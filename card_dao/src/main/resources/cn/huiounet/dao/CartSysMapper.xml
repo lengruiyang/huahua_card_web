@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.CartSysMapper">
+    <select id="findByUser_id" resultType="CartSys">
+        SELECT * FROM  card_cart_sys where user_id = #{user_id};
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM card_cart_sys WHERE id = #{id};
+    </delete>
+</mapper>

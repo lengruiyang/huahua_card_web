@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.ImgSysMapper">
+    <select id="findByGoodsId" resultType="ImgSys">
+        SELECT * FROM  card_img_sys where goods_id = #{goods_id} AND status = '1';
+    </select>
+
+    <select id="findByLunBo" resultType="ImgSys">
+        SELECT * FROM  card_img_sys where status = '2';
+    </select>
+
+</mapper>

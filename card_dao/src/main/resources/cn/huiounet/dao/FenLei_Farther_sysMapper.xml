@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.FenLei_Farther_sysMapper">
+    <select id="findById" resultType="FenLei_Farther_sys">
+        SELECT * FROM  card_fen_lei_farther_sys where id = #{id};
+    </select>
+</mapper>

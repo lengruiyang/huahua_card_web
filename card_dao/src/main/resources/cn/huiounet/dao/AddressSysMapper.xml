@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.AddressSysMapper">
+
+    <select id="findByUser_id" resultType="AddressSys">
+        SELECT * FROM  card_address where user_id = #{user_id};
+    </select>
+
+    <select id="findByStatus" resultType="AddressSys">
+        SELECT * FROM  card_address where user_id = #{user_id} AND status = #{status};
+    </select>
+
+    <select id="findById" resultType="AddressSys">
+        SELECT * FROM  card_address where id = #{id};
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM card_address where id = #{id};
+    </delete>
+
+</mapper>

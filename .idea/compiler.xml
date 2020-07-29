@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="card_common" />
+        <module name="card_dao" />
+        <module name="card_pojo" />
+        <module name="card_service" />
+        <module name="card_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="card_common" target="1.8" />
+      <module name="card_dao" target="1.8" />
+      <module name="card_pojo" target="1.8" />
+      <module name="card_service" target="1.8" />
+      <module name="card_web" target="1.8" />
+      <module name="huahua_card_web" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

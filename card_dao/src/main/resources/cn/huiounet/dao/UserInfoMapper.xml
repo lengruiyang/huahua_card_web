@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.UserInfoMapper">
+    <select id="findByOpenId" resultType="UserInfoSystem">
+        SELECT * FROM  card_user_info where open_id = #{open_id};
+    </select>
+
+    <select id="findByPhone" resultType="UserInfoSystem">
+        SELECT * FROM  card_user_info where  phone_number = #{phone_number};
+    </select>
+
+    <select id="findById" resultType="UserInfoSystem">
+        SELECT * FROM  card_user_info where  id = #{id};
+    </select>
+
+    <!--<update id="updateSex">-->
+        <!--UPDATE card_user_info set sex = #{sex} where id = #{id};-->
+    <!--</update>-->
+
+    <!--<update id="updateBir">-->
+        <!--UPDATE card_user_info set birthday = #{birthday} where id = #{id};-->
+    <!--</update>-->
+
+    <update id="updateQM">
+        UPDATE card_user_info set qian_ming = #{qian_ming} where id = #{id};
+    </update>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.CouponSysMapper">
+    <select id="findByUser" resultType="CouponSys">
+        SELECT * FROM  card_coupon_sys where user_id = #{user_id};
+    </select>
+
+    <select id="findById" resultType="CouponSys">
+        SELECT * FROM  card_coupon_sys where id = #{id};
+    </select>
+
+    <update id="updateById">
+        UPDATE FROM card_coupon_sys SET status = #{status} WHERE id = #{id};
+    </update>
+
+    <update id="updateTime">
+        UPDATE FROM card_coupon_sys SET start_time = #{start_time},last_time = #{last_time} WHERE id = #{id};
+    </update>
+</mapper>

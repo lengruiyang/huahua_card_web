@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/card_common/card_common.iml" filepath="$PROJECT_DIR$/card_common/card_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/card_dao/card_dao.iml" filepath="$PROJECT_DIR$/card_dao/card_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/card_pojo/card_pojo.iml" filepath="$PROJECT_DIR$/card_pojo/card_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/card_service/card_service.iml" filepath="$PROJECT_DIR$/card_service/card_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/card_web/card_web.iml" filepath="$PROJECT_DIR$/card_web/card_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/huahua_card_web.iml" filepath="$PROJECT_DIR$/huahua_card_web.iml" />
+    </modules>
+  </component>
+</project>
