@@ -14,4 +14,6 @@ public interface GoodsSysService {
     List<GoodsSys> SearchGoods(String goods_name);
 
     List<GoodsSys> findAll(int start,int pageSize);
+
+    List<GoodsSys> findByShop_id(String shop_id);
 }

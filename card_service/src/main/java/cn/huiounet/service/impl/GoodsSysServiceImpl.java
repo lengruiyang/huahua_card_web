@@ -32,4 +32,9 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     public List<GoodsSys> findAll(int start, int pageSize) {
         return goodsSysMapper.findAll(start, pageSize);
     }
+
+    @Override
+    public List<GoodsSys> findByShop_id(String shop_id) {
+        return goodsSysMapper.findByShop_id(shop_id);
+    }
 }

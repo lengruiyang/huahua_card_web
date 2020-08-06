@@ -20,8 +20,21 @@ public class GoodsSys implements Serializable {
     private String is_sport_vip;
     private String vip_price;
     private String get_score;
+    private String shop_id;
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public GoodsSys() {
+    }
 
     @Override
+
     public String toString() {
         return "GoodsSys{" +
                 "id=" + id +

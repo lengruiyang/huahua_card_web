@@ -15,4 +15,6 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
     List<GoodsSys> SearchGoods(String goods_name);
 
     List<GoodsSys> findAll(@Param(value = "start")int start,@Param(value = "pageSize")int pageSize);
+
+    List<GoodsSys> findByShop_id(String shop_id);
 }

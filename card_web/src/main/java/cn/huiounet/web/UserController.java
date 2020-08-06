@@ -1,14 +1,12 @@
 package cn.huiounet.web;
 
 import cn.huiounet.pojo.UserInfoSystem;
-import cn.huiounet.pojo.utils.HttpRequest;
-import cn.huiounet.pojo.utils.WxUtils;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.UserInfoService;
+import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.send_message.RamNumberUtil;
 import cn.huiounet.utils.send_message.SendMessageUtil;
 import cn.huiounet.utils.wxPay.WeChatTool;
-import cn.huiounet.utils.wxPay.WxConfig;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +61,7 @@ public class UserController {
         String nickName = request.getParameter("nickName");
         String avatarUrl = request.getParameter("avatarUrl");
         String password = request.getParameter("password");
+        String from_user_id = request.getParameter("from_user_id");
 
 
 
@@ -97,6 +96,8 @@ public class UserController {
             userInfoSystem.setPhone_number(phone);
             userInfoSystem.setSex(gander);
             userInfoSystem.setPassword(password);
+            userInfoSystem.setUser_tuijian_id(RamNumberUtil.getRandomStr(6,1));
+            userInfoSystem.setFrom_id(from_user_id);
             userInfoSystem.setStatus("1");
             userInfoService.saveUser(userInfoSystem);
 

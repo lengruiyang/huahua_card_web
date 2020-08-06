@@ -18,4 +18,8 @@
         SELECT * FROM card_goods_sys WHERE status = '1' LIMIT #{start} , #{pageSize} ;
     </select>
 
+    <select id="findByShop_id" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id} ;
+    </select>
+
 </mapper>

@@ -2,19 +2,10 @@ package cn.huiounet.utils.send_message;
 
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
-import com.tencentcloudapi.common.Credential;
-import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 
 //导入可选配置类
-import com.tencentcloudapi.common.profile.ClientProfile;
-import com.tencentcloudapi.common.profile.HttpProfile;
-
 // 导入 SMS 模块的 client
-import com.tencentcloudapi.sms.v20190711.SmsClient;
-
 // 导入要请求接口对应的 request response 类
-import com.tencentcloudapi.sms.v20190711.models.SendSmsRequest;
-import com.tencentcloudapi.sms.v20190711.models.SendSmsResponse;
 
 /**
  * Tencent Cloud Sms Sendsms

@@ -17,6 +17,24 @@ public class UserInfoSystem implements Serializable {
     private String settting_num;
     private String create_time;
     private String password;
+    private String user_tuijian_id;
+    private String from_id;
+
+    public String getUser_tuijian_id() {
+        return user_tuijian_id;
+    }
+
+    public void setUser_tuijian_id(String user_tuijian_id) {
+        this.user_tuijian_id = user_tuijian_id;
+    }
+
+    public String getFrom_id() {
+        return from_id;
+    }
+
+    public void setFrom_id(String from_id) {
+        this.from_id = from_id;
+    }
 
     public UserInfoSystem() {
     }
