@@ -6,4 +6,37 @@
         SELECT * FROM  card_order_sys where order_num = #{order_num};
     </select>
 
+    <select id="findAll" resultType="OrderSys">
+        SELECT * FROM  card_order_sys   where  user_id = #{user_id} ORDER  BY id  desc   limit #{start},#{size} ;
+    </select>
+
+    <select id="findAllNum" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  card_order_sys where user_id = #{user_id} AND pay_status = #{pay_status};
+    </select>
+
+
+    <select id="findOrderStatus" resultType="OrderSys">
+        SELECT * FROM  card_order_sys   where user_id = #{user_id} And pay_status = #{pay_status} ORDER  BY id desc limit #{start},#{size};
+    </select>
+
+    <update id="updataPayStatusByOrderNum">
+        UPDATE card_order_sys SET pay_status = #{pay_status} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updataPayTime">
+        UPDATE card_order_sys SET pay_time = #{pay_time} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updateNotic">
+        UPDATE card_order_sys SET goods_notic = #{goods_notic} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updateFaHuo">
+        UPDATE card_order_sys SET fa_huo_time = #{fa_huo_time},fa_huo_num = #{fa_huo_num} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updateAddress">
+        UPDATE card_order_sys SET address_num = #{address_num} WHERE order_num = #{order_num}
+    </update>
+
 </mapper>

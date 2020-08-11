@@ -21,6 +21,15 @@ public class GoodsSys implements Serializable {
     private String vip_price;
     private String get_score;
     private String shop_id;
+    private String yun_fei;
+
+    public String getYun_fei() {
+        return yun_fei;
+    }
+
+    public void setYun_fei(String yun_fei) {
+        this.yun_fei = yun_fei;
+    }
 
     public String getShop_id() {
         return shop_id;

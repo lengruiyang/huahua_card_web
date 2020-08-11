@@ -1,8 +1,12 @@
+import cn.huiounet.pojo.UserInfoSystem;
+import cn.huiounet.pojo.address.AddressSys;
 import cn.huiounet.pojo.address.AddressTip;
+import cn.huiounet.pojo.dingyuexiaoxi.Template;
+import cn.huiounet.pojo.dingyuexiaoxi.TemplateParam;
 import cn.huiounet.pojo.goods.GoodsSys;
-import cn.huiounet.service.AddressSysService;
-import cn.huiounet.service.AddressTipService;
-import cn.huiounet.service.GoodsSysService;
+import cn.huiounet.pojo.order.OrderSys;
+import cn.huiounet.service.*;
+import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.http.HttpUtils;
 import cn.huiounet.utils.send_message.RamNumberUtil;
 import cn.huiounet.utils.send_message.SendMessageUtil;
@@ -17,10 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 
@@ -35,66 +37,21 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64;
 public class OrderTest {
 
     @Autowired
+    private OrderSysService orderSysService;
+
+    @Autowired
     private GoodsSysService goodsSysService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private OrderAddressService orderAddressService;
 
     @Test
     public void test_(){
-        List<GoodsSys> newGoods = goodsSysService.findNewGoods();
-        System.out.println(newGoods);
-//        try {
-//            String mess = SendMessageUtil.getMess("15779543583", "111000");
-//            System.out.println(mess);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        //API产品路径
-//        String host = "https://maskface.market.alicloudapi.com";
-//        String path = "/ai_image_detect/ai_maskface/v1";
-//        String method = "POST";
-//        //阿里云APPCODE
-//        String appcode = "0a80a077661e45e69cc1b5792d8a7fd1";
-//        Map<String, String> headers = new HashMap<String, String>();
-//        headers.put("Authorization", "APPCODE " + appcode);
-//        //根据API的要求，定义相对应的Content-Type
-//        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-//        Map<String, String> querys = new HashMap<String, String>();
-//        Map<String, String> bodys = new HashMap<String, String>();
-//
-//        //启用BASE64编码方式进行识别
-//        //内容数据类型是BASE64编码
-//        String imgFile = "C:\\Users\\Dell\\Desktop\\test2.jpg";
-//        String imgBase64 = "";
-//        try {
-//            File file = new File(imgFile);
-//            byte[] content = new byte[(int) file.length()];
-//            FileInputStream finputstream = new FileInputStream(file);
-//            finputstream.read(content);
-//            finputstream.close();
-//            imgBase64 = new String(encodeBase64(content));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return;
-//        }
-//        bodys.put("IMAGE", imgBase64);
-//
-//
-//        try {
-//            /**
-//             * 重要提示如下:
-//             * HttpUtils请从
-//             * https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/src/main/java/com/aliyun/api/gateway/demo/util/HttpUtils.java
-//             * 下载
-//             *
-//             * 相应的依赖请参照
-//             * https://github.com/aliyun/api-gateway-demo-sign-java/blob/master/pom.xml
-//             */
-//            HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, bodys);
-//            System.out.println(response.toString());
-//            //获取response的body
-//            System.out.println(EntityUtils.toString(response.getEntity()));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+        //orderAddressService.updateByOrderNum("1","1","1","862288f563284b27b0f9592b7d2af281");
 
     }
 

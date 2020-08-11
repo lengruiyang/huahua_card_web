@@ -67,7 +67,7 @@ public class XmlPayUtil {
      * @param out_trade_no 支付单号
      * @return
      */
-    public String psyStatusXml(String out_trade_no){
+    public static String psyStatusXml(String out_trade_no){
         String nonceStr= WXPayUtil.generateUUID();
         Map<String ,String> map = new HashMap<String ,String>();
         map.put("appid",WeChatTool.wxspAppid);
@@ -103,7 +103,7 @@ public class XmlPayUtil {
      * @param refund_desc
      * @return
      */
-    public String tuiKuan(String out_trade_no,String out_refund_no,int total_fee,int refund_fee,String refund_desc){
+    public static String tuiKuan(String out_trade_no,String out_refund_no,int total_fee,int refund_fee,String refund_desc){
         String nonceStr= WXPayUtil.generateUUID();
         Map<String ,String> map = new HashMap<String ,String>();
         map.put("appid",WeChatTool.wxspAppid);
