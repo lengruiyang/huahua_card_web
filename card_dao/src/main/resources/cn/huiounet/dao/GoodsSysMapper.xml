@@ -22,4 +22,20 @@
         SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id} ;
     </select>
 
+    <select id="findByLike" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys ORDER  BY like_many DESC limit #{start},#{size};
+    </select>
+
+    <select id="findBySell" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys ORDER  BY sell_many DESC limit #{start},#{size};
+    </select>
+
+    <update id="updateLike">
+        UPDATE card_goods_sys SET like_many = #{like_many} WHERE id = #{id};
+    </update>
+
+    <update id="updateSell_many">
+        UPDATE card_goods_sys SET sell_many = #{sell_many} WHERE id = #{id};
+    </update>
+
 </mapper>

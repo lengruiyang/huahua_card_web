@@ -6,6 +6,18 @@
         SELECT * FROM  card_cart_sys where user_id = #{user_id};
     </select>
 
+    <select id="findById" resultType="CartSys">
+        SELECT * FROM  card_cart_sys where id = #{id};
+    </select>
+
+    <select id="findByShop_id" resultType="CartSys">
+        SELECT * FROM  card_cart_sys where shop_id = #{shop_id};
+    </select>
+
+    <select id="GroupBy" resultType="CartSys">
+        SELECT * FROM card_cart_sys WHERE user_id = #{user_id} GROUP BY shop_id;
+    </select>
+
     <delete id="deleteById">
         DELETE FROM card_cart_sys WHERE id = #{id};
     </delete>

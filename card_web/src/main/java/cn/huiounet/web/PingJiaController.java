@@ -1,9 +1,11 @@
 package cn.huiounet.web;
 
 import cn.huiounet.pojo.UserInfoSystem;
+import cn.huiounet.pojo.pingjia.PingJiaNum;
 import cn.huiounet.pojo.pingjia.PingJiaSys;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.GoodsSysService;
+import cn.huiounet.service.OrderSysService;
 import cn.huiounet.service.PingJiaSysService;
 import cn.huiounet.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class PingJiaController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private OrderSysService orderSysService;
 
     @Autowired
     private GoodsSysService goodsSysService;
@@ -65,6 +70,8 @@ public class PingJiaController {
         pingJiaSys.setUser_name(byId.getNick_name());
 
         pingJiaSysService.savePingJia(pingJiaSys);
+
+        orderSysService.updatePj("1",order_num);
 
         return Result.ok("ok");
     }
@@ -112,6 +119,8 @@ public class PingJiaController {
         pingJiaSysService.deleteById(id);
     }
 
+
+
     @GetMapping("/findByGoodsId")
     public List<PingJiaSys> findByGoodsId(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
@@ -124,6 +133,112 @@ public class PingJiaController {
         String start = request.getParameter("start");
 
         List<PingJiaSys> byGoodsIds = pingJiaSysService.findByGoodsId(goods_id, Integer.parseInt(start), 5);
+
+        return byGoodsIds;
+    }
+
+    @GetMapping("/findByGoodsPj")
+    public List<PingJiaSys> findByGoodsPj(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String goods_id = request.getParameter("goods_id");
+
+        String start = request.getParameter("start");
+
+        List<PingJiaSys> byGoodsIds = pingJiaSysService.GoodsPj(goods_id, Integer.parseInt(start), 5);
+
+        return byGoodsIds;
+    }
+
+    @GetMapping("/findByPoorPj")
+    public List<PingJiaSys> findByPoorPj(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String goods_id = request.getParameter("goods_id");
+
+        String start = request.getParameter("start");
+
+        List<PingJiaSys> byGoodsIds = pingJiaSysService.PoorPj(goods_id, Integer.parseInt(start), 5);
+
+        return byGoodsIds;
+    }
+
+    @GetMapping("/findByMPj")
+    public List<PingJiaSys> findByMPj(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String goods_id = request.getParameter("goods_id");
+
+        String start = request.getParameter("start");
+
+        List<PingJiaSys> byGoodsIds = pingJiaSysService.MPj(goods_id, Integer.parseInt(start), 5);
+
+        return byGoodsIds;
+    }
+
+    @GetMapping("/findByImgPj")
+    public List<PingJiaSys> findByImgPj(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String goods_id = request.getParameter("goods_id");
+
+        String start = request.getParameter("start");
+
+        List<PingJiaSys> byGoodsIds = pingJiaSysService.findByImg(goods_id, Integer.parseInt(start), 5);
+
+        return byGoodsIds;
+    }
+
+    @GetMapping("/findByPjNum")
+    public PingJiaNum findByPjNum(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String goods_id = request.getParameter("goods_id");
+
+        int goodPj = pingJiaSysService.findByNum("1", goods_id);
+        int mPj = pingJiaSysService.findByNum("2", goods_id);
+        int poorPj = pingJiaSysService.findByNum("3", goods_id);
+        int imgPj = pingJiaSysService.findByNum("4", goods_id);
+        int allPj = pingJiaSysService.findByNum("5", goods_id);
+
+        PingJiaNum pingJiaNum = new PingJiaNum(goodPj,poorPj,mPj,imgPj,allPj);
+
+        return pingJiaNum;
+    }
+
+    @GetMapping("/findByUserGoodsId")
+    public List<PingJiaSys> findByUserGoodsId(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String goods_id = request.getParameter("goods_id");
+        String user_id = request.getParameter("user_id");
+
+        List<PingJiaSys> byGoodsIds = pingJiaSysService.findByUserGoodsId(goods_id,user_id);
 
         return byGoodsIds;
     }

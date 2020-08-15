@@ -109,6 +109,10 @@ public class GoodsController {
         String goods_id = request.getParameter("goods_id");
         GoodsSc goodsSc = new GoodsSc();
         goodsSc.setGoods_id(goods_id);
+        GoodsSys id = goodsSysService.findId(goods_id);
+        String like_many = id.getLike_many();
+        int i = Integer.parseInt(like_many) + 1;
+        goodsSysService.updateLike(i+"",goods_id);
         goodsSc.setUser_id(user_id);
         goodsScService.saveGoodsSc(goodsSc);
         //成功
@@ -141,7 +145,12 @@ public class GoodsController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
+        GoodsSys id = goodsSysService.findId(goods_id);
+        String like_many = id.getLike_many();
+        int i = Integer.parseInt(like_many);
+        int i1 = i - 1;
 
+        goodsSysService.updateLike(i1+"",goods_id);
 
         goodsScService.deleteById(goods_id,user_id);
         //成功
@@ -161,6 +170,36 @@ public class GoodsController {
         List<GoodsColor> goodsColor = goodsColorService.findGoodsColor(goods_id);
         //成功
         return goodsColor;
+    }
+
+    @GetMapping("/findSell")
+    public List<GoodsSys> findSell(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String start = request.getParameter("start");
+
+        List<GoodsSys> bySell = goodsSysService.findBySell(Integer.parseInt(start), 5);
+        //成功
+        return bySell;
+    }
+
+    @GetMapping("/findLike")
+    public List<GoodsSys> findLike(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String start = request.getParameter("start");
+
+        List<GoodsSys> byLike = goodsSysService.findByLike(Integer.parseInt(start), 5);
+        //成功
+        return byLike;
     }
 
     @GetMapping("/findSize")

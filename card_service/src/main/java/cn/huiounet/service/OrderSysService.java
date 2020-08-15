@@ -16,6 +16,8 @@ public interface OrderSysService {
 
     void updateAddress(String address_num, String order_num);
 
+    void updatePj(String is_pj,String order_num);
+
     void updataPayTime(String pay_time, String order_num);
 
     void updateFaHuo(String fa_huo_time, String fa_huo_num, String order_num);

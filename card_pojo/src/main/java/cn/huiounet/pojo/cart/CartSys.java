@@ -17,6 +17,41 @@ public class CartSys  implements Serializable{
     private String img;
     private String about_mess; //相关信息
     private String status_;
+    private String shop_id;
+    private String shop_name;
+    private String shop_img;
+
+    public String getStatus_() {
+        return status_;
+    }
+
+    public void setStatus_(String status_) {
+        this.status_ = status_;
+    }
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
+
+    public String getShop_img() {
+        return shop_img;
+    }
+
+    public void setShop_img(String shop_img) {
+        this.shop_img = shop_img;
+    }
 
     public String getStatus() {
         return status_;
@@ -40,6 +75,10 @@ public class CartSys  implements Serializable{
                 ", user_id='" + user_id + '\'' +
                 ", img='" + img + '\'' +
                 ", about_mess='" + about_mess + '\'' +
+                ", status_='" + status_ + '\'' +
+                ", shop_id='" + shop_id + '\'' +
+                ", shop_name='" + shop_name + '\'' +
+                ", shop_img='" + shop_img + '\'' +
                 '}';
     }
 

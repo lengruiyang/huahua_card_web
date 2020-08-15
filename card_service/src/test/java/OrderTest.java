@@ -1,10 +1,12 @@
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.address.AddressSys;
 import cn.huiounet.pojo.address.AddressTip;
+import cn.huiounet.pojo.cart.CartSys;
 import cn.huiounet.pojo.dingyuexiaoxi.Template;
 import cn.huiounet.pojo.dingyuexiaoxi.TemplateParam;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.OrderSys;
+import cn.huiounet.pojo.pingjia.PingJiaSys;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.http.HttpUtils;
@@ -23,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 
@@ -46,11 +50,22 @@ public class OrderTest {
     private UserInfoService userInfoService;
 
     @Autowired
-    private OrderAddressService orderAddressService;
+    private PingJiaSysService pingJiaSysService;
+
+    @Autowired
+    private CartSysService cartSysService;
 
     @Test
     public void test_(){
 
+//
+//        System.out.println(cartSys.toString());
+//        goodsSysService.updateLike("1","1");
+//        goodsSysService.updateSell_many("1","1");
+//
+//        List<PingJiaSys> pingJiaSys = pingJiaSysService.PoorPj();
+//
+//        System.out.println(pingJiaSys.toString());
         //orderAddressService.updateByOrderNum("1","1","1","862288f563284b27b0f9592b7d2af281");
 
     }

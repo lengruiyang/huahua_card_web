@@ -3,6 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.huiounet.dao.PingJiaSysMapper">
 
+    <select id="findByImg" resultType="PingJiaSys">
+        SELECT * FROM  card_pingjia where goods_id = #{goods_id} AND img_one != "undefined" limit #{start},#{size};
+    </select>
+
     <select id="findByUser_id" resultType="PingJiaSys">
         SELECT * FROM  card_pingjia where user_id = #{user_id} limit #{start},#{size};
     </select>
@@ -13,6 +17,42 @@
 
     <select id="findByGoodsId" resultType="PingJiaSys">
         SELECT * FROM  card_pingjia where goods_id = #{goods_id} limit #{start},#{size};
+    </select>
+
+    <select id="GoodsPj" resultType="PingJiaSys">
+        SELECT * FROM card_pingjia WHERE goods_id = #{goods_id} AND star &gt; 3 limit #{start},#{size};
+    </select>
+
+    <select id="PoorPj" resultType="PingJiaSys">
+        SELECT * FROM card_pingjia WHERE goods_id = #{goods_id} AND star &lt; 3 limit #{start},#{size};
+    </select>
+
+    <select id="MPj" resultType="PingJiaSys">
+        SELECT * FROM card_pingjia WHERE goods_id = #{goods_id} AND star = 3 limit #{start},#{size};
+    </select>
+
+    <select id="findByUserGoodsId" resultType="PingJiaSys">
+        SELECT * FROM  card_pingjia where goods_id = #{goods_id} AND user_id = #{user_id};
+    </select>
+
+    <select id="findByNum" resultType="java.lang.Integer">
+        SELECT
+        <if test="star == 1">
+            SUM(CASE WHEN star &gt; 3 THEN 1 ELSE 0 END )
+        </if>
+        <if test="star == 2">
+            SUM(CASE WHEN star=3 THEN 1 ELSE 0 END )
+        </if>
+        <if test="star == 3">
+            SUM(CASE WHEN star &lt; 3 THEN 1 ELSE 0 END )
+        </if>
+        <if test="star == 4">
+            SUM(CASE WHEN img_one != "undefined" THEN 1 ELSE 0 END )
+        </if>
+        <if test="star == 5">
+            COUNT(*)
+        </if>
+        FROM `card_pingjia` WHERE  goods_id = #{goods_id};
     </select>
 
     <delete id="deleteById">

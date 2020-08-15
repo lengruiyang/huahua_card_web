@@ -39,6 +39,11 @@ public class OrderSysServiceImpl implements OrderSysService {
     }
 
     @Override
+    public void updatePj(String is_pj, String order_num) {
+        orderSysMapper.updatePj(is_pj, order_num);
+    }
+
+    @Override
     public void updataPayTime(String pay_time, String order_num) {
         orderSysMapper.updataPayTime(pay_time, order_num);
     }

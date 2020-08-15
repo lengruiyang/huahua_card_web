@@ -67,19 +67,10 @@ public class WxPayController {
 //            if(Long.parseLong(byOrderNum.getLast_time())>System.currentTimeMillis()){
 //                return null;
 //            }
-            String goods_id = byOrderNum.getGoods_id();
+            String shop_name = byOrderNum.getShop_name();
 
-            GoodsSys Goods = goodsSysService.findId(goods_id);
 
             UserInfoSystem byId = userInfoService.findById(user_id);
-
-            String goods_name = "";
-            if(Goods.getGoods_name().length()>5){
-                goods_name = Goods.getGoods_name().substring(0, 5);
-                goods_name = goods_name + "....";
-            }else {
-                goods_name = Goods.getGoods_name();
-            }
 
 
             String all_money = byOrderNum.getAll_money();
@@ -87,7 +78,7 @@ public class WxPayController {
             String yun_fei = byOrderNum.getYun_fei();
 
 
-            Map<String, String> payResult = CreateOrder.createOrder(goods_name, byId.getOpen_id(), order_num, Integer.parseInt(all_money)+Integer.parseInt(yun_fei));
+            Map<String, String> payResult = CreateOrder.createOrder(shop_name+"-商品购买", byId.getOpen_id(), order_num, Integer.parseInt(all_money)+Integer.parseInt(yun_fei));
 
             logger.info(payResult);
 
@@ -125,6 +116,16 @@ public class WxPayController {
         }
         if (trade_state.equals("SUCCESS")) {
             //已支付
+            List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+            for(int i = 0;i<byOrderNUm.size();i++){
+                ReturnGoods returnGoods = byOrderNUm.get(i);
+                String goods_id = returnGoods.getGoods_id();
+                GoodsSys id = goodsSysService.findId(goods_id);
+                String sell_many = id.getSell_many();
+                int i1 = Integer.parseInt(sell_many);
+                int sellMany = i1 + 1;
+                goodsSysService.updateSell_many(sellMany+"",goods_id);
+            }
             orderSysService.updataPayStatusByOrderNum("is_payed",order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             orderSysService.updataPayTime(df.format(new Date()),order_num);

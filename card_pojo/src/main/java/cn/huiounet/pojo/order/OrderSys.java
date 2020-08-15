@@ -10,7 +10,9 @@ public class OrderSys implements Serializable{
     private String user_id;
     private String pay_status;
     private String order_num; //订单号
-    private String goods_id;
+    private String shop_name;
+    private String shop_id;
+    private String shop_img;
     private String goods_notic;
     private String all_money;
     private String address_num;
@@ -18,7 +20,33 @@ public class OrderSys implements Serializable{
     private String pay_time;
     private String fa_huo_time;
     private String fa_huo_num;
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public String getShop_img() {
+        return shop_img;
+    }
+
+    public void setShop_img(String shop_img) {
+        this.shop_img = shop_img;
+    }
+
     private String yun_fei;
+    private String is_pj;
+
+    public String getIs_pj() {
+        return is_pj;
+    }
+
+    public void setIs_pj(String is_pj) {
+        this.is_pj = is_pj;
+    }
 
     public String getYun_fei() {
         return yun_fei;
@@ -100,12 +128,12 @@ public class OrderSys implements Serializable{
         this.order_num = order_num;
     }
 
-    public String getGoods_id() {
-        return goods_id;
+    public String getShop_name() {
+        return shop_name;
     }
 
-    public void setGoods_id(String goods_id) {
-        this.goods_id = goods_id;
+    public void setShop_name(String goods_id) {
+        this.shop_name = goods_id;
     }
 
     public String getGoods_notic() {
@@ -140,7 +168,7 @@ public class OrderSys implements Serializable{
                 ", user_id='" + user_id + '\'' +
                 ", pay_status='" + pay_status + '\'' +
                 ", order_num='" + order_num + '\'' +
-                ", goods_id='" + goods_id + '\'' +
+                ", shop_name='" + shop_name + '\'' +
                 ", goods_notic='" + goods_notic + '\'' +
                 ", all_money='" + all_money + '\'' +
                 ", address_num='" + address_num + '\'' +

@@ -20,6 +20,8 @@ public interface OrderSysMapper extends Mapper<OrderSys>{
 
     void updataPayTime(@Param(value = "pay_time")String pay_time,@Param(value = "order_num")String order_num);
 
+    void updatePj(@Param(value = "is_pj")String is_pj,@Param(value = "order_num")String order_num);
+
     void updateFaHuo(@Param(value = "fa_huo_time")String fa_huo_time,@Param(value = "fa_huo_num")String fa_huo_num,@Param(value = "order_num")String order_num);
 
     List<OrderSys> findOrderStatus(@Param(value = "user_id")String user_id,@Param(value = "pay_status")String pay_status,@Param(value = "start")int start,@Param(value = "size")int size);

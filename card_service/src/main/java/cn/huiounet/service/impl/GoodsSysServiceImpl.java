@@ -19,8 +19,23 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     }
 
     @Override
+    public List<GoodsSys> findBySell(int start, int size) {
+        return goodsSysMapper.findBySell(start, size);
+    }
+
+    @Override
     public List<GoodsSys> findNewGoods() {
         return goodsSysMapper.findNewGoods();
+    }
+
+    @Override
+    public List<GoodsSys> findByLike(int start, int size) {
+        return goodsSysMapper.findByLike(start, size);
+    }
+
+    @Override
+    public void updateSell_many(String sell_many, String id) {
+        goodsSysMapper.updateSell_many(sell_many, id);
     }
 
     @Override
@@ -36,5 +51,10 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     @Override
     public List<GoodsSys> findByShop_id(String shop_id) {
         return goodsSysMapper.findByShop_id(shop_id);
+    }
+
+    @Override
+    public void updateLike(String like_many, String id) {
+        goodsSysMapper.updateLike(like_many,id);
     }
 }

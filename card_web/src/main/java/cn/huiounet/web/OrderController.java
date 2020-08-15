@@ -2,12 +2,14 @@ package cn.huiounet.web;
 
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.address.AddressSys;
+import cn.huiounet.pojo.cart.CartSys;
 import cn.huiounet.pojo.dingyuexiaoxi.Template;
 import cn.huiounet.pojo.dingyuexiaoxi.TemplateParam;
 import cn.huiounet.pojo.goods.GoodsColor;
 import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.*;
+import cn.huiounet.pojo.shop.ShopSys;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.access_token.GetTokenUtil;
 import cn.huiounet.utils.http.HttpRequest;
@@ -24,10 +26,14 @@ import redis.clients.jedis.JedisShardInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/order")
@@ -58,6 +64,12 @@ public class OrderController {
     @Autowired
     private AddressSysService addressSysService;
 
+    @Autowired
+    private CartSysService cartSysService;
+
+    @Autowired
+    private ShopSysService shopSysService;
+
     /**
      * 一个
      * @param response
@@ -74,6 +86,7 @@ public class OrderController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
+        String shop_id = request.getParameter("shop_id");
         String goods_color = request.getParameter("goods_color");
         String goods_num = request.getParameter("goods_num");
         String address_id = request.getParameter("address_id");
@@ -101,9 +114,13 @@ public class OrderController {
         returnGoods.setGoods_id(byId1.getGoods_id());
 
 
+        ShopSys byOpenId = shopSysService.findByOpenId(shop_id);
 
+
+        orderSys.setShop_img(byOpenId.getShop_head_img());
+        orderSys.setShop_name(byOpenId.getShop_name());
         orderSys.setOrder_num(nonceStr);
-        orderSys.setGoods_id(goods_id);
+        orderSys.setShop_id(shop_id);
         orderSys.setAddress_num(address_id);
         orderSys.setPay_status("not_pay"); //未支付
         long totalMilliSeconds = System.currentTimeMillis();
@@ -133,6 +150,111 @@ public class OrderController {
         return nonceStr;
     }
 
+    /**
+     * fand
+     * @param response
+     * @param request
+     * @return
+     */
+    @GetMapping("/saveCartListToOrder")
+    private List<String> saveCartList(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+        String CartidList = request.getParameter("idList");
+
+        String[] split = CartidList.split("\\|");
+        List<CartSys> cartSys = new ArrayList<>();
+//        int yun
+        for(int i = 0;i<split.length;i++){
+            //思路：根据cartid查找到该购物车资料再进行shopId分组找到不同的shopId进行订单分组
+            CartSys byId = cartSysService.findById(split[i]);
+//            String goods_id = byId.getGoods_id();
+//            GoodsSys id = goodsSysService.findId(goods_id);
+//            String yun_fei = id.getYun_fei();
+            cartSys.add(byId);//存入集合
+        }
+        Map<String,List<CartSys>> userGroupMap = cartSys.stream().
+                collect(Collectors.groupingBy(CartSys::getShop_id));
+        List<String> strings = new ArrayList<>();
+        for(Map.Entry<String, List<CartSys>> entry : userGroupMap.entrySet()){
+            String nonceStr= WXPayUtil.generateUUID(); //订单号
+            String mapKey = entry.getKey(); //mapKey就是shop_id
+            List<CartSys> value = entry.getValue(); //对应shop下面的goods
+            OrderSys orderSys = new OrderSys();
+            orderSys.setUser_id(user_id);
+            orderSys.setShop_id(mapKey);
+            ShopSys byOpenId = shopSysService.findByOpenId(mapKey);
+            orderSys.setShop_name(byOpenId.getShop_name());
+            orderSys.setShop_img(byOpenId.getShop_head_img());
+            orderSys.setPay_status("not_pay");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            orderSys.setCreat_time(df.format(new Date()));
+            orderSys.setOrder_num(nonceStr);
+
+
+            int yunfeiMoney = 0;
+            BigDecimal money = new BigDecimal(0);
+            for(int n = 0;n<value.size();n++){
+                CartSys cartSys1 = value.get(n);
+                ReturnGoods returnGoods1 = new ReturnGoods();
+                returnGoods1.setOrder_num(nonceStr);
+                returnGoods1.setName(cartSys1.getGoods_name());
+                returnGoods1.setImg(cartSys1.getImg());
+                returnGoods1.setNum(cartSys1.getGoods_num());
+                returnGoods1.setPrice(cartSys1.getGoods_price());
+                returnGoods1.setGoods_id(cartSys1.getGoods_id());
+                returnGoods1.setSize(cartSys1.getSize());
+                returnGoods1.setColor(cartSys1.getColor());
+                BigDecimal b1 = new BigDecimal(cartSys1.getGoods_price());
+                BigDecimal b2 = new BigDecimal(100);
+                BigDecimal multiply = b1.multiply(b2);
+                BigDecimal b3 = new BigDecimal(Integer.parseInt(cartSys1.getGoods_num()));
+                multiply.multiply(b3);
+                money = multiply.add(money);
+                returnGoodsService.saveReturnGoods(returnGoods1);
+                String goods_id = cartSys1.getGoods_id();
+                GoodsSys id = goodsSysService.findId(goods_id);
+                String yun_fei = id.getYun_fei();
+                int i = Integer.parseInt(yun_fei);
+                yunfeiMoney = i+yunfeiMoney;
+            }
+            int money_ = money.intValue();
+
+            orderSys.setAll_money(money_+"");
+            long totalMilliSeconds = System.currentTimeMillis();
+            long time = totalMilliSeconds + 300000;
+            orderSys.setLast_time(time+"");
+            strings.add(nonceStr);
+            //添加地址
+            AddressSys byStatus = addressSysService.findByStatus(user_id, "1");
+            String user_name = byStatus.getUser_name();
+
+            OrderAddress orderAddress = new OrderAddress();
+            orderAddress.setOrder_num(nonceStr);
+            orderAddress.setUser_name(user_name);
+            orderAddress.setUser_phone(byStatus.getUser_phone());
+            orderAddress.setTip(byStatus.getTip());
+            orderAddress.setUser_address(byStatus.getUser_address());
+            orderAddressService.saveOrderAddress(orderAddress);
+            orderSys.setAddress_num(byStatus.getId()+"");
+            orderSys.setYun_fei(yunfeiMoney+"");
+            orderSysService.saveOrder(orderSys);
+
+        }
+
+        for(int m = 0;m<split.length;m++){
+            String s = split[m];
+
+            cartSysService.deleteById(s);
+        }
+        return strings;
+    }
+
 
     /**
      * fand
@@ -156,10 +278,13 @@ public class OrderController {
         long totalMilliSeconds = System.currentTimeMillis();
         long time2 = time - totalMilliSeconds;
         byOrderNum.setLast_time(time2+"");
+
         List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
 
         return new ReturnOrder(byOrderNUm,byOrderNum);
     }
+
+
 
     @GetMapping("/findOrderStatus")
     private List<ReturnOrder> findOrderStatus(HttpServletResponse response, HttpServletRequest request){
@@ -301,10 +426,8 @@ public class OrderController {
         //获得openid
         OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
         String user_id = byOrderNum.getUser_id();
-        String goods_id = byOrderNum.getGoods_id();
-        GoodsSys id = goodsSysService.findId(goods_id);
+        String shop_name = byOrderNum.getShop_name();
         UserInfoSystem byId = userInfoService.findById(user_id);
-        String address_num = byOrderNum.getAddress_num();
         OrderAddress byId1 = orderAddressService.findByOrderNum(order_num);
         String open_id = byId.getOpen_id();
         //得到了模板id;zTNpnRfGK8YgL2i6cctWsaIdPXqUHtdk8F60fxT6RGE
@@ -314,7 +437,7 @@ public class OrderController {
         template.setPage("/pages/orderDetail/orderDetail?order_num="+order_num);
         List<TemplateParam> paras=new ArrayList<TemplateParam>();
         paras.add(new TemplateParam("character_string1",order_num));
-        paras.add(new TemplateParam("thing2",id.getGoods_name().substring(0,10)+"..."));
+        paras.add(new TemplateParam("thing2","商家:"+shop_name+"的商品发货"));
         paras.add(new TemplateParam("character_string4",fa_huo_num));
         paras.add(new TemplateParam("date5",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
         paras.add(new TemplateParam("thing11",new SimpleDateFormat(byId1.getUser_address()).format(new Date())));

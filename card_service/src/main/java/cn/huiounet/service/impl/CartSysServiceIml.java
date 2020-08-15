@@ -27,4 +27,19 @@ public class CartSysServiceIml implements CartSysService{
     public void deleteById(String id) {
         cartSysMapper.deleteById(id);
     }
+
+    @Override
+    public List<CartSys> GroupBy(String user_id) {
+        return cartSysMapper.GroupBy(user_id);
+    }
+
+    @Override
+    public List<CartSys> findByShop_id(String shop_id) {
+        return cartSysMapper.findByShop_id(shop_id);
+    }
+
+    @Override
+    public CartSys findById(String id) {
+        return cartSysMapper.findById(id);
+    }
 }

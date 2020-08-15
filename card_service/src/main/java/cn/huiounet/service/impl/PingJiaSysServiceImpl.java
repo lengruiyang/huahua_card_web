@@ -33,6 +33,36 @@ public class PingJiaSysServiceImpl implements PingJiaSysService {
     }
 
     @Override
+    public int findByNum(String star, String goods_id) {
+        return pingJiaSysMapper.findByNum(star,goods_id);
+    }
+
+    @Override
+    public List<PingJiaSys> GoodsPj(String goods_id,int start,int size) {
+        return pingJiaSysMapper.GoodsPj(goods_id, start, size);
+    }
+
+    @Override
+    public List<PingJiaSys> PoorPj(String goods_id,int start,int size) {
+        return pingJiaSysMapper.PoorPj(goods_id, start, size);
+    }
+
+    @Override
+    public List<PingJiaSys> MPj(String goods_id,int start,int size) {
+        return pingJiaSysMapper.MPj(goods_id, start, size);
+    }
+
+    @Override
+    public List<PingJiaSys> findByImg(String goods_id, int start, int size) {
+        return pingJiaSysMapper.findByImg(goods_id, start, size);
+    }
+
+    @Override
+    public List<PingJiaSys> findByUserGoodsId(String goods_id, String user_id) {
+        return pingJiaSysMapper.findByUserGoodsId(goods_id, user_id);
+    }
+
+    @Override
     public List<PingJiaSys> findByGoodsId(String goods_id, int start, int size) {
         return pingJiaSysMapper.findByGoodsId(goods_id, start, size);
     }

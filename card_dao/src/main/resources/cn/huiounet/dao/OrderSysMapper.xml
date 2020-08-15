@@ -39,4 +39,8 @@
         UPDATE card_order_sys SET address_num = #{address_num} WHERE order_num = #{order_num}
     </update>
 
+    <update id="updatePj">
+        UPDATE card_order_sys SET is_pj = #{is_pj} WHERE order_num = #{order_num}
+    </update>
+
 </mapper>
