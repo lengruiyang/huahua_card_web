@@ -1,13 +1,11 @@
 package cn.huiounet.web;
 
 import cn.huiounet.pojo.UserInfoSystem;
+import cn.huiounet.pojo.order.ReturnGoods;
 import cn.huiounet.pojo.pingjia.PingJiaNum;
 import cn.huiounet.pojo.pingjia.PingJiaSys;
 import cn.huiounet.pojo.vo.Result;
-import cn.huiounet.service.GoodsSysService;
-import cn.huiounet.service.OrderSysService;
-import cn.huiounet.service.PingJiaSysService;
-import cn.huiounet.service.UserInfoService;
+import cn.huiounet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +32,9 @@ public class PingJiaController {
     @Autowired
     private GoodsSysService goodsSysService;
 
+    @Autowired
+    private ReturnGoodsService returnGoodsService;
+
     @GetMapping("save")
     public Result savePingJia(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
@@ -52,6 +53,7 @@ public class PingJiaController {
         String size = request.getParameter("size");
         String color = request.getParameter("color");
         String goods_id = request.getParameter("goods_id");
+        String returnGoods = request.getParameter("returnGoods");
 
         PingJiaSys pingJiaSys = new PingJiaSys();
         pingJiaSys.setColor(color);
@@ -68,10 +70,21 @@ public class PingJiaController {
         UserInfoSystem byId = userInfoService.findById(user_id);
         pingJiaSys.setUser_img(byId.getHead_img());
         pingJiaSys.setUser_name(byId.getNick_name());
-
         pingJiaSysService.savePingJia(pingJiaSys);
-
-        orderSysService.updatePj("1",order_num);
+        returnGoodsService.updateByOrderNum("1",returnGoods);
+        List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+        int count = 0;
+        for(int i = 0;i<byOrderNUm.size();i++){
+            ReturnGoods returnGoods1 = byOrderNUm.get(i);
+            String is_pj = returnGoods1.getIs_pj();
+            if(is_pj != null){
+                count = count + 1;
+            }
+        }
+        int size1 = byOrderNUm.size();
+        if(size1 == count){
+            orderSysService.updatePj("1",order_num);
+        }
 
         return Result.ok("ok");
     }

@@ -169,13 +169,10 @@ public class OrderController {
 
         String[] split = CartidList.split("\\|");
         List<CartSys> cartSys = new ArrayList<>();
-//        int yun
         for(int i = 0;i<split.length;i++){
             //思路：根据cartid查找到该购物车资料再进行shopId分组找到不同的shopId进行订单分组
             CartSys byId = cartSysService.findById(split[i]);
-//            String goods_id = byId.getGoods_id();
-//            GoodsSys id = goodsSysService.findId(goods_id);
-//            String yun_fei = id.getYun_fei();
+
             cartSys.add(byId);//存入集合
         }
         Map<String,List<CartSys>> userGroupMap = cartSys.stream().
@@ -213,9 +210,10 @@ public class OrderController {
                 BigDecimal b1 = new BigDecimal(cartSys1.getGoods_price());
                 BigDecimal b2 = new BigDecimal(100);
                 BigDecimal multiply = b1.multiply(b2);
+                logger.info("数量:"+Integer.parseInt(cartSys1.getGoods_num()));
                 BigDecimal b3 = new BigDecimal(Integer.parseInt(cartSys1.getGoods_num()));
-                multiply.multiply(b3);
-                money = multiply.add(money);
+                BigDecimal b4 = multiply.multiply(b3);
+                money = b4.add(money);
                 returnGoodsService.saveReturnGoods(returnGoods1);
                 String goods_id = cartSys1.getGoods_id();
                 GoodsSys id = goodsSysService.findId(goods_id);

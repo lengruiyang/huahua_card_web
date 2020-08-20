@@ -21,4 +21,9 @@ public class ReturnGoodsServiceImpl implements ReturnGoodsService {
     public void saveReturnGoods(ReturnGoods returnGoods) {
         returnGoodsMapper.insert(returnGoods);
     }
+
+    @Override
+    public void updateByOrderNum(String is_pj, String order_num) {
+        returnGoodsMapper.updateByOrderNum(is_pj, order_num);
+    }
 }

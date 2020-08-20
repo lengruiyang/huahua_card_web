@@ -47,7 +47,7 @@ public class WxPayController {
     private ReturnGoodsService returnGoodsService;
 
     @GetMapping("/order")
-    public Map<String,String> createOrder(HttpServletResponse response, HttpServletRequest request){
+    public Map<String, String> createOrder(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -62,7 +62,7 @@ public class WxPayController {
 
         String payStatus = byOrderNum.getPay_status();
 
-        if(payStatus.equals("not_pay")){
+        if (payStatus.equals("not_pay")) {
 
 //            if(Long.parseLong(byOrderNum.getLast_time())>System.currentTimeMillis()){
 //                return null;
@@ -78,19 +78,62 @@ public class WxPayController {
             String yun_fei = byOrderNum.getYun_fei();
 
 
-            Map<String, String> payResult = CreateOrder.createOrder(shop_name+"-商品购买", byId.getOpen_id(), order_num, Integer.parseInt(all_money)+Integer.parseInt(yun_fei));
+            Map<String, String> payResult = CreateOrder.createOrder(shop_name + "-商品购买", byId.getOpen_id(), order_num, Integer.parseInt(all_money) + Integer.parseInt(yun_fei));
 
             logger.info(payResult);
 
             return payResult;
-        }else {
+        } else {
             return null;
         }
     }
 
+
+    @GetMapping("/orderList")
+    public Map<String, String> createOrderList(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+
+        String order_num = request.getParameter("order_num");
+
+        String[] split = order_num.split("\\|");
+        int AllMoney = 0;
+        for (int i = 0; i < split.length; i++) {
+            String s = split[i];
+            if (s == "") {
+                continue;
+            }
+            OrderSys byOrderNum = orderSysService.findByOrderNum(s);
+            if (byOrderNum.getPay_status().equals("is_payed")) {
+                continue;
+            }
+            String all_money = byOrderNum.getAll_money();
+            String yun_fei = byOrderNum.getYun_fei();
+            AllMoney = Integer.parseInt(all_money) + Integer.parseInt(yun_fei) + AllMoney;
+        }
+
+        if (AllMoney == 0) {
+            return null;
+        }
+
+        UserInfoSystem byId = userInfoService.findById(user_id);
+
+        Map<String, String> payResult = CreateOrder.createOrder("合并-商品购买", byId.getOpen_id(), split[0], AllMoney);
+
+        logger.info(payResult);
+
+        return payResult;
+
+    }
+
     //支付查询
     @GetMapping("/pay_status")
-    public Result payStatus(HttpServletResponse response, HttpServletRequest request){
+    public Result payStatus(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -99,8 +142,8 @@ public class WxPayController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
 
         String order_num = request.getParameter("order_num");
-        String notic = request.getParameter("notic");
 
+        String notic = request.getParameter("notic");
 
 
         String pay_status = XmlPayUtil.psyStatusXml(order_num);
@@ -117,39 +160,77 @@ public class WxPayController {
         if (trade_state.equals("SUCCESS")) {
             //已支付
             List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
-            for(int i = 0;i<byOrderNUm.size();i++){
+            for (int i = 0; i < byOrderNUm.size(); i++) {
                 ReturnGoods returnGoods = byOrderNUm.get(i);
                 String goods_id = returnGoods.getGoods_id();
                 GoodsSys id = goodsSysService.findId(goods_id);
                 String sell_many = id.getSell_many();
                 int i1 = Integer.parseInt(sell_many);
                 int sellMany = i1 + 1;
-                goodsSysService.updateSell_many(sellMany+"",goods_id);
+                goodsSysService.updateSell_many(sellMany + "", goods_id);
             }
-            orderSysService.updataPayStatusByOrderNum("is_payed",order_num);
+            orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            orderSysService.updataPayTime(df.format(new Date()),order_num);
-            if(!notic.equals("")){
-                orderSysService.updateNotic(notic,order_num);
+            orderSysService.updataPayTime(df.format(new Date()), order_num);
+            if (!notic.equals("")) {
+                orderSysService.updateNotic(notic, order_num);
             }
             return Result.ok("ok"); //支付成功
-        }else {
+        } else {
             return Result.ok("fail");//支付失败
         }
     }
 
+    //支付查询
+    @GetMapping("/pay_statusList")
+    public Result payStatusList(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
-//    @GetMapping("/wx_tk")
-//    public String wx_tk(HttpServletResponse response, HttpServletRequest request){
-//        response.setContentType("text/html;charset=utf-8");
-//        /*设置响应头允许ajax跨域访问*/
-//        response.setHeader("Access-Control-Allow-Origin", "*");
-//
-//        /* 星号表示所有的异域请求都可以接受， */
-//        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
-//
-//        String order_num = request.getParameter("order_num");
-//
-//
-//    }
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String order_num = request.getParameter("order_num");
+
+        String notic = request.getParameter("notic");
+        String[] split = order_num.split("\\|");
+
+        String pay_status = XmlPayUtil.psyStatusXml(split[0]);
+
+        String mess = HttpRequest.sendPost("https://api.mch.weixin.qq.com/pay/orderquery", pay_status);
+        String trade_state = "";
+        try {
+            Map<String, String> map = WXPayUtil.xmlToMap(mess);
+            trade_state = map.get("trade_state");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("错误" + e);
+        }
+        if (trade_state.equals("SUCCESS")) {
+            //已支付
+            for (int n = 0; n < split.length; n++) {
+                orderSysService.updataPayStatusByOrderNum("is_payed", split[n]);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                orderSysService.updataPayTime(df.format(new Date()), order_num);
+                List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(split[n]);
+                for (int i = 0; i < byOrderNUm.size(); i++) {
+                    ReturnGoods returnGoods = byOrderNUm.get(i);
+                    String goods_id = returnGoods.getGoods_id();
+                    GoodsSys id = goodsSysService.findId(goods_id);
+                    String sell_many = id.getSell_many();
+                    int i1 = Integer.parseInt(sell_many);
+                    int sellMany = i1 + 1;
+                    goodsSysService.updateSell_many(sellMany + "", goods_id);
+                }
+                if (!notic.equals("")) {
+                    orderSysService.updateNotic(notic, order_num);
+                }
+            }
+            return Result.ok("ok"); //支付成功
+        } else {
+            return Result.ok("fail");//支付失败
+        }
+    }
+
 }

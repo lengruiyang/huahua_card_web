@@ -9,4 +9,6 @@ public interface ReturnGoodsService {
     List<ReturnGoods> findByOrderNUm(String order_num);
 
     void saveReturnGoods(ReturnGoods returnGoods);
+
+    void updateByOrderNum(String is_pj,String order_num);
 }

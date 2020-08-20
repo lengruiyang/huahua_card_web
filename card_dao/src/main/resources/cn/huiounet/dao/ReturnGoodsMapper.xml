@@ -6,5 +6,9 @@
         SELECT * FROM card_order_goods WHERE order_num = #{order_num};
     </select>
 
+    <update id="updateByOrderNum">
+        UPDATE card_order_goods SET is_pj = #{is_pj} WHERE  id= #{id}
+    </update>
+
 
 </mapper>

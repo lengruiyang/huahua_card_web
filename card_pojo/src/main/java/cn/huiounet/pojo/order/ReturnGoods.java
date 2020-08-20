@@ -14,6 +14,15 @@ public class ReturnGoods implements Serializable {
     private String size;
     private String order_num;
     private String goods_id;
+    private String is_pj;
+
+    public String getIs_pj() {
+        return is_pj;
+    }
+
+    public void setIs_pj(String is_pj) {
+        this.is_pj = is_pj;
+    }
 
     public String getGoods_id() {
         return goods_id;

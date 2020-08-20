@@ -110,7 +110,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:5.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.13" />
-          <element id="library" level="project" name="Maven: com.google.zxing:core:3.3.0" />
+          <element id="library" level="project" name="Maven: com.google.zxing:core:3.3.3" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:5.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.0.2.RELEASE" />
@@ -149,6 +149,8 @@
           <element id="library" level="project" name="Maven: com.squareup.okhttp:okhttp:2.5.0" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.3" />
           <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.12" />
+          <element id="library" level="project" name="Maven: com.google.zxing:javase:3.2.1" />
+          <element id="library" level="project" name="Maven: com.beust:jcommander:1.48" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -10,6 +10,8 @@ import cn.huiounet.pojo.pingjia.PingJiaSys;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.http.HttpUtils;
+import cn.huiounet.utils.qrcode.QRCodeTools;
+import cn.huiounet.utils.qrcode.QRCodeUtil;
 import cn.huiounet.utils.send_message.RamNumberUtil;
 import cn.huiounet.utils.send_message.SendMessageUtil;
 import org.apache.http.HttpResponse;
@@ -57,16 +59,6 @@ public class OrderTest {
 
     @Test
     public void test_(){
-
-//
-//        System.out.println(cartSys.toString());
-//        goodsSysService.updateLike("1","1");
-//        goodsSysService.updateSell_many("1","1");
-//
-//        List<PingJiaSys> pingJiaSys = pingJiaSysService.PoorPj();
-//
-//        System.out.println(pingJiaSys.toString());
-        //orderAddressService.updateByOrderNum("1","1","1","862288f563284b27b0f9592b7d2af281");
 
     }
 
