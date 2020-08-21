@@ -20,6 +20,8 @@ public class OrderSys implements Serializable{
     private String pay_time;
     private String fa_huo_time;
     private String fa_huo_num;
+    private String yun_fei;
+    private String is_pj;
 
     public String getShop_id() {
         return shop_id;
@@ -36,9 +38,6 @@ public class OrderSys implements Serializable{
     public void setShop_img(String shop_img) {
         this.shop_img = shop_img;
     }
-
-    private String yun_fei;
-    private String is_pj;
 
     public String getIs_pj() {
         return is_pj;

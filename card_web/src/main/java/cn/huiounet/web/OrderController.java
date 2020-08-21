@@ -121,6 +121,7 @@ public class OrderController {
         orderSys.setShop_name(byOpenId.getShop_name());
         orderSys.setOrder_num(nonceStr);
         orderSys.setShop_id(shop_id);
+
         orderSys.setAddress_num(address_id);
         orderSys.setPay_status("not_pay"); //未支付
         long totalMilliSeconds = System.currentTimeMillis();
