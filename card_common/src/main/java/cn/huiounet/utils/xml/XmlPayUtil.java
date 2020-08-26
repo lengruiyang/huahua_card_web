@@ -89,7 +89,6 @@ public class XmlPayUtil {
         formData += "<sign>"+sign+"</sign>";
         formData += "</xml>";
 
-        System.out.println(formData);
         return formData;
 
     }

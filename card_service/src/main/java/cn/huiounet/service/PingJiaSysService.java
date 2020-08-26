@@ -26,4 +26,6 @@ public interface PingJiaSysService {
 
 
     List<PingJiaSys> findByGoodsId(String goods_id,int start,int size);
+
+    PingJiaSys findById(String id);
 }

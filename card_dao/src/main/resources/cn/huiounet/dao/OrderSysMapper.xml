@@ -10,6 +10,10 @@
         SELECT * FROM  card_order_sys   where  user_id = #{user_id} ORDER  BY id  desc   limit #{start},#{size} ;
     </select>
 
+    <select id="findPayNumList" resultType="OrderSys">
+        SELECT * FROM  card_order_sys   where  pay_num = #{pay_num};
+    </select>
+
     <select id="findAllNum" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM  card_order_sys where user_id = #{user_id} AND pay_status = #{pay_status};
     </select>
@@ -42,5 +46,23 @@
     <update id="updatePj">
         UPDATE card_order_sys SET is_pj = #{is_pj} WHERE order_num = #{order_num}
     </update>
+
+
+    <update id="updateFP">
+        UPDATE card_order_sys SET fa_piao = #{fa_piao} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updatePayNum">
+        UPDATE card_order_sys SET pay_num = #{pay_num} WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updatePayNumById">
+        UPDATE card_order_sys SET pay_num = #{pay_num} WHERE id = #{id}
+    </update>
+
+    <update id="updateAll_pay">
+        UPDATE card_order_sys SET all_pay = #{all_pay} WHERE order_num = #{order_num}
+    </update>
+
 
 </mapper>

@@ -17,7 +17,7 @@ public class AppSysController {
      * token
      */
     @org.springframework.scheduling.annotation.Scheduled(cron = "0 0 0/1 * * ?")
-    public void setWxToken(){
+    public void setWxToken() {
 
         String token_wx = GetTokenUtil.getToken_wx();
 
@@ -28,30 +28,23 @@ public class AppSysController {
 
         String token = jedis.set("token", token_wx);
 
-        logger.info("保存token"+token);
+        logger.info("保存token" + token);
     }
 
 
     @GetMapping("/token")
-    public String getWxToken(){
+    public String getWxToken() {
 
         JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
-
-
         shardInfo.setPassword("lry123456");//这里是密码
 
         Jedis jedis = new Jedis(shardInfo);
 
-        String token = jedis.get("token");
+        String token_wx = GetTokenUtil.getToken_wx();
 
-        if(token == null){
-            String token_wx = GetTokenUtil.getToken_wx();
+        jedis.set("token", token_wx);
 
-            jedis.set("token", token_wx);
+        return token_wx;
 
-            return token_wx;
-        }
-
-        return token;
     }
 }

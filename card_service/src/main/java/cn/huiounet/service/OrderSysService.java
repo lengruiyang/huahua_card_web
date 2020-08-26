@@ -27,4 +27,14 @@ public interface OrderSysService {
     List<OrderSys> findAll(String user_id, int start,int size);
 
     int findAllNum(String user_id,String pay_status);
+
+    void updateFP(String fa_piao,String order_num);
+
+    void updatePayNum(String pay_num,String order_num);
+
+    void updatePayNumById(String pay_num,String id);
+
+    List<OrderSys> findPayNumList(String pay_num);
+
+    void updateAll_pay(String all_pay,String order_num);
 }

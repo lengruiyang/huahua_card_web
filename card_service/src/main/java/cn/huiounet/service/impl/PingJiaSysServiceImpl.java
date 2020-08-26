@@ -66,4 +66,9 @@ public class PingJiaSysServiceImpl implements PingJiaSysService {
     public List<PingJiaSys> findByGoodsId(String goods_id, int start, int size) {
         return pingJiaSysMapper.findByGoodsId(goods_id, start, size);
     }
+
+    @Override
+    public PingJiaSys findById(String id) {
+        return pingJiaSysMapper.findById(id);
+    }
 }

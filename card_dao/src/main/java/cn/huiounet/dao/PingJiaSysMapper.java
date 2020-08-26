@@ -16,6 +16,8 @@ public interface PingJiaSysMapper extends Mapper<PingJiaSys> {
 
     void deleteById(String id);
 
+    PingJiaSys findById(String id);
+
     int findByNum(@Param(value = "star")String star,@Param(value = "goods_id")String goods_id);
 
     List<PingJiaSys> GoodsPj(@Param(value = "goods_id")String goods_id, @Param(value = "start")int start,@Param(value = "size")int size);

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -41,6 +43,7 @@ public class OrderFPsysController {
         String company_bank = request.getParameter("company_bank");
         String bampany_card = request.getParameter("bampany_card");
         String user_id = request.getParameter("user_id");
+        String status = request.getParameter("status");
 
 
         OrderFPsys orderFPsys = new OrderFPsys();
@@ -55,6 +58,12 @@ public class OrderFPsysController {
         orderFPsys.setCompany_name(company_name);
         orderFPsys.setCompany_code(company_code);
         orderFPsys.setCompany_bank(company_bank);
+        orderFPsys.setStatus(status);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        orderFPsys.setCreate_time(df.format(new Date()));
+
+        orderSysService.updateFP("1",order_num);
+
         orderFPsysService.saveFP(orderFPsys);
 
         return Result.ok("ok");

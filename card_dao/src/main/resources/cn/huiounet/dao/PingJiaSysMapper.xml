@@ -11,6 +11,10 @@
         SELECT * FROM  card_pingjia where user_id = #{user_id} limit #{start},#{size};
     </select>
 
+    <select id="findById" resultType="PingJiaSys">
+        SELECT * FROM  card_pingjia where id = #{id};
+    </select>
+
     <select id="findByOrderNum" resultType="PingJiaSys">
         SELECT * FROM  card_pingjia where order_num = #{order_num};
     </select>

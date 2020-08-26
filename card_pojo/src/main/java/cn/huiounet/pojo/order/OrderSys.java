@@ -22,6 +22,33 @@ public class OrderSys implements Serializable{
     private String fa_huo_num;
     private String yun_fei;
     private String is_pj;
+    private String fa_piao;
+    private String pay_num;
+    private String all_pay;
+
+    public String getAll_pay() {
+        return all_pay;
+    }
+
+    public void setAll_pay(String all_pay) {
+        this.all_pay = all_pay;
+    }
+
+    public String getPay_num() {
+        return pay_num;
+    }
+
+    public void setPay_num(String pay_num) {
+        this.pay_num = pay_num;
+    }
+
+    public String getFa_piao() {
+        return fa_piao;
+    }
+
+    public void setFa_piao(String fa_piao) {
+        this.fa_piao = fa_piao;
+    }
 
     public String getShop_id() {
         return shop_id;

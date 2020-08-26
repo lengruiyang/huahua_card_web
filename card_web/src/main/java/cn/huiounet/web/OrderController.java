@@ -16,6 +16,7 @@ import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.math.Arith;
 import cn.huiounet.utils.tuikuan.TuiKuanSys;
 import cn.huiounet.utils.wxPay.WXPayUtil;
+import cn.huiounet.utils.xml.XmlPayUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -493,10 +494,30 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
 
         OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
-        String nonceStr= WXPayUtil.generateUUID(); //订单号
-        TuiKuanSys.tuiKuan(order_num,nonceStr,Integer.parseInt(byOrderNum.getAll_money())+Integer.parseInt(byOrderNum.getYun_fei()),Integer.parseInt(byOrderNum.getAll_money())+Integer.parseInt(byOrderNum.getYun_fei()),"商品退款");
 
-        orderSysService.updataPayStatusByOrderNum("is_cancel",order_num);
+        String nonceStr= WXPayUtil.generateUUID(); //订单号
+
+
+        if(byOrderNum.getAll_pay() == null){
+            List<OrderSys> payNumList = orderSysService.findPayNumList(byOrderNum.getPay_num());
+            int money = 0;
+            for(int i = 0;i<payNumList.size();i++){
+                OrderSys orderSys = payNumList.get(i);
+                String all_money = orderSys.getAll_money();
+                String yun_fei = orderSys.getYun_fei();
+                int i1 = Integer.parseInt(all_money);
+                int i2 = Integer.parseInt(yun_fei);
+                money = i1 + i2 + money;
+            }
+            String pay_num = byOrderNum.getPay_num();
+            String yun_fei = byOrderNum.getYun_fei();
+            String all_money = byOrderNum.getAll_money();
+            TuiKuanSys.tuiKuan(pay_num,nonceStr,money,Integer.parseInt(yun_fei)+Integer.parseInt(all_money),"商品退款");
+            orderSysService.updataPayStatusByOrderNum("is_cancel",order_num);
+        }else {
+            TuiKuanSys.tuiKuan(order_num,nonceStr,Integer.parseInt(byOrderNum.getAll_money())+Integer.parseInt(byOrderNum.getYun_fei()),Integer.parseInt(byOrderNum.getAll_money())+Integer.parseInt(byOrderNum.getYun_fei()),"商品退款");
+            orderSysService.updataPayStatusByOrderNum("is_cancel",order_num);
+        }
     }
 
     @GetMapping("/findOrderNum")

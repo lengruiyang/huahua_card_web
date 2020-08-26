@@ -123,7 +123,7 @@ public class WxPayController {
 
         UserInfoSystem byId = userInfoService.findById(user_id);
 
-        Map<String, String> payResult = CreateOrder.createOrder("合并-商品购买", byId.getOpen_id(), split[0], AllMoney);
+        Map<String, String> payResult = CreateOrder.createOrder("合并-商品购买", byId.getOpen_id(), split[0].substring(0,12), AllMoney);
 
         logger.info(payResult);
 
@@ -172,9 +172,11 @@ public class WxPayController {
             orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             orderSysService.updataPayTime(df.format(new Date()), order_num);
+            orderSysService.updatePayNumById(order_num,orderSysService.findByOrderNum(order_num).getId()+"");
             if (!notic.equals("")) {
                 orderSysService.updateNotic(notic, order_num);
             }
+            orderSysService.updateAll_pay("1",order_num);
             return Result.ok("ok"); //支付成功
         } else {
             return Result.ok("fail");//支付失败
@@ -196,7 +198,7 @@ public class WxPayController {
         String notic = request.getParameter("notic");
         String[] split = order_num.split("\\|");
 
-        String pay_status = XmlPayUtil.psyStatusXml(split[0]);
+        String pay_status = XmlPayUtil.psyStatusXml(split[0].substring(0,12));
 
         String mess = HttpRequest.sendPost("https://api.mch.weixin.qq.com/pay/orderquery", pay_status);
         String trade_state = "";
@@ -224,8 +226,9 @@ public class WxPayController {
                     goodsSysService.updateSell_many(sellMany + "", goods_id);
                 }
                 if (!notic.equals("")) {
-                    orderSysService.updateNotic(notic, order_num);
+                    orderSysService.updateNotic(notic, split[n]);
                 }
+                orderSysService.updatePayNumById(split[0].substring(0,12),orderSysService.findByOrderNum(split[n]).getId()+"");
             }
             return Result.ok("ok"); //支付成功
         } else {

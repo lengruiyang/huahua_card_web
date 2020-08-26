@@ -69,5 +69,30 @@ public class OrderSysServiceImpl implements OrderSysService {
         return orderSysMapper.findAllNum(user_id, pay_status);
     }
 
+    @Override
+    public void updateFP(String fa_piao, String order_num) {
+        orderSysMapper.updateFP(fa_piao, order_num);
+    }
+
+    @Override
+    public void updatePayNum(String pay_num, String order_num) {
+        orderSysMapper.updatePayNum(pay_num, order_num);
+    }
+
+    @Override
+    public void updatePayNumById(String pay_num, String id) {
+        orderSysMapper.updatePayNumById(pay_num, id);
+    }
+
+    @Override
+    public List<OrderSys> findPayNumList(String pay_num) {
+        return orderSysMapper.findPayNumList(pay_num);
+    }
+
+    @Override
+    public void updateAll_pay(String all_pay, String order_num) {
+        orderSysMapper.updateAll_pay(all_pay, order_num);
+    }
+
 
 }
