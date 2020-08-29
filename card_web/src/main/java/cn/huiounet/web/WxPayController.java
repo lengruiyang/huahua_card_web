@@ -3,12 +3,12 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.OrderSys;
-
-
 import cn.huiounet.pojo.order.ReturnGoods;
-import cn.huiounet.pojo.order.ReturnOrder;
 import cn.huiounet.pojo.vo.Result;
-import cn.huiounet.service.*;
+import cn.huiounet.service.GoodsSysService;
+import cn.huiounet.service.OrderSysService;
+import cn.huiounet.service.ReturnGoodsService;
+import cn.huiounet.service.UserInfoService;
 import cn.huiounet.utils.create_order.CreateOrder;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.wxPay.WXPayUtil;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -64,9 +63,6 @@ public class WxPayController {
 
         if (payStatus.equals("not_pay")) {
 
-//            if(Long.parseLong(byOrderNum.getLast_time())>System.currentTimeMillis()){
-//                return null;
-//            }
             String shop_name = byOrderNum.getShop_name();
 
 

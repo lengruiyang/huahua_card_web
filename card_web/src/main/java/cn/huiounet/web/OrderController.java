@@ -10,13 +10,13 @@ import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.*;
 import cn.huiounet.pojo.shop.ShopSys;
+import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.access_token.GetTokenUtil;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.math.Arith;
 import cn.huiounet.utils.tuikuan.TuiKuanSys;
 import cn.huiounet.utils.wxPay.WXPayUtil;
-import cn.huiounet.utils.xml.XmlPayUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @RestController
@@ -393,7 +392,7 @@ public class OrderController {
     }
 
     @GetMapping("/faHuo")
-    private void faHuo(HttpServletResponse response, HttpServletRequest request){
+    private Result faHuo(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -402,6 +401,9 @@ public class OrderController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String order_num = request.getParameter("order_num");
         String fa_huo_num = request.getParameter("fa_huo_num");
+        if(orderSysService.findByOrderNum(order_num).getPay_status().equals("is_fa_huo")){
+            return Result.fail("已经发货了");
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         orderSysService.updataPayStatusByOrderNum("is_fa_huo",order_num);
         orderSysService.updateFaHuo(df.format(new Date()),fa_huo_num,order_num);
@@ -451,6 +453,8 @@ public class OrderController {
         String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
 
         logger.info(reqMess);
+
+        return Result.ok(reqMess);
     }
 
 

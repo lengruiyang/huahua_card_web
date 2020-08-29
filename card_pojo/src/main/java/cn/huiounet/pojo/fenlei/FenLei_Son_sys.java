@@ -8,7 +8,6 @@ public class FenLei_Son_sys implements Serializable {
     private int id;
     private String name;
     private String farther_id;
-    private String goods_id;
     private String img;
 
     public int getId() {
@@ -33,14 +32,6 @@ public class FenLei_Son_sys implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getGoods_id() {
-        return goods_id;
-    }
-
-    public void setGoods_id(String goods_id) {
-        this.goods_id = goods_id;
     }
 
     public String getImg() {

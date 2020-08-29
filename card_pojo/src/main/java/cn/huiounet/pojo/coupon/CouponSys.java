@@ -21,6 +21,15 @@ public class CouponSys implements Serializable{
     private String last_time;
     private String long_time;
     private String user_id;
+    private String where_from; //sys:系统  goods:商品 shop:商店
+
+    public String getWhere_from() {
+        return where_from;
+    }
+
+    public void setWhere_from(String where_from) {
+        this.where_from = where_from;
+    }
 
     public String getUser_id() {
         return user_id;
