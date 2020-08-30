@@ -9,4 +9,6 @@ public interface PingJIaHFService {
     List<PingJIaHF> findByPjId(String pj_id,int start,int size);
 
     void savePjHf(PingJIaHF pingJIaHF);
+
+    void deleteById(String id);
 }

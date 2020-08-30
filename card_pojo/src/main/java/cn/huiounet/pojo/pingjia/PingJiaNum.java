@@ -8,6 +8,15 @@ public class PingJiaNum implements Serializable {
     private int mPj;
     private int imgPj;
     private int allPj;
+    private Double allPjToPer;
+
+    public Double getAllPjToPer() {
+        return allPjToPer;
+    }
+
+    public void setAllPjToPer(Double allPjToPer) {
+        this.allPjToPer = allPjToPer;
+    }
 
     public int getGoodPj() {
         return goodPj;
@@ -49,11 +58,12 @@ public class PingJiaNum implements Serializable {
         this.imgPj = imgPj;
     }
 
-    public PingJiaNum(int goodPj, int poorPj, int mPj, int imgPj,int allPj) {
+    public PingJiaNum(int goodPj, int poorPj, int mPj, int imgPj, int allPj, Double allPjToPer) {
         this.goodPj = goodPj;
         this.poorPj = poorPj;
         this.mPj = mPj;
         this.imgPj = imgPj;
         this.allPj = allPj;
+        this.allPjToPer = allPjToPer;
     }
 }

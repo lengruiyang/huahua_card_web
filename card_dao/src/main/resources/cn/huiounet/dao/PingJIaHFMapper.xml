@@ -4,7 +4,11 @@
 <mapper namespace="cn.huiounet.dao.PingJIaHFMapper">
 
     <select id="findByPjId" resultType="PingJIaHF">
-        SELECT * FROM card_pingjia_hf WHERE pj_id = #{pj_id} limit #{start},#{size};
+        SELECT * FROM card_pingjia_hf WHERE pj_id = #{pj_id} ORDER  BY id desc limit #{start},#{size};
     </select>
+
+    <delete id="deleteById">
+        DELETE FROM card_pingjia_hf WHERE id = #{id}
+    </delete>
 
 </mapper>

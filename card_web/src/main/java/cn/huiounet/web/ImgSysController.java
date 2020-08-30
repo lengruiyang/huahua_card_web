@@ -18,13 +18,8 @@ public class ImgSysController {
     private ImgSysService imgSysService;
 
     @GetMapping("/lun_bo")
-    public List<ImgSys> getLun_bo(HttpServletResponse response, HttpServletRequest request){
-        response.setContentType("text/html;charset=utf-8");
-        /*设置响应头允许ajax跨域访问*/
-        response.setHeader("Access-Control-Allow-Origin", "*");
+    public List<ImgSys> getLun_bo(){
 
-        /* 星号表示所有的异域请求都可以接受， */
-        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         List<ImgSys> byLunBo = imgSysService.findByLunBo();
 
         return byLunBo;
@@ -41,6 +36,14 @@ public class ImgSysController {
         String goods_id = request.getParameter("goods_id");
 
         List<ImgSys> byGoodsId = imgSysService.findByGoodsId(goods_id);
+
+        return byGoodsId;
+    }
+
+    @GetMapping("/fenlei_img")
+    public List<ImgSys> fenlei_img(){
+
+        List<ImgSys> byGoodsId = imgSysService.findByFenLeiLunBo();
 
         return byGoodsId;
     }

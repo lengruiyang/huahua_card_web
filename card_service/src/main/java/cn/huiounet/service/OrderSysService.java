@@ -37,4 +37,8 @@ public interface OrderSysService {
     List<OrderSys> findPayNumList(String pay_num);
 
     void updateAll_pay(String all_pay,String order_num);
+
+    void deleteByOrderNum(String order_num);
+
+    List<OrderSys> findOrderNumByUserId(String user_id);
 }

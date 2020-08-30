@@ -94,5 +94,15 @@ public class OrderSysServiceImpl implements OrderSysService {
         orderSysMapper.updateAll_pay(all_pay, order_num);
     }
 
+    @Override
+    public void deleteByOrderNum(String order_num) {
+        orderSysMapper.deleteByOrderNum(order_num);
+    }
+
+    @Override
+    public List<OrderSys> findOrderNumByUserId(String user_id) {
+        return orderSysMapper.findOrderNumByUserId(user_id);
+    }
+
 
 }

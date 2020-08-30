@@ -22,4 +22,9 @@ public class PingJIaHFServiceImpl implements PingJIaHFService {
     public void savePjHf(PingJIaHF pingJIaHF) {
         pingJIaHFMapper.insert(pingJIaHF);
     }
+
+    @Override
+    public void deleteById(String id) {
+        pingJIaHFMapper.deleteById(id);
+    }
 }

@@ -248,7 +248,9 @@ public class PingJiaController {
         int imgPj = pingJiaSysService.findByNum("4", goods_id);
         int allPj = pingJiaSysService.findByNum("5", goods_id);
 
-        PingJiaNum pingJiaNum = new PingJiaNum(goodPj,poorPj,mPj,imgPj,allPj);
+        Double i = Double.valueOf(goodPj) / Double.valueOf(allPj);
+
+        PingJiaNum pingJiaNum = new PingJiaNum(goodPj,poorPj,mPj,imgPj,allPj,i);
 
         return pingJiaNum;
     }
@@ -368,6 +370,21 @@ public class PingJiaController {
 
 
         return byPjId;
+    }
+
+
+    @GetMapping("/deleteHFByPjId")
+    public void deleteHFByPjId(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String id = request.getParameter("id");
+
+        pingJIaHFService.deleteById(id);
+
     }
 
 }

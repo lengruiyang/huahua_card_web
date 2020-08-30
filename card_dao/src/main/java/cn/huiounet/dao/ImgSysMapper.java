@@ -10,4 +10,6 @@ public interface ImgSysMapper extends Mapper<ImgSys> {
     List<ImgSys> findByGoodsId(String goods_id);
 
     List<ImgSys> findByLunBo();
+
+    List<ImgSys> findByFenLeiLunBo();
 }

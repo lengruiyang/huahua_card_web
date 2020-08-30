@@ -10,4 +10,6 @@ public interface ImgSysService {
 
     List<ImgSys> findByLunBo();
 
+    List<ImgSys> findByFenLeiLunBo();
+
 }

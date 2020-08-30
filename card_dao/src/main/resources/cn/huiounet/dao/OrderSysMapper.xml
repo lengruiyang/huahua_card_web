@@ -6,6 +6,10 @@
         SELECT * FROM  card_order_sys where order_num = #{order_num};
     </select>
 
+    <select id="findOrderNumByUserId" resultType="OrderSys">
+        SELECT * FROM  card_order_sys where user_id = #{user_id} AND pay_status = 'not_pay';
+    </select>
+
     <select id="findAll" resultType="OrderSys">
         SELECT * FROM  card_order_sys   where  user_id = #{user_id} ORDER  BY id  desc   limit #{start},#{size} ;
     </select>
@@ -63,6 +67,10 @@
     <update id="updateAll_pay">
         UPDATE card_order_sys SET all_pay = #{all_pay} WHERE order_num = #{order_num}
     </update>
+
+    <delete id="deleteByOrderNum">
+        DELETE FROM card_order_sys WHERE  order_num = #{order_num}
+    </delete>
 
 
 </mapper>

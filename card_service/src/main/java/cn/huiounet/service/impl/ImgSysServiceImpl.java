@@ -22,4 +22,9 @@ public class ImgSysServiceImpl implements ImgSysService {
     public List<ImgSys> findByLunBo() {
         return imgSysMapper.findByLunBo();
     }
+
+    @Override
+    public List<ImgSys> findByFenLeiLunBo() {
+        return imgSysMapper.findByFenLeiLunBo();
+    }
 }

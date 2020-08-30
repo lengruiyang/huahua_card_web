@@ -7,7 +7,11 @@
     </select>
 
     <select id="findByLunBo" resultType="ImgSys">
-        SELECT * FROM  card_img_sys where status = '2';
+    SELECT * FROM  card_img_sys where status = '2';
+    </select>
+
+    <select id="findByFenLeiLunBo" resultType="ImgSys">
+        SELECT * FROM  card_img_sys where status = '3';
     </select>
 
 </mapper>

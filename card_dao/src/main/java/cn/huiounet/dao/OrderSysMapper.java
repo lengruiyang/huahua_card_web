@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface OrderSysMapper extends Mapper<OrderSys>{
 
+    List<OrderSys> findOrderNumByUserId(String user_id);
+
     OrderSys findByOrderNum(String order_num);
 
     List<OrderSys> findPayNumList(String pay_num);
@@ -35,4 +37,6 @@ public interface OrderSysMapper extends Mapper<OrderSys>{
     List<OrderSys> findOrderStatus(@Param(value = "user_id")String user_id,@Param(value = "pay_status")String pay_status,@Param(value = "start")int start,@Param(value = "size")int size);
 
     List<OrderSys> findAll(@Param(value = "user_id") String user_id,@Param(value = "start")int start,@Param(value = "size")int size);
+
+    void deleteByOrderNum(String order_num);
 }
