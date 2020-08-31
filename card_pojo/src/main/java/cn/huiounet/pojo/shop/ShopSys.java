@@ -13,6 +13,87 @@ public class ShopSys implements Serializable{
     private String fire_num; //热度
     private String fans;
     private String user_open_id;//管理者
+    private String user_pj;
+    private String wu_liu;
+    private String shou_hou;
+    private String id_card;
+    private String shop_qr_code;
+    private String shop_mess;
+    private String location;
+    private String create_time;
+    private String sell_goods;
+
+    public String getUser_pj() {
+        return user_pj;
+    }
+
+    public void setUser_pj(String user_pj) {
+        this.user_pj = user_pj;
+    }
+
+    public String getWu_liu() {
+        return wu_liu;
+    }
+
+    public void setWu_liu(String wu_liu) {
+        this.wu_liu = wu_liu;
+    }
+
+    public String getShou_hou() {
+        return shou_hou;
+    }
+
+    public void setShou_hou(String shou_hou) {
+        this.shou_hou = shou_hou;
+    }
+
+    public String getId_card() {
+        return id_card;
+    }
+
+    public void setId_card(String id_card) {
+        this.id_card = id_card;
+    }
+
+    public String getShop_qr_code() {
+        return shop_qr_code;
+    }
+
+    public void setShop_qr_code(String shop_qr_code) {
+        this.shop_qr_code = shop_qr_code;
+    }
+
+    public String getShop_mess() {
+        return shop_mess;
+    }
+
+    public void setShop_mess(String shop_mess) {
+        this.shop_mess = shop_mess;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public String getSell_goods() {
+        return sell_goods;
+    }
+
+    public void setSell_goods(String sell_goods) {
+        this.sell_goods = sell_goods;
+    }
 
     public int getId() {
         return id;
@@ -78,19 +159,6 @@ public class ShopSys implements Serializable{
         this.user_open_id = user_open_id;
     }
 
-    @Override
-    public String toString() {
-        return "ShopSys{" +
-                "id=" + id +
-                ", shop_name='" + shop_name + '\'' +
-                ", shop_head_img='" + shop_head_img + '\'' +
-                ", shop_status='" + shop_status + '\'' +
-                ", bindtap='" + bindtap + '\'' +
-                ", fire_num='" + fire_num + '\'' +
-                ", fans='" + fans + '\'' +
-                ", user_open_id='" + user_open_id + '\'' +
-                '}';
-    }
 
     public ShopSys() {
     }

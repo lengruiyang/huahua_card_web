@@ -6,6 +6,8 @@ import cn.huiounet.service.ShopSysService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShopSysServiceImpl implements ShopSysService {
     @Autowired
@@ -14,5 +16,10 @@ public class ShopSysServiceImpl implements ShopSysService {
     @Override
     public ShopSys findByOpenId(String user_open_id) {
         return shopSysMapper.findByOpenId(user_open_id);
+    }
+
+    @Override
+    public ShopSys findById(String id) {
+        return shopSysMapper.findById(id);
     }
 }
