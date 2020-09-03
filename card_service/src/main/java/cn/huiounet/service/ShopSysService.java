@@ -9,4 +9,6 @@ public interface ShopSysService {
     ShopSys findByOpenId(String user_open_id);
 
     ShopSys findById(String id);
+
+    void updateFans(String fans,String user_open_id);
 }

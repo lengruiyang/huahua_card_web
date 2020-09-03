@@ -1,4 +1,5 @@
 
+import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
 import cn.huiounet.service.*;

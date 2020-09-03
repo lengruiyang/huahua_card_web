@@ -25,4 +25,13 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
     List<GoodsSys> findAll(@Param(value = "start")int start,@Param(value = "pageSize")int pageSize);
 
     List<GoodsSys> findByShop_id(String shop_id);
+
+    List<GoodsSys> findByShopIdOrderBySellMany( @Param(value = "shop_id")String shop_id,@Param(value = "start")int stsrt,@Param(value = "size")int size);
+
+    List<GoodsSys> findByShopIdOrderByLike(@Param(value = "shop_id")String shop_id,@Param(value = "start")int stsrt,@Param(value = "size")int size);
+    List<GoodsSys> findByShopIdOrderByPriceDESC(@Param(value = "shop_id")String shop_id,@Param(value = "start")int stsrt,@Param(value = "size")int size);
+    List<GoodsSys> findByShopIdOrderByPriceASC(@Param(value = "shop_id")String shop_id,@Param(value = "start")int stsrt,@Param(value = "size")int size);
+    List<GoodsSys> findByShopId(@Param(value = "shop_id")String shop_id,@Param(value = "start")int stsrt,@Param(value = "size")int size);
+
+
 }

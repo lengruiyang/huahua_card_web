@@ -57,4 +57,31 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     public void updateLike(String like_many, String id) {
         goodsSysMapper.updateLike(like_many,id);
     }
+
+    @Override
+    public List<GoodsSys> findByShopIdOrderBySellMany(String shop_id, int stsrt, int size) {
+        return goodsSysMapper.findByShopIdOrderBySellMany(shop_id, stsrt, size);
+    }
+
+    @Override
+    public List<GoodsSys> findByShopIdOrderByLike(String shop_id, int stsrt, int size) {
+        return goodsSysMapper.findByShopIdOrderByLike(shop_id, stsrt, size);
+    }
+
+    @Override
+    public List<GoodsSys> findByShopIdOrderByPriceDESC(String shop_id, int stsrt, int size) {
+        return goodsSysMapper.findByShopIdOrderByPriceDESC(shop_id, stsrt, size);
+    }
+
+    @Override
+    public List<GoodsSys> findByShopIdOrderByPriceASC(String shop_id, int stsrt, int size) {
+        return goodsSysMapper.findByShopIdOrderByPriceASC(shop_id, stsrt, size);
+    }
+
+    @Override
+    public List<GoodsSys> findByShopId(String shop_id, int stsrt, int size) {
+        return goodsSysMapper.findByShopId(shop_id, stsrt, size);
+    }
+
+
 }

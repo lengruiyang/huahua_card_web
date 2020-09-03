@@ -22,4 +22,9 @@ public class ShopSysServiceImpl implements ShopSysService {
     public ShopSys findById(String id) {
         return shopSysMapper.findById(id);
     }
+
+    @Override
+    public void updateFans(String fans, String user_open_id) {
+        shopSysMapper.updateFans(fans, user_open_id);
+    }
 }

@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.huiounet.dao.GoodsSysMapper">
+
+    <select id="findByShopIdOrderBySellMany" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id} ORDER  BY sell_many  DESC  limit #{start},#{size};
+    </select>
+
+    <select id="findByShopIdOrderByLike" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id} ORDER BY like_many  DESC  limit #{start},#{size};
+    </select>
+
+    <select id="findByShopIdOrderByPriceDESC" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id}  ORDER  BY low_price DESC  limit #{start},#{size};
+    </select>
+
+    <select id="findByShopIdOrderByPriceASC" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id}  ORDER  BY low_price ASC  limit #{start},#{size};
+    </select>
+
+    <select id="findByShopId" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id}  limit #{start},#{size};
+    </select>
+
     <select id="findId" resultType="GoodsSys">
         SELECT * FROM  card_goods_sys where id = #{id};
     </select>
@@ -29,6 +50,8 @@
     <select id="findBySell" resultType="GoodsSys">
         SELECT * FROM card_goods_sys ORDER  BY sell_many DESC limit #{start},#{size};
     </select>
+
+
 
     <update id="updateLike">
         UPDATE card_goods_sys SET like_many = #{like_many} WHERE id = #{id};

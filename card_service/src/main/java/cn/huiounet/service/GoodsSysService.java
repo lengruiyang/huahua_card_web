@@ -25,4 +25,13 @@ public interface GoodsSysService {
     List<GoodsSys> findByShop_id(String shop_id);
 
     void updateLike(String like_many,String id);
+
+    List<GoodsSys> findByShopIdOrderBySellMany(String shop_id,int stsrt,int size);
+
+    List<GoodsSys> findByShopIdOrderByLike(String shop_id,int stsrt,int size);
+
+    List<GoodsSys> findByShopIdOrderByPriceDESC(String shop_id,int stsrt,int size);
+
+    List<GoodsSys> findByShopIdOrderByPriceASC(String shop_id,int stsrt,int size);
+    List<GoodsSys> findByShopId(String shop_id,int stsrt,int size);
 }

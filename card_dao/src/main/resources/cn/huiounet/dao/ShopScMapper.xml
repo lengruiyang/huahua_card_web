@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.ShopScMapper">
+    <select id="findByUserId" resultType="ShopSc">
+        SELECT * FROM card_shop_sc WHERE user_id = #{user_id} AND shop_id = #{shop_id};
+    </select>
+
+    <select id="findByShopId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM card_shop_sc WHERE  shop_id = #{shop_id};
+    </select>
+
+    <delete id="deleteSc">
+        DELETE FROM card_shop_sc WHERE user_id = #{user_id} AND shop_id = #{shop_id};
+    </delete>
+</mapper>
