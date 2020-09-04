@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.OrderSellAfterMapper">
+
+    <select id="findByOrderNum" resultType="OrderSellAfter">
+        SELECT * FROM  card_sell_after where order_num = #{order_num};
+    </select>
+
+    <select id="findByUserId" resultType="OrderSellAfter">
+        SELECT * FROM  card_sell_after where user_id = #{user_id};
+    </select>
+
+    <update id="updateStatus">
+        UPDATE card_sell_after SET status = #{status},result = #{result} WHERE order_num = #{order_num}
+    </update>
+
+</mapper>

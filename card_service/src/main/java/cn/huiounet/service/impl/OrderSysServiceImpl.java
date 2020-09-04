@@ -104,5 +104,15 @@ public class OrderSysServiceImpl implements OrderSysService {
         return orderSysMapper.findOrderNumByUserId(user_id);
     }
 
+    @Override
+    public void updatePayWay(String pay_way, String order_num) {
+        orderSysMapper.updatePayWay(pay_way, order_num);
+    }
+
+    @Override
+    public void updateTk(String is_tk, String tk_money, String tk_time, String order_num) {
+        orderSysMapper.updateTk(is_tk, tk_money, tk_time, order_num);
+    }
+
 
 }

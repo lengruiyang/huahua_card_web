@@ -41,4 +41,8 @@ public interface OrderSysService {
     void deleteByOrderNum(String order_num);
 
     List<OrderSys> findOrderNumByUserId(String user_id);
+
+    void updatePayWay(String pay_way,String order_num);
+
+    void updateTk(String is_tk,String tk_money,String tk_time, String order_num);
 }

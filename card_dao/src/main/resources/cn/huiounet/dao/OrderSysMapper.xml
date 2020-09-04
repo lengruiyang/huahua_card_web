@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.huiounet.dao.OrderSysMapper">
+    <update id="updatePayWay">
+        update  card_order_sys SET pay_way = #{pay_way} WHERE  order_num = #{order_num}
+    </update>
+
+    <update id="updateTk">
+        update  card_order_sys SET is_tk = #{is_tk},tk_money = #{tk_money},tk_time = #{tk_time} WHERE  order_num = #{order_num}
+    </update>
     <select id="findByOrderNum" resultType="OrderSys">
         SELECT * FROM  card_order_sys where order_num = #{order_num};
     </select>
@@ -71,6 +78,9 @@
     <delete id="deleteByOrderNum">
         DELETE FROM card_order_sys WHERE  order_num = #{order_num}
     </delete>
+
+
+
 
 
 </mapper>

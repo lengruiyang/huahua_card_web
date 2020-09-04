@@ -25,6 +25,42 @@ public class OrderSys implements Serializable{
     private String fa_piao;
     private String pay_num;
     private String all_pay;
+    private String pay_way;
+    private String is_tk;
+    private String tk_money;
+    private String tk_time;
+
+    public String getPay_way() {
+        return pay_way;
+    }
+
+    public void setPay_way(String pay_way) {
+        this.pay_way = pay_way;
+    }
+
+    public String getIs_tk() {
+        return is_tk;
+    }
+
+    public void setIs_tk(String is_tk) {
+        this.is_tk = is_tk;
+    }
+
+    public String getTk_money() {
+        return tk_money;
+    }
+
+    public void setTk_money(String tk_money) {
+        this.tk_money = tk_money;
+    }
+
+    public String getTk_time() {
+        return tk_time;
+    }
+
+    public void setTk_time(String tk_time) {
+        this.tk_time = tk_time;
+    }
 
     public String getAll_pay() {
         return all_pay;

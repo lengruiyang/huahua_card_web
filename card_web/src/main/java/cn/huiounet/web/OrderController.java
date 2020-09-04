@@ -70,6 +70,9 @@ public class OrderController {
     @Autowired
     private ShopSysService shopSysService;
 
+    @Autowired
+    private OrderSellAfterService orderSellAfterService;
+
     /**
      * 一个
      *
@@ -517,10 +520,12 @@ public class OrderController {
             String yun_fei = byOrderNum.getYun_fei();
             String all_money = byOrderNum.getAll_money();
             TuiKuanSys.tuiKuan(pay_num, nonceStr, money, Integer.parseInt(yun_fei) + Integer.parseInt(all_money), "商品退款");
+            orderSysService.updateTk("yes", Integer.parseInt(yun_fei) + Integer.parseInt(all_money) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
             orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
         } else {
             TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), "商品退款");
             orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+            orderSysService.updateTk("yes", Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
         }
     }
 
@@ -568,6 +573,228 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
 
         orderSysService.deleteByOrderNum(order_num);
+
+    }
+
+
+    @GetMapping("/findShByOrderNum")
+    private OrderSellAfter findShByOrderNum(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String order_num = request.getParameter("order_num");
+
+        OrderSellAfter byOrderNum = orderSellAfterService.findByOrderNum(order_num);
+
+        return byOrderNum;
+    }
+
+    @GetMapping("/findShByOrderNumHas")
+    private Result findShByOrderNumHas(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String order_num = request.getParameter("order_num");
+
+        OrderSellAfter byOrderNum = orderSellAfterService.findByOrderNum(order_num);
+        if(byOrderNum == null){
+            return Result.ok("noHas");
+        }else {
+            return Result.ok("has");
+        }
+    }
+
+    @GetMapping("/findShByUserId")
+    private List<ReturnSellAfter> findShByUserId(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+
+        List<OrderSellAfter> byOrderNums = orderSellAfterService.findByUserId(user_id);
+        List<ReturnSellAfter> returnSellAfters = new ArrayList<>();
+        for(int i = 0;i<byOrderNums.size();i++){
+            OrderSellAfter orderSellAfter = byOrderNums.get(i);
+            String order_num = orderSellAfter.getOrder_num();
+            OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+            List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+            ReturnSellAfter returnSellAfter = new ReturnSellAfter(byOrderNum,byOrderNUm,orderSellAfter);
+            returnSellAfters.add(returnSellAfter);
+        }
+
+        return returnSellAfters;
+    }
+
+
+    @GetMapping("/SaveSh")
+    private Result SaveSh(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+        String why_tk = request.getParameter("why_tk");
+        String order_num = request.getParameter("order_num");
+        String say_mess = request.getParameter("say_mess");
+        String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+        OrderSellAfter orderSellAfter = new OrderSellAfter();
+        orderSellAfter.setCreate_time(format);
+        orderSellAfter.setSay_mess(say_mess);
+        orderSellAfter.setOrder_num(order_num);
+        orderSellAfter.setUser_id(user_id);
+        orderSellAfter.setWhy_tk(why_tk);
+        orderSellAfter.setStatus("0");
+        orderSellAfter.setTk_money(Integer.parseInt(byOrderNum.getYun_fei()) + Integer.parseInt(byOrderNum.getAll_money()) + "");
+        orderSellAfterService.saveSellAfter(orderSellAfter);
+        /*订阅消息*/
+        //获取access_token
+        JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
+
+
+        shardInfo.setPassword("lry123456");//这里是密码
+
+        Jedis jedis = new Jedis(shardInfo);
+
+        String token = jedis.get("token");
+
+        if (token == null) {
+            token = GetTokenUtil.getToken_wx();
+
+            jedis.set("token", token);
+
+        }
+        //获得openid
+        UserInfoSystem byId = userInfoService.findById(user_id);
+        String open_id = byId.getOpen_id();
+        //得到了模板id;zTNpnRfGK8YgL2i6cctWsaIdPXqUHtdk8F60fxT6RGE
+        Template template = new Template();
+        template.setTemplate_id("350YLkwydqr47t1ZgtnjLdpYVtEBjnjY7u0ft5dr3lQ");
+        template.setTouser(open_id);
+        template.setPage("/pages/refundList/refundList?user_id=" + user_id);
+        List<TemplateParam> paras = new ArrayList<TemplateParam>();
+        paras.add(new TemplateParam("character_string1", order_num));
+        //(Integer.parseInt(byOrderNum.getYun_fei()) + Integer.parseInt(byOrderNum.getAll_money()) / 100)
+        paras.add(new TemplateParam("amount2",  (Double.valueOf(byOrderNum.getYun_fei())+Double.valueOf(byOrderNum.getAll_money()))/100+ ""));
+        paras.add(new TemplateParam("thing4", why_tk));
+        paras.add(new TemplateParam("thing5", say_mess));
+        template.setTemplateParamList(paras);
+
+        String requestUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=ACCESS_TOKEN";
+        requestUrl = requestUrl.replace("ACCESS_TOKEN", token);
+
+
+        String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
+
+        logger.info(reqMess);
+
+        return Result.ok(reqMess);
+
+    }
+
+    @GetMapping("/updateSh")
+    private Result updateSh(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String order_num = request.getParameter("order_num");
+        String status = request.getParameter("status");
+        String beizhu = request.getParameter("beizhu");
+        OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+
+
+
+        String user_id = byOrderNum.getUser_id();
+
+        /*订阅消息*/
+        //获取access_token
+        JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
+
+
+        shardInfo.setPassword("lry123456");//这里是密码
+
+        Jedis jedis = new Jedis(shardInfo);
+
+        String token = jedis.get("token");
+
+        if (token == null) {
+            token = GetTokenUtil.getToken_wx();
+
+            jedis.set("token", token);
+
+        }
+        //获得openid
+        UserInfoSystem byId = userInfoService.findById(user_id);
+        String open_id = byId.getOpen_id();
+        //得到了模板id;zTNpnRfGK8YgL2i6cctWsaIdPXqUHtdk8F60fxT6RGE
+        Template template = new Template();
+        template.setTemplate_id("OQB_nYB48Lr6u5rNjgijQWNQxH8lDgeyKu6sjiPWmeA");
+        template.setTouser(open_id);
+        template.setPage("/pages/refundList/refundList?user_id=" + user_id);
+        List<TemplateParam> paras = new ArrayList<TemplateParam>();
+        paras.add(new TemplateParam("character_string1", order_num));
+        paras.add(new TemplateParam("time3", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
+        String ShenHe = "";
+        if (status.equals("1")) {
+            ShenHe = "审核通过";
+            //退款
+            String nonceStr = WXPayUtil.generateUUID(); //订单号
+
+
+            if (byOrderNum.getAll_pay() == null) {
+                List<OrderSys> payNumList = orderSysService.findPayNumList(byOrderNum.getPay_num());
+                int money = 0;
+                for (int i = 0; i < payNumList.size(); i++) {
+                    OrderSys orderSys = payNumList.get(i);
+                    String all_money = orderSys.getAll_money();
+                    String yun_fei = orderSys.getYun_fei();
+                    int i1 = Integer.parseInt(all_money);
+                    int i2 = Integer.parseInt(yun_fei);
+                    money = i1 + i2 + money;
+                }
+                String pay_num = byOrderNum.getPay_num();
+                String yun_fei = byOrderNum.getYun_fei();
+                String all_money = byOrderNum.getAll_money();
+                TuiKuanSys.tuiKuan(pay_num, nonceStr, money, Integer.parseInt(yun_fei) + Integer.parseInt(all_money), "商品退款");
+                orderSysService.updateTk("yes", Integer.parseInt(yun_fei) + Integer.parseInt(all_money) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+                orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+            } else {
+                TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), "商品退款");
+                orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+                orderSysService.updateTk("yes", Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+            }
+        } else {
+            ShenHe = "审核不通过";
+        }
+        paras.add(new TemplateParam("thing4", ShenHe));
+        paras.add(new TemplateParam("thing2", beizhu));
+
+        template.setTemplateParamList(paras);
+
+        String requestUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=ACCESS_TOKEN";
+        requestUrl = requestUrl.replace("ACCESS_TOKEN", token);
+
+
+        String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
+
+        logger.info(reqMess);
+        orderSellAfterService.updateStatus(status,beizhu, order_num);
+        return Result.ok(reqMess);
 
     }
 

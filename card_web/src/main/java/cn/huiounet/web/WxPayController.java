@@ -168,6 +168,7 @@ public class WxPayController {
             orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             orderSysService.updataPayTime(df.format(new Date()), order_num);
+            orderSysService.updatePayWay("wxPay",order_num);
             orderSysService.updatePayNumById(order_num,orderSysService.findByOrderNum(order_num).getId()+"");
             if (!notic.equals("")) {
                 orderSysService.updateNotic(notic, order_num);
