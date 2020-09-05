@@ -14,6 +14,24 @@ public class OrderSellAfter implements Serializable {
     private String status; //状态 1:通过 2：不通过
     private String user_id;
     private String result;
+    private String user_tkink;
+    private String work_time;
+
+    public String getWork_time() {
+        return work_time;
+    }
+
+    public void setWork_time(String work_time) {
+        this.work_time = work_time;
+    }
+
+    public String getUser_tkink() {
+        return user_tkink;
+    }
+
+    public void setUser_tkink(String user_tkink) {
+        this.user_tkink = user_tkink;
+    }
 
     public String getResult() {
         return result;

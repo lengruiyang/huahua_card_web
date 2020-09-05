@@ -5,7 +5,7 @@
 
 
     <select id="findByStatus" resultType="SystemMessageSys">
-        SELECT * FROM card_system_message WHERE status = '1';
+        SELECT * FROM card_system_message;
     </select>
 
 

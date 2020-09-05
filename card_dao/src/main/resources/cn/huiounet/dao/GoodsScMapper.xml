@@ -6,6 +6,10 @@
         SELECT * FROM  card_goods_sc where goods_id = #{goods_id} AND user_id = #{user_id};
     </select>
 
+    <select id="findScByUser" resultType="GoodsSc">
+        SELECT * FROM  card_goods_sc where  user_id = #{user_id} ORDER BY  id DESC limit #{start},#{size};
+    </select>
+
     <delete id="deleteById">
         DELETE FROM card_goods_sc where goods_id = #{goods_id} AND user_id = #{user_id};
     </delete>

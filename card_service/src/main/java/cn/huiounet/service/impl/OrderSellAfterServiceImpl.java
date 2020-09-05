@@ -19,8 +19,13 @@ public class OrderSellAfterServiceImpl implements OrderSellAfterService {
     }
 
     @Override
-    public List<OrderSellAfter> findByUserId(String user_id) {
-        return orderSellAfterMapper.findByUserId(user_id);
+    public List<OrderSellAfter> findByUserId(String user_id,int start,int size) {
+        return orderSellAfterMapper.findByUserId(user_id,start,size);
+    }
+
+    @Override
+    public int findByUserIdNum(String user_id) {
+        return orderSellAfterMapper.findByUserIdNum(user_id);
     }
 
     @Override
@@ -29,7 +34,12 @@ public class OrderSellAfterServiceImpl implements OrderSellAfterService {
     }
 
     @Override
-    public void updateStatus(String status,String result, String order_num) {
-        orderSellAfterMapper.updateStatus(status,result, order_num);
+    public void updateStatus(String status,String result,String work_time, String order_num) {
+        orderSellAfterMapper.updateStatus(status,result,work_time, order_num);
+    }
+
+    @Override
+    public void updateUserThink(String user_think, String order_num) {
+        orderSellAfterMapper.updateUserThink(user_think, order_num);
     }
 }

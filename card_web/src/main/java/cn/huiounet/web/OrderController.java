@@ -619,8 +619,10 @@ public class OrderController {
         /* 星号表示所有的异域请求都可以接受， */
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
+        String start = request.getParameter("start");
 
-        List<OrderSellAfter> byOrderNums = orderSellAfterService.findByUserId(user_id);
+        List<OrderSellAfter> byOrderNums = orderSellAfterService.findByUserId(user_id,Integer.parseInt(start),5);
+
         List<ReturnSellAfter> returnSellAfters = new ArrayList<>();
         for(int i = 0;i<byOrderNums.size();i++){
             OrderSellAfter orderSellAfter = byOrderNums.get(i);
@@ -632,6 +634,38 @@ public class OrderController {
         }
 
         return returnSellAfters;
+    }
+
+
+    @GetMapping("/findShByUserIdNum")
+    private Result findShByUserIdNum(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+
+
+        int byUserIdNum = orderSellAfterService.findByUserIdNum(user_id);
+
+        return Result.ok(byUserIdNum+"");
+    }
+
+    @GetMapping("/updateUserThink")
+    private void updateUserThink(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String order_num = request.getParameter("order_num");
+        String user_think = request.getParameter("user_think");
+
+        orderSellAfterService.updateUserThink(user_think,order_num);
+
     }
 
 
@@ -793,7 +827,7 @@ public class OrderController {
         String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
 
         logger.info(reqMess);
-        orderSellAfterService.updateStatus(status,beizhu, order_num);
+        orderSellAfterService.updateStatus(status,beizhu, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
         return Result.ok(reqMess);
 
     }

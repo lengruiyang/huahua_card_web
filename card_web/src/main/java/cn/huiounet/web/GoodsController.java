@@ -178,6 +178,30 @@ public class GoodsController {
         return goods;
     }
 
+
+    @GetMapping("/findScList")
+    public List<GoodsSys> findScList(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String user_id = request.getParameter("user_id");
+        String start = request.getParameter("start");
+
+        List<GoodsSc> scByUser = goodsScService.findScByUser(user_id, Integer.parseInt(start), 5);
+        List<GoodsSys> goodsSys = new ArrayList<>();
+        for(int i = 0;i<scByUser.size();i++){
+            GoodsSc goodsSc = scByUser.get(i);
+            String goods_id = goodsSc.getGoods_id();
+            GoodsSys id = goodsSysService.findId(goods_id);
+            goodsSys.add(id);
+        }
+        return goodsSys;
+    }
+
     @GetMapping("/saveSc")
     public Result saveSc(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");

@@ -2,6 +2,7 @@
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
+import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.service.*;
 
 import cn.huiounet.utils.access_token.GetTokenUtil;
@@ -16,7 +17,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -44,9 +48,13 @@ public class OrderTest {
     @Autowired
     private PingJIaHFService pingJIaHFService;
 
+    @Autowired
+    private MiaoShaGoodsSysService miaoShaGoodsSysService;
+
     @Test
     public void test_(){
-        System.out.println();
+
+
     }
 
 

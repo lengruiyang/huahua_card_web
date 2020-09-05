@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vuejs-2.5.16.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="file" value="文件名" id="up_file"> <br>
+    <input type="button" @click="uploadFile()" value="上传"> <br>
+    <span>状态:<font color="red">{{mess}}</font></span>
+</div>
+<script src="js/controller/uploadFileController.js"></script>
+</body>
+</html>

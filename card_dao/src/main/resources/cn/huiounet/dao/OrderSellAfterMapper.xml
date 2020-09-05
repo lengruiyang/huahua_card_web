@@ -8,11 +8,19 @@
     </select>
 
     <select id="findByUserId" resultType="OrderSellAfter">
-        SELECT * FROM  card_sell_after where user_id = #{user_id};
+        SELECT * FROM  card_sell_after where user_id = #{user_id} ORDER  BY id  desc  limit #{start},#{size};
+    </select>
+
+    <select id="findByUserIdNum" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM  card_sell_after where user_id = #{user_id};
     </select>
 
     <update id="updateStatus">
-        UPDATE card_sell_after SET status = #{status},result = #{result} WHERE order_num = #{order_num}
+        UPDATE card_sell_after SET status = #{status},result = #{result},work_time = #{work_time}  WHERE order_num = #{order_num}
+    </update>
+
+    <update id="updateUserThink">
+        UPDATE card_sell_after SET user_think = #{user_think}  WHERE order_num = #{order_num}
     </update>
 
 </mapper>

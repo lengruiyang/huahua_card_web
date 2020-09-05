@@ -30,4 +30,9 @@ public class GoodsScServiceImpl implements GoodsScService {
     public void saveGoodsSc(GoodsSc goodsSc) {
         goodsScMapper.insert(goodsSc);
     }
+
+    @Override
+    public List<GoodsSc> findScByUser(String user_id,int start,int size) {
+        return goodsScMapper.findScByUser(user_id,start,size);
+    }
 }
