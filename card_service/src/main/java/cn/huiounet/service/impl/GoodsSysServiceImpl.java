@@ -83,5 +83,10 @@ public class GoodsSysServiceImpl implements GoodsSysService {
         return goodsSysMapper.findByShopId(shop_id, stsrt, size);
     }
 
+    @Override
+    public List<GoodsSys> findMiaoShaGoodsList(String miaosha_id, int start, int size) {
+        return goodsSysMapper.findMiaoShaGoodsList(miaosha_id, start, size);
+    }
+
 
 }

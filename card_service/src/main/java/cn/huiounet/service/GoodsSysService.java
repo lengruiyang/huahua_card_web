@@ -10,28 +10,31 @@ public interface GoodsSysService {
 
     GoodsSys findId(String id);
 
-    List<GoodsSys> findBySell(int start,int size);
+    List<GoodsSys> findBySell(int start, int size);
 
     List<GoodsSys> findNewGoods();
 
-    List<GoodsSys> findByLike(int start,int size);
+    List<GoodsSys> findByLike(int start, int size);
 
-    void updateSell_many(String sell_many,String id);
+    void updateSell_many(String sell_many, String id);
 
     List<GoodsSys> SearchGoods(String goods_name);
 
-    List<GoodsSys> findAll(int start,int pageSize);
+    List<GoodsSys> findAll(int start, int pageSize);
 
     List<GoodsSys> findByShop_id(String shop_id);
 
-    void updateLike(String like_many,String id);
+    void updateLike(String like_many, String id);
 
-    List<GoodsSys> findByShopIdOrderBySellMany(String shop_id,int stsrt,int size);
+    List<GoodsSys> findByShopIdOrderBySellMany(String shop_id, int stsrt, int size);
 
-    List<GoodsSys> findByShopIdOrderByLike(String shop_id,int stsrt,int size);
+    List<GoodsSys> findByShopIdOrderByLike(String shop_id, int stsrt, int size);
 
-    List<GoodsSys> findByShopIdOrderByPriceDESC(String shop_id,int stsrt,int size);
+    List<GoodsSys> findByShopIdOrderByPriceDESC(String shop_id, int stsrt, int size);
 
-    List<GoodsSys> findByShopIdOrderByPriceASC(String shop_id,int stsrt,int size);
-    List<GoodsSys> findByShopId(String shop_id,int stsrt,int size);
+    List<GoodsSys> findByShopIdOrderByPriceASC(String shop_id, int stsrt, int size);
+
+    List<GoodsSys> findByShopId(String shop_id, int stsrt, int size);
+
+    List<GoodsSys> findMiaoShaGoodsList(String miaosha_id,int start,int size);
 }

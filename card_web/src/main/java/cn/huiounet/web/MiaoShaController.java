@@ -1,7 +1,9 @@
 package cn.huiounet.web;
 
+import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.pojo.miaosha.MiaoShaSys;
+import cn.huiounet.service.GoodsSysService;
 import cn.huiounet.service.MiaoShaGoodsSysService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,9 @@ public class MiaoShaController {
 
     @Autowired
     private MiaoShaGoodsSysService miaoShaGoodsSysService;
+
+    @Autowired
+    private GoodsSysService goodsSysService;
 
     /**
      * 每晚12：00触发秒杀清零机制
@@ -43,6 +50,8 @@ public class MiaoShaController {
         for(int i = 0;i<all.size();i++){
             MiaoShaSys miaoShaSys = new MiaoShaSys();
             MiaoShaGoodsSys miaoShaGoodsSys = all.get(i);
+            String id = miaoShaGoodsSys.getId();
+            miaoShaSys.setId(id);
             String name = miaoShaGoodsSys.getName();
             String start_time = miaoShaGoodsSys.getStart_time();
             String long_time = miaoShaGoodsSys.getLong_time();
@@ -71,5 +80,21 @@ public class MiaoShaController {
             miaoShaSysList.add(miaoShaSys);
         }
         return miaoShaSysList;
+    }
+
+    @GetMapping("/goods")
+    public List<GoodsSys> findMiaoshaGoodsList(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String start = request.getParameter("start");
+        String miaosha_id = request.getParameter("miaosha_id");
+
+        List<GoodsSys> miaoShaGoodsList = goodsSysService.findMiaoShaGoodsList(miaosha_id, Integer.parseInt(start), 5);
+
+        return miaoShaGoodsList;
     }
 }

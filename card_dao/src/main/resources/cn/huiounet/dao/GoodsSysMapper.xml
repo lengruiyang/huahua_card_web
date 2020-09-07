@@ -23,6 +23,10 @@
         SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id}  limit #{start},#{size};
     </select>
 
+    <select id="findMiaoShaGoodsList" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE miaosha_id = #{miaosha_id} AND is_miaosha = '1' limit #{start},#{size};
+    </select>
+
     <select id="findId" resultType="GoodsSys">
         SELECT * FROM  card_goods_sys where id = #{id};
     </select>

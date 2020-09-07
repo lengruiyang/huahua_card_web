@@ -2,7 +2,6 @@
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
-import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.service.*;
 
 import cn.huiounet.utils.access_token.GetTokenUtil;
@@ -48,12 +47,19 @@ public class OrderTest {
     @Autowired
     private PingJIaHFService pingJIaHFService;
 
-    @Autowired
-    private MiaoShaGoodsSysService miaoShaGoodsSysService;
-
     @Test
     public void test_(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        Date date = null;
+        try {
+            date = sdf.parse("2020-9-5 22:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long longDate = date.getTime();
+        System.out.println(longDate);
 
     }
 

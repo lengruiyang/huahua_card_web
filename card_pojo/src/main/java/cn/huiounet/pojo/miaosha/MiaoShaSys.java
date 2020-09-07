@@ -7,6 +7,15 @@ public class MiaoShaSys implements Serializable {
     private String status;
     private Long time; //还剩多久结束
     private Long start_time; //还剩多久开始
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -18,7 +27,8 @@ public class MiaoShaSys implements Serializable {
                 "name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", time=" + time +
-                ", start_time='" + start_time + '\'' +
+                ", start_time=" + start_time +
+                ", id='" + id + '\'' +
                 '}';
     }
 
