@@ -15,4 +15,6 @@ public interface AddressSysService {
     AddressSys findByStatus(String user_id,String status);
 
     AddressSys findById(String id);
+
+    void updateStatus(String status,String id);
 }

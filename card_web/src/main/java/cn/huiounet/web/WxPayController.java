@@ -119,7 +119,7 @@ public class WxPayController {
 
         UserInfoSystem byId = userInfoService.findById(user_id);
 
-        Map<String, String> payResult = CreateOrder.createOrder("合并-商品购买", byId.getOpen_id(), split[0].substring(0,12), AllMoney);
+        Map<String, String> payResult = CreateOrder.createOrder("商品购买", byId.getOpen_id(), split[0].substring(0,12), AllMoney);
 
         logger.info(payResult);
 
@@ -161,9 +161,14 @@ public class WxPayController {
                 String goods_id = returnGoods.getGoods_id();
                 GoodsSys id = goodsSysService.findId(goods_id);
                 String sell_many = id.getSell_many();
+                String kucun = id.getKucun();
+                int i2 = Integer.parseInt(kucun);
                 int i1 = Integer.parseInt(sell_many);
                 int sellMany = i1 + 1;
+                String num = returnGoods.getNum();
+                int i3 = i2 - Integer.parseInt(num); //剩余库存
                 goodsSysService.updateSell_many(sellMany + "", goods_id);
+                goodsSysService.updateKuCun(i3+"",goods_id);
             }
             orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -218,9 +223,14 @@ public class WxPayController {
                     String goods_id = returnGoods.getGoods_id();
                     GoodsSys id = goodsSysService.findId(goods_id);
                     String sell_many = id.getSell_many();
+                    String kucun = id.getKucun();
                     int i1 = Integer.parseInt(sell_many);
+                    int i2 = Integer.parseInt(kucun);
                     int sellMany = i1 + 1;
+                    String num = returnGoods.getNum();
+                    int i3 = i2 - Integer.parseInt(num); //剩余酷讯
                     goodsSysService.updateSell_many(sellMany + "", goods_id);
+                    goodsSysService.updateKuCun(i3+"",goods_id);
                 }
                 if (!notic.equals("")) {
                     orderSysService.updateNotic(notic, split[n]);

@@ -131,9 +131,18 @@ public class AddressController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
 
         String id = request.getParameter("id");
-
-
+        String user_id = request.getParameter("user_id");
+        AddressSys byId = addressSysService.findById(id);
         addressSysService.deleteById(id);
+        if(addressSysService.findByUser_id(user_id).size() != 0){
+            if(byId.getStatus().equals("1")){
+                //如果是默认地址
+                //改变默认地址
+                List<AddressSys> byUser_id = addressSysService.findByUser_id(user_id);
+                AddressSys addressSys = byUser_id.get(0);
+                addressSysService.updateStatus("1",addressSys.getId()+"");
+            }
+        }
 
         return Result.ok("ok");
     }

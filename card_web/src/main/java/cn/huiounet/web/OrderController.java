@@ -90,16 +90,23 @@ public class OrderController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
+        if(goodsSysService.findId(goods_id).getKucun().equals("0")){
+            return "fail";
+        }
         String shop_id = request.getParameter("shop_id");
         String goods_color = request.getParameter("goods_color");
         String goods_num = request.getParameter("goods_num");
         String address_id = request.getParameter("address_id");
+        String order_lx = request.getParameter("order_lx");
         String goods_size = request.getParameter("goods_size");
         String nonceStr = WXPayUtil.generateUUID(); //订单号
 
         GoodsSize byId = goodsSizeService.findById(goods_size);
+
         GoodsColor byId1 = goodsColorService.findById(goods_color);
+
         OrderSys orderSys = new OrderSys();
+        orderSys.setOrder_lx(order_lx);
         orderSys.setUser_id(user_id);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         orderSys.setCreat_time(df.format(new Date()));
@@ -155,6 +162,8 @@ public class OrderController {
         return nonceStr;
     }
 
+
+
     /**
      * fand
      *
@@ -194,6 +203,7 @@ public class OrderController {
             ShopSys byOpenId = shopSysService.findByOpenId(mapKey);
             orderSys.setShop_name(byOpenId.getShop_name());
             orderSys.setShop_img(byOpenId.getShop_head_img());
+            orderSys.setOrder_lx("1");
             orderSys.setPay_status("not_pay");
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             orderSys.setCreat_time(df.format(new Date()));
@@ -603,9 +613,9 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
 
         OrderSellAfter byOrderNum = orderSellAfterService.findByOrderNum(order_num);
-        if(byOrderNum == null){
+        if (byOrderNum == null) {
             return Result.ok("noHas");
-        }else {
+        } else {
             return Result.ok("has");
         }
     }
@@ -621,15 +631,15 @@ public class OrderController {
         String user_id = request.getParameter("user_id");
         String start = request.getParameter("start");
 
-        List<OrderSellAfter> byOrderNums = orderSellAfterService.findByUserId(user_id,Integer.parseInt(start),5);
+        List<OrderSellAfter> byOrderNums = orderSellAfterService.findByUserId(user_id, Integer.parseInt(start), 5);
 
         List<ReturnSellAfter> returnSellAfters = new ArrayList<>();
-        for(int i = 0;i<byOrderNums.size();i++){
+        for (int i = 0; i < byOrderNums.size(); i++) {
             OrderSellAfter orderSellAfter = byOrderNums.get(i);
             String order_num = orderSellAfter.getOrder_num();
             OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
             List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
-            ReturnSellAfter returnSellAfter = new ReturnSellAfter(byOrderNum,byOrderNUm,orderSellAfter);
+            ReturnSellAfter returnSellAfter = new ReturnSellAfter(byOrderNum, byOrderNUm, orderSellAfter);
             returnSellAfters.add(returnSellAfter);
         }
 
@@ -650,7 +660,7 @@ public class OrderController {
 
         int byUserIdNum = orderSellAfterService.findByUserIdNum(user_id);
 
-        return Result.ok(byUserIdNum+"");
+        return Result.ok(byUserIdNum + "");
     }
 
     @GetMapping("/updateUserThink")
@@ -664,7 +674,7 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
         String user_think = request.getParameter("user_think");
 
-        orderSellAfterService.updateUserThink(user_think,order_num);
+        orderSellAfterService.updateUserThink(user_think, order_num);
 
     }
 
@@ -720,7 +730,7 @@ public class OrderController {
         List<TemplateParam> paras = new ArrayList<TemplateParam>();
         paras.add(new TemplateParam("character_string1", order_num));
         //(Integer.parseInt(byOrderNum.getYun_fei()) + Integer.parseInt(byOrderNum.getAll_money()) / 100)
-        paras.add(new TemplateParam("amount2",  (Double.valueOf(byOrderNum.getYun_fei())+Double.valueOf(byOrderNum.getAll_money()))/100+ ""));
+        paras.add(new TemplateParam("amount2", (Double.valueOf(byOrderNum.getYun_fei()) + Double.valueOf(byOrderNum.getAll_money())) / 100 + ""));
         paras.add(new TemplateParam("thing4", why_tk));
         paras.add(new TemplateParam("thing5", say_mess));
         template.setTemplateParamList(paras);
@@ -750,7 +760,6 @@ public class OrderController {
         String status = request.getParameter("status");
         String beizhu = request.getParameter("beizhu");
         OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
-
 
 
         String user_id = byOrderNum.getUser_id();
@@ -827,7 +836,7 @@ public class OrderController {
         String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
 
         logger.info(reqMess);
-        orderSellAfterService.updateStatus(status,beizhu, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+        orderSellAfterService.updateStatus(status, beizhu, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
         return Result.ok(reqMess);
 
     }

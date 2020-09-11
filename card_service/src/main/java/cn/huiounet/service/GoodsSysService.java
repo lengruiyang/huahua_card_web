@@ -1,7 +1,6 @@
 package cn.huiounet.service;
 
 import cn.huiounet.pojo.goods.GoodsSys;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,5 +35,7 @@ public interface GoodsSysService {
 
     List<GoodsSys> findByShopId(String shop_id, int stsrt, int size);
 
-    List<GoodsSys> findMiaoShaGoodsList(String miaosha_id,int start,int size);
+    List<GoodsSys> findMiaoShaGoodsList(String miaosha_id, int start, int size);
+
+    void updateKuCun(String kucun, String id);
 }

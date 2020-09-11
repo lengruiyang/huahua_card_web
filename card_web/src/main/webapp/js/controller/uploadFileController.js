@@ -12,7 +12,7 @@ var app = new Vue({
             formData.append('file', document.querySelector('input[type=file]').files[0]);
             //post提交
             axios({
-                url: '/card_web/upFile/img.lry',
+                url: '/card_web_/upload/img.lry',
                 data: formData,
                 method: 'post',
                 headers: {

@@ -19,4 +19,8 @@
         DELETE FROM card_address where id = #{id};
     </delete>
 
+    <update id="updateStatus">
+        UPDATE card_address SET status = #{status} WHERE id = #{id};
+    </update>
+
 </mapper>

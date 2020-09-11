@@ -88,5 +88,10 @@ public class GoodsSysServiceImpl implements GoodsSysService {
         return goodsSysMapper.findMiaoShaGoodsList(miaosha_id, start, size);
     }
 
+    @Override
+    public void updateKuCun(String kucun, String id) {
+        goodsSysMapper.updateKuCun(kucun, id);
+    }
+
 
 }

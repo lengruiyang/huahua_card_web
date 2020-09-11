@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.YuYueMiaoShaMapper">
+
+
+    <select id="findByStartTime" resultType="YuYueMiaoSha">
+        SELECT * FROM card_yuyue WHERE start_time = #{start_time};
+    </select>
+
+    <select id="findByUserIdAndStartTime" resultType="YuYueMiaoSha">
+        SELECT * FROM card_yuyue WHERE user_id = #{user_id} AND start_time = #{start_time};
+    </select>
+
+    <delete id="deleteByUserIdAndStartTime">
+        DELETE FROM card_yuyue WHERE user_id = #{user_id} AND start_time = #{start_time};
+    </delete>
+
+</mapper>

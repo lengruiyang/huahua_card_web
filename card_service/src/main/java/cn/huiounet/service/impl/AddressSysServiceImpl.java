@@ -37,4 +37,9 @@ public class AddressSysServiceImpl implements AddressSysService {
     public AddressSys findById(String id) {
         return addressSysMapper.findById(id);
     }
+
+    @Override
+    public void updateStatus(String status, String id) {
+        addressSysMapper.updateStatus(status, id);
+    }
 }

@@ -65,4 +65,8 @@
         UPDATE card_goods_sys SET sell_many = #{sell_many} WHERE id = #{id};
     </update>
 
+    <update id="updateKuCun">
+        UPDATE card_goods_sys SET kucun = #{kucun} WHERE id = #{id};
+    </update>
+
 </mapper>

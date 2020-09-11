@@ -22,6 +22,33 @@ public class GoodsSys implements Serializable {
     private String get_score;
     private String shop_id;
     private String yun_fei;
+    private String miaosha_id;
+    private String is_miaosha;
+    private String kucun;
+
+    public String getKucun() {
+        return kucun;
+    }
+
+    public void setKucun(String kucun) {
+        this.kucun = kucun;
+    }
+
+    public String getMiaosha_id() {
+        return miaosha_id;
+    }
+
+    public void setMiaosha_id(String miaosha_id) {
+        this.miaosha_id = miaosha_id;
+    }
+
+    public String getIs_miaosha() {
+        return is_miaosha;
+    }
+
+    public void setIs_miaosha(String is_miaosha) {
+        this.is_miaosha = is_miaosha;
+    }
 
     public String getYun_fei() {
         return yun_fei;

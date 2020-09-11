@@ -29,6 +29,15 @@ public class OrderSys implements Serializable{
     private String is_tk;
     private String tk_money;
     private String tk_time;
+    private String order_lx; //1普通 2秒杀 3拼团
+
+    public String getOrder_lx() {
+        return order_lx;
+    }
+
+    public void setOrder_lx(String order_lx) {
+        this.order_lx = order_lx;
+    }
 
     public String getPay_way() {
         return pay_way;

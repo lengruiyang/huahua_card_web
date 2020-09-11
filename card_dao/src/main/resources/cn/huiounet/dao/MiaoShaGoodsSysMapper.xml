@@ -7,4 +7,9 @@
         UPDATE card_miao_sha SET start_time = #{start_time} WHERE id = #{id}
     </update>
 
+    <select id="findById" resultType="MiaoShaGoodsSys">
+        SELECT * FROM card_miao_sha WHERE id = #{id};
+    </select>
+
+
 </mapper>

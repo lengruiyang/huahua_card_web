@@ -22,4 +22,9 @@ public class MiaoShaGoodsSysServiceImpl implements MiaoShaGoodsSysService {
     public void updateStartTime(String start_time, String id) {
         miaoShaGoodsSysMapper.updateStartTime(start_time, id);
     }
+
+    @Override
+    public MiaoShaGoodsSys findById(String id) {
+        return miaoShaGoodsSysMapper.findById(id);
+    }
 }

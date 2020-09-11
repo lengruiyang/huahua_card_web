@@ -15,4 +15,6 @@ public interface AddressSysMapper extends Mapper<AddressSys>{
     AddressSys findById(String id);
 
     AddressSys findByStatus(@Param(value = "user_id")String user_id,@Param(value = "status")String status);
+
+    void updateStatus(@Param(value = "status")String status,@Param(value = "id")String id);
 }

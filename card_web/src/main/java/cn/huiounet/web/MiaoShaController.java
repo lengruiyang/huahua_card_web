@@ -3,8 +3,11 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.pojo.miaosha.MiaoShaSys;
+import cn.huiounet.pojo.miaosha.YuYueMiaoSha;
+import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.GoodsSysService;
 import cn.huiounet.service.MiaoShaGoodsSysService;
+import cn.huiounet.service.YuYueMiaoShaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,9 @@ public class MiaoShaController {
 
     @Autowired
     private MiaoShaGoodsSysService miaoShaGoodsSysService;
+
+    @Autowired
+    private YuYueMiaoShaService yuYueMiaoShaService;
 
     @Autowired
     private GoodsSysService goodsSysService;
@@ -82,6 +88,27 @@ public class MiaoShaController {
         return miaoShaSysList;
     }
 
+    @GetMapping("/findById")
+    public Long findById(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String id = request.getParameter("id");
+        MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(id);
+        String start_time = byId.getStart_time();
+        String long_time = byId.getLong_time();
+        long st = Long.parseLong(start_time);
+        long lo = Long.parseLong(long_time);
+        long end_time = st + lo;
+        long l = System.currentTimeMillis();
+        long l1 = end_time - l;
+
+        return  (l1)/1000;
+    }
+
     @GetMapping("/goods")
     public List<GoodsSys> findMiaoshaGoodsList(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
@@ -96,5 +123,90 @@ public class MiaoShaController {
         List<GoodsSys> miaoShaGoodsList = goodsSysService.findMiaoShaGoodsList(miaosha_id, Integer.parseInt(start), 5);
 
         return miaoShaGoodsList;
+    }
+
+    @GetMapping("/yuyue")
+    public Result yuYueMiaoSha(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String user_id = request.getParameter("user_id");
+        String goods_id = request.getParameter("goods_id");
+        GoodsSys id = goodsSysService.findId(goods_id);
+        String miaosha_id = id.getMiaosha_id();
+
+        MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(miaosha_id);
+        //判断相同的预约
+        if(yuYueMiaoShaService.findByUserIdAndStartTime(user_id,byId.getStart_time()) != null){
+            return Result.ok("fail");
+        }
+
+        YuYueMiaoSha yuYueMiaoSha = new YuYueMiaoSha();
+
+
+        String start_time = byId.getStart_time();
+
+        yuYueMiaoSha.setGoods_id(goods_id);
+        yuYueMiaoSha.setStart_time(start_time);
+        yuYueMiaoSha.setUser_id(user_id);
+
+        yuYueMiaoShaService.saveYuYue(yuYueMiaoSha);
+        return Result.ok("ok");
+    }
+
+
+    @GetMapping("/cancelyuyue")
+    public Result cancelyuyue(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String user_id = request.getParameter("user_id");
+
+        String goods_id = request.getParameter("goods_id");
+        GoodsSys id = goodsSysService.findId(goods_id);
+        String miaosha_id = id.getMiaosha_id();
+        MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(miaosha_id);
+        String start_time = byId.getStart_time();
+
+        yuYueMiaoShaService.deleteByUserIdAndStartTime(user_id,start_time);
+        return Result.ok("ok");
+    }
+
+
+    @GetMapping("/findUserYuYue")
+    public Result findUserYuYue(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String user_id = request.getParameter("user_id");
+
+        String goods_id = request.getParameter("goods_id");
+        GoodsSys id = goodsSysService.findId(goods_id);
+        String miaosha_id = id.getMiaosha_id();
+
+        MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(miaosha_id);
+
+
+        YuYueMiaoSha byUserIdAndStartTime = yuYueMiaoShaService.findByUserIdAndStartTime(user_id, byId.getStart_time());
+
+        if (byUserIdAndStartTime == null){
+            return Result.ok("ok");
+        }else {
+            return Result.ok("fail");
+        }
+
+
     }
 }

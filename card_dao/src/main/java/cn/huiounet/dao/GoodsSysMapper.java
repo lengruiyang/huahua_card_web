@@ -38,5 +38,7 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
 
     List<GoodsSys> findMiaoShaGoodsList(@Param(value = "miaosha_id")String miaosha_id,@Param(value = "start")int start,@Param(value = "size")int size);
 
+    void updateKuCun(@Param(value = "kucun")String kucun,@Param(value = "id")String id);
+
 
 }
