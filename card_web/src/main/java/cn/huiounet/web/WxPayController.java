@@ -179,8 +179,10 @@ public class WxPayController {
                 orderSysService.updateNotic(notic, order_num);
             }
             orderSysService.updateAll_pay("1",order_num);
+            logger.info("微信支付订单号："+order_num+"支付成功");
             return Result.ok("ok"); //支付成功
         } else {
+            logger.info("微信支付订单号："+order_num+"支付失败");
             return Result.ok("fail");//支付失败
         }
     }
@@ -237,8 +239,10 @@ public class WxPayController {
                 }
                 orderSysService.updatePayNumById(split[0].substring(0,12),orderSysService.findByOrderNum(split[n]).getId()+"");
             }
+            logger.info("微信支付订单号："+order_num+"支付成功");
             return Result.ok("ok"); //支付成功
         } else {
+            logger.info("微信支付订单号："+order_num+"支付失败");
             return Result.ok("fail");//支付失败
         }
     }

@@ -21,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/address")
 public class AddressController {
+    private static final Logger logger = Logger.getLogger(AddressController.class);
+
     @Autowired
     private AddressTipService addressTipService;
 
@@ -86,6 +88,8 @@ public class AddressController {
 
         addressSysService.saveAddress(addressSys);
 
+        logger.info("用户："+user_id+"新建地址");
+
         return Result.ok("ok");
     }
 
@@ -143,7 +147,7 @@ public class AddressController {
                 addressSysService.updateStatus("1",addressSys.getId()+"");
             }
         }
-
+        logger.info("用户"+user_id+"删除地址Id:"+id);
         return Result.ok("ok");
     }
 }

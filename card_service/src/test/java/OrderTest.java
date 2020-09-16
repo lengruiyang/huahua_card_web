@@ -50,9 +50,6 @@ public class OrderTest {
 
     @Test
     public void test_(){
-        YuYueMiaoSha yuYueMiaoSha = new YuYueMiaoSha();
-        yuYueMiaoSha.setUser_id(1+"");
-        yuYueMiaoShaService.saveYuYue(yuYueMiaoSha);
 
     }
 

@@ -16,6 +16,27 @@ public class UserInfoSystem implements Serializable {
     private String status;
     private String settting_num;
     private String create_time;
+
+    @Override
+    public String toString() {
+        return "UserInfoSystem{" +
+                "id=" + id +
+                ", head_img='" + head_img + '\'' +
+                ", nick_name='" + nick_name + '\'' +
+                ", qian_ming='" + qian_ming + '\'' +
+                ", open_id='" + open_id + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", status='" + status + '\'' +
+                ", settting_num='" + settting_num + '\'' +
+                ", create_time='" + create_time + '\'' +
+                ", password='" + password + '\'' +
+                ", user_tuijian_id='" + user_tuijian_id + '\'' +
+                ", from_id='" + from_id + '\'' +
+                '}';
+    }
+
     private String password;
     private String user_tuijian_id;
     private String from_id;

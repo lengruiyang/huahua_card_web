@@ -15,6 +15,7 @@ import cn.huiounet.service.*;
 import cn.huiounet.utils.access_token.GetTokenUtil;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.math.Arith;
+import cn.huiounet.utils.redis.RedisUtil;
 import cn.huiounet.utils.tuikuan.TuiKuanSys;
 import cn.huiounet.utils.wxPay.WXPayUtil;
 import org.apache.log4j.Logger;
@@ -90,16 +91,26 @@ public class OrderController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
-        if(goodsSysService.findId(goods_id).getKucun().equals("0")){
-            return "fail";
-        }
+
         String shop_id = request.getParameter("shop_id");
         String goods_color = request.getParameter("goods_color");
         String goods_num = request.getParameter("goods_num");
+        if(Integer.parseInt(goodsSysService.findId(goods_id).getKucun()) < Integer.parseInt(goods_num) ){
+            return "fail";
+        }
         String address_id = request.getParameter("address_id");
         String order_lx = request.getParameter("order_lx");
         String goods_size = request.getParameter("goods_size");
         String nonceStr = WXPayUtil.generateUUID(); //订单号
+
+        if(order_lx.equals("2")){
+            //直接减少库存
+            GoodsSys id = goodsSysService.findId(goods_id);
+
+            String kucun = id.getKucun();
+
+            goodsSysService.updateKuCun(Integer.parseInt(kucun)-Integer.parseInt(goods_num)+"",goods_id);
+        }
 
         GoodsSize byId = goodsSizeService.findById(goods_size);
 
@@ -159,6 +170,7 @@ public class OrderController {
         orderSysService.saveOrder(orderSys);
         returnGoodsService.saveReturnGoods(returnGoods);
 
+        logger.info("用户Id:"+user_id+"生成商品Id:"+goods_id+"的订单；类型为:"+order_lx+"订单号为:"+nonceStr);
         return nonceStr;
     }
 
@@ -266,6 +278,7 @@ public class OrderController {
 
             cartSysService.deleteById(s);
         }
+        logger.info("用户ID"+user_id+"通过购物车生成订单");
         return strings;
     }
 
@@ -452,10 +465,10 @@ public class OrderController {
         template.setPage("/pages/orderDetail/orderDetail?order_num=" + order_num);
         List<TemplateParam> paras = new ArrayList<TemplateParam>();
         paras.add(new TemplateParam("character_string1", order_num));
-        paras.add(new TemplateParam("thing2", "商家:" + shop_name + "的商品发货"));
+        paras.add(new TemplateParam("thing2", shop_name + "的商品发货"));
         paras.add(new TemplateParam("character_string4", fa_huo_num));
         paras.add(new TemplateParam("date5", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())));
-        paras.add(new TemplateParam("thing11", new SimpleDateFormat(byId1.getUser_address()).format(new Date())));
+        paras.add(new TemplateParam("thing11", byId1.getUser_address()));
 
         template.setTemplateParamList(paras);
 
@@ -465,7 +478,7 @@ public class OrderController {
 
         String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
 
-        logger.info(reqMess);
+        logger.info("订单:"+order_num+"发货，订阅消息发送情况:"+reqMess);
 
         return Result.ok(reqMess);
     }
@@ -482,7 +495,7 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
 
         orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
-
+        logger.info("订单号:"+order_num+"被取消");
     }
 
 
@@ -497,20 +510,30 @@ public class OrderController {
         String order_num = request.getParameter("order_num");
 
         orderSysService.updataPayStatusByOrderNum("is_shou_huo", order_num);
-
+        logger.info("订单号："+order_num+"收货");
     }
 
     @GetMapping("/tui_kuan")
-    private void tui_kuan(HttpServletResponse response, HttpServletRequest request) {
+    private String tui_kuan(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
 
         /* 星号表示所有的异域请求都可以接受， */
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+
         String order_num = request.getParameter("order_num");
+        String token = request.getParameter("token");
+
+
 
         OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+        String sysToken = RedisUtil.redisGetString(byOrderNum.getUser_id());
+
+        if(!sysToken.equals(token)){
+            return "token_error";
+        }
 
         String nonceStr = WXPayUtil.generateUUID(); //订单号
 
@@ -532,10 +555,14 @@ public class OrderController {
             TuiKuanSys.tuiKuan(pay_num, nonceStr, money, Integer.parseInt(yun_fei) + Integer.parseInt(all_money), "商品退款");
             orderSysService.updateTk("yes", Integer.parseInt(yun_fei) + Integer.parseInt(all_money) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
             orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+            logger.info("订单号退款:"+order_num);
+            return "ok";
         } else {
             TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), "商品退款");
             orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
             orderSysService.updateTk("yes", Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+            logger.info("订单号退款:"+order_num);
+            return "ok";
         }
     }
 
@@ -584,6 +611,7 @@ public class OrderController {
 
         orderSysService.deleteByOrderNum(order_num);
 
+        logger.info("订单被删除:"+order_num);
     }
 
 
@@ -741,7 +769,7 @@ public class OrderController {
 
         String reqMess = HttpRequest.sendPost(requestUrl, template.toJSON());
 
-        logger.info(reqMess);
+        logger.info("用户Id"+user_id+"申请售后，订阅消息状态:"+reqMess);
 
         return Result.ok(reqMess);
 
@@ -837,6 +865,8 @@ public class OrderController {
 
         logger.info(reqMess);
         orderSellAfterService.updateStatus(status, beizhu, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+
+        logger.info("订单"+order_num+"售后审核:"+ShenHe);
         return Result.ok(reqMess);
 
     }

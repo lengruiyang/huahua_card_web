@@ -101,7 +101,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "2:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "2:00", goods_name.substring(0, 16) + "...", price);
             logger.info("执行结果:用户"+user_id+s);
         }
     }
@@ -123,7 +123,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "4:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "4:00", goods_name.substring(0, 16) + "...", price);
             logger.info("执行结果:用户"+user_id+s);
         }
     }
@@ -145,7 +145,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "6:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "6:00", goods_name.substring(0, 16) + "...", price);
             logger.info("执行结果:用户"+user_id+s);
         }
     }
@@ -167,7 +167,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "8:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "8:00", goods_name.substring(0, 16) + "...", price);
             logger.info("执行结果:用户"+user_id+s);
         }
     }
@@ -189,7 +189,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "10:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "10:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -212,7 +212,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "12:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "12:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -235,7 +235,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "14:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "14:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -258,7 +258,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "16:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "16:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -281,7 +281,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "18:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "18:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -304,7 +304,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "20:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "20:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -327,7 +327,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "22:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "22:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }
@@ -350,7 +350,7 @@ public class AutoMiaoShaNoticController {
             String low_price = id.getLow_price();
             String hight_price = id.getHight_price();
             String price = low_price+"."+hight_price;
-            String s = noticUtil(user_id, "00:00", goods_name.substring(0, 5) + "...", price);
+            String s = noticUtil(user_id, "00:00", goods_name.substring(0, 16) + "...", price);
 
             logger.info("执行结果:用户"+user_id+s);
         }

@@ -1,13 +1,17 @@
 package cn.huiounet.web;
 
+import cn.huiounet.pojo.ReturnUser;
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.UserInfoService;
 import cn.huiounet.utils.http.HttpRequest;
+import cn.huiounet.utils.redis.RedisUtil;
 import cn.huiounet.utils.send_message.RamNumberUtil;
 import cn.huiounet.utils.send_message.SendMessageUtil;
+import cn.huiounet.utils.wxPay.WXPayUtil;
 import cn.huiounet.utils.wxPay.WeChatTool;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private static final Logger logger = Logger.getLogger(UserController.class);
     @Autowired
     private UserInfoService userInfoService;
 
@@ -176,8 +181,18 @@ public class UserController {
 
     }
 
+
+    public  String getToken(String userId){
+
+        String nonceStr = WXPayUtil.generateUUID();
+
+        RedisUtil.redisSetString(userId,nonceStr,true,7200000);
+
+        return nonceStr;
+    }
+
     @GetMapping("/find_user")
-    public UserInfoSystem findUser(HttpServletResponse response, HttpServletRequest request){
+    public ReturnUser findUser(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -188,7 +203,13 @@ public class UserController {
 
         UserInfoSystem byOpenId = userInfoService.findByOpenId(open_id);
 
-        return byOpenId;
+        String token = getToken(byOpenId.getId()+"");
+
+        ReturnUser returnUser = new ReturnUser(byOpenId,token);
+
+
+        logger.info("用户"+open_id+"登录结果:"+returnUser);
+        return returnUser;
     }
 
     @GetMapping("/find_userById")
@@ -218,6 +239,8 @@ public class UserController {
         String q_m = request.getParameter("qian_ming");
 
        userInfoService.updateQM(q_m,id);
+
+       logger.info("签名ID"+id+"被更新");
 
         return Result.ok("ok");
     }

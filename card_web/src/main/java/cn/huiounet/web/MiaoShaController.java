@@ -155,6 +155,9 @@ public class MiaoShaController {
         yuYueMiaoSha.setUser_id(user_id);
 
         yuYueMiaoShaService.saveYuYue(yuYueMiaoSha);
+
+        logger.info("用户Id:"+user_id+"预约秒杀商品Id"+goods_id);
+
         return Result.ok("ok");
     }
 
@@ -177,6 +180,8 @@ public class MiaoShaController {
         String start_time = byId.getStart_time();
 
         yuYueMiaoShaService.deleteByUserIdAndStartTime(user_id,start_time);
+
+        logger.info("用户Id:"+user_id+"取消商品预约Id:"+goods_id);
         return Result.ok("ok");
     }
 

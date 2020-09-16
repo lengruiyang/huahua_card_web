@@ -99,6 +99,7 @@ public class PingJiaController {
             orderSysService.updatePj("1",order_num);
         }
 
+        logger.info("用户Id评价:"+user_id+"评价商品Id:"+goods_id);
         return Result.ok("ok");
     }
 

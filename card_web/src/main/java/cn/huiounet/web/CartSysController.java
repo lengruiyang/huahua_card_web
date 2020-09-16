@@ -51,6 +51,8 @@ public class CartSysController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         CartSys cartSys = new CartSys();
 
+
+
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
         if(goodsSysService.findId(goods_id).getKucun().equals("0")){
@@ -93,6 +95,8 @@ public class CartSysController {
 
         cartSysService.saveCartSys(cartSys);
 
+        logger.info("用户:"+user_id+"添加商品Id:"+goods_id+"进入购物车");
+
         return Result.ok("ok");
     }
 
@@ -108,6 +112,7 @@ public class CartSysController {
 
         cartSysService.deleteById(id);
 
+        logger.info("用户根据Id删除购物车商品ID:"+id);
         return Result.ok("ok");
     }
 
@@ -127,6 +132,7 @@ public class CartSysController {
 
             cartSysService.deleteById(s);
         }
+        logger.info("用户删除购物车集合:"+idList.toString());
         return Result.ok("ok");
     }
 

@@ -6,6 +6,7 @@ import cn.huiounet.service.GoodsColorService;
 import cn.huiounet.service.GoodsScService;
 import cn.huiounet.service.GoodsSizeService;
 import cn.huiounet.service.GoodsSysService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/goods")
 public class GoodsController {
+    private static final Logger logger = Logger.getLogger(GoodsController.class);
     @Autowired
     private GoodsSysService goodsSysService;
 
@@ -220,6 +222,8 @@ public class GoodsController {
         goodsSysService.updateLike(i+"",goods_id);
         goodsSc.setUser_id(user_id);
         goodsScService.saveGoodsSc(goodsSc);
+
+        logger.info("用户Id:"+user_id+"收藏商品:"+goods_id);
         //成功
         return Result.ok("ok");
     }
@@ -259,6 +263,8 @@ public class GoodsController {
 
         goodsScService.deleteById(goods_id,user_id);
         //成功
+
+        logger.info("用户Id"+user_id+"取消收藏Id:"+goods_id);
         return Result.ok("ok");
     }
 

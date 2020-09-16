@@ -19,6 +19,15 @@ public class OrderFPsys implements Serializable{
     private String bampany_card;
     private String user_id;
     private String create_time;
+    private String fp_status;
+
+    public String getFp_status() {
+        return fp_status;
+    }
+
+    public void setFp_status(String fp_status) {
+        this.fp_status = fp_status;
+    }
 
     public String getCreate_time() {
         return create_time;

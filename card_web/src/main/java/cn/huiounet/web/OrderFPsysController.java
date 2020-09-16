@@ -4,6 +4,7 @@ import cn.huiounet.pojo.fapiao.OrderFPsys;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.OrderFPsysService;
 import cn.huiounet.service.OrderSysService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/fp")
 public class OrderFPsysController {
+    private static final Logger logger = Logger.getLogger(OrderFPsysController.class);
     @Autowired
     private OrderFPsysService orderFPsysService;
 
@@ -44,6 +46,7 @@ public class OrderFPsysController {
         String bampany_card = request.getParameter("bampany_card");
         String user_id = request.getParameter("user_id");
         String status = request.getParameter("status");
+        String fp_status = request.getParameter("fp_status");
 
 
         OrderFPsys orderFPsys = new OrderFPsys();
@@ -59,12 +62,15 @@ public class OrderFPsysController {
         orderFPsys.setCompany_code(company_code);
         orderFPsys.setCompany_bank(company_bank);
         orderFPsys.setStatus(status);
+        orderFPsys.setFp_status(fp_status);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         orderFPsys.setCreate_time(df.format(new Date()));
 
         orderSysService.updateFP("1",order_num);
 
         orderFPsysService.saveFP(orderFPsys);
+
+        logger.info("用户Id"+user_id+"申请发票");
 
         return Result.ok("ok");
     }
