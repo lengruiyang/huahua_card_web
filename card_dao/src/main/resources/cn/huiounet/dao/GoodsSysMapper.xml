@@ -23,6 +23,10 @@
         SELECT * FROM card_goods_sys WHERE shop_id = #{shop_id}  limit #{start},#{size};
     </select>
 
+    <select id="searchGoods" resultType="GoodsSys">
+        SELECT * FROM card_goods_sys WHERE goods_name LIKE "%" #{goods_name} "%"  limit #{start},#{size};
+    </select>
+
     <select id="findMiaoShaGoodsList" resultType="GoodsSys">
         SELECT * FROM card_goods_sys WHERE miaosha_id = #{miaosha_id} AND is_miaosha = '1' limit #{start},#{size};
     </select>
@@ -53,6 +57,10 @@
 
     <select id="findBySell" resultType="GoodsSys">
         SELECT * FROM card_goods_sys ORDER  BY sell_many DESC limit #{start},#{size};
+    </select>
+
+    <select id="findMaxId" resultType="java.lang.Integer">
+       SELECT MAX(id) FROM card_goods_sys;
     </select>
 
 

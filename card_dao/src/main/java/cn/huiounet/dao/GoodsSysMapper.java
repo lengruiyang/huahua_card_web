@@ -12,6 +12,10 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
 
     List<GoodsSys> findNewGoods();
 
+    int findMaxId();
+
+    List<GoodsSys> searchGoods(@Param(value = "goods_name")String goods_name,@Param(value = "start")int start,@Param(value = "size")int size);
+
     void updateSell_many(@Param(value = "sell_many") String sell_many, @Param(value = "id") String id);
 
     List<GoodsSys> findByLike(@Param(value = "start") int start, @Param(value = "size") int size);

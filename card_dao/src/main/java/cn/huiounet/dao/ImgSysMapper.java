@@ -12,4 +12,8 @@ public interface ImgSysMapper extends Mapper<ImgSys> {
     List<ImgSys> findByLunBo();
 
     List<ImgSys> findByFenLeiLunBo();
+
+    List<ImgSys> findByFenLeiLunBoShouYe();
+
+    List<ImgSys> findByFenLeiLunBoBystatus(String status);
 }

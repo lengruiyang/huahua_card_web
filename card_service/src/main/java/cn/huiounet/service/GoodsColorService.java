@@ -10,4 +10,8 @@ public interface GoodsColorService {
 
     GoodsColor findById(String id);
 
+    void saveGoodsColor(GoodsColor goodsColor);
+
+    int findMaxId();
+
 }

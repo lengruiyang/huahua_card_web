@@ -5,12 +5,10 @@ import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.OrderSys;
 import cn.huiounet.pojo.order.ReturnGoods;
 import cn.huiounet.pojo.vo.Result;
-import cn.huiounet.service.GoodsSysService;
-import cn.huiounet.service.OrderSysService;
-import cn.huiounet.service.ReturnGoodsService;
-import cn.huiounet.service.UserInfoService;
+import cn.huiounet.service.*;
 import cn.huiounet.utils.create_order.CreateOrder;
 import cn.huiounet.utils.http.HttpRequest;
+import cn.huiounet.utils.math.Arith;
 import cn.huiounet.utils.wxPay.WXPayUtil;
 import cn.huiounet.utils.xml.XmlPayUtil;
 import org.apache.log4j.Logger;
@@ -38,6 +36,9 @@ public class WxPayController {
 
     @Autowired
     private OrderSysService orderSysService;
+
+    @Autowired
+    private CouponSysService couponSysService;
 
     @Autowired
     private GoodsSysService goodsSysService;
@@ -69,12 +70,20 @@ public class WxPayController {
             UserInfoSystem byId = userInfoService.findById(user_id);
 
 
-            String all_money = byOrderNum.getAll_money();
+            int AllMoney = Integer.parseInt(byOrderNum.getAll_money());
 
             String yun_fei = byOrderNum.getYun_fei();
-
-
-            Map<String, String> payResult = CreateOrder.createOrder(shop_name + "-商品购买", byId.getOpen_id(), order_num, Integer.parseInt(all_money) + Integer.parseInt(yun_fei));
+            AllMoney  = AllMoney + Integer.parseInt(yun_fei);
+            if(byOrderNum.getYouhui_status() != null){
+                if(byOrderNum.getYouhui_status().equals("1")){
+                    String youhui_much = byOrderNum.getYouhui_much();
+                    double mul = Arith.mul(Double.parseDouble(youhui_much), Double.valueOf(100));
+//                    int i1 = Integer.parseInt(youhui_much) * 100;
+                    int i = new Double(mul).intValue();
+                    AllMoney = AllMoney - i;
+                }
+            }
+            Map<String, String> payResult = CreateOrder.createOrder(shop_name + "-商品购买", byId.getOpen_id(), order_num, AllMoney);
 
             logger.info(payResult);
 
@@ -169,6 +178,10 @@ public class WxPayController {
                 int i3 = i2 - Integer.parseInt(num); //剩余库存
                 goodsSysService.updateSell_many(sellMany + "", goods_id);
                 goodsSysService.updateKuCun(i3+"",goods_id);
+            }
+            OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+            if(byOrderNum.getYouhuiquan_id() != null){
+                couponSysService.updateById("2",byOrderNum.getYouhuiquan_id());
             }
             orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

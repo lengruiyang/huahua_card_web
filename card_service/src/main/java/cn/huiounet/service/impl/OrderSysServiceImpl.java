@@ -19,6 +19,11 @@ public class OrderSysServiceImpl implements OrderSysService {
     }
 
     @Override
+    public void updateYouHui(String youhui_status, String youhui_much, String youhuiquan_id, String order_num) {
+        orderSysMapper.updateYouHui(youhui_status, youhui_much, youhuiquan_id, order_num);
+    }
+
+    @Override
     public void saveOrder(OrderSys orderSys) {
         orderSysMapper.insert(orderSys);
     }
@@ -112,6 +117,11 @@ public class OrderSysServiceImpl implements OrderSysService {
     @Override
     public void updateTk(String is_tk, String tk_money, String tk_time, String order_num) {
         orderSysMapper.updateTk(is_tk, tk_money, tk_time, order_num);
+    }
+
+    @Override
+    public List<OrderSys> searchOrder(String user_id, String order_num, String shop_name, int start, int size) {
+        return orderSysMapper.searchOrder(user_id, order_num, shop_name, start, size);
     }
 
 

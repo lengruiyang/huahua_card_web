@@ -349,6 +349,32 @@ public class OrderController {
         return returnOrders;
     }
 
+    @GetMapping("/searchOrder")
+    private List<ReturnOrder> searchOrder(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String user_id = request.getParameter("user_id");
+        String start = request.getParameter("start");
+        String mess = request.getParameter("mess");
+
+        List<OrderSys> orderSys = orderSysService.searchOrder(user_id, mess, mess, Integer.parseInt(start), 5);
+
+        List<ReturnOrder> returnOrders = new ArrayList<>();
+        for(int i = 0;i<orderSys.size();i++){
+            String order_num = orderSys.get(i).getOrder_num();
+            List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+            OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+            ReturnOrder returnOrder = new ReturnOrder(byOrderNUm,byOrderNum);
+            returnOrders.add(returnOrder);
+        }
+
+        return returnOrders;
+    }
+
 
     @GetMapping("/findAll")
     private List<ReturnOrder> findAll(HttpServletResponse response, HttpServletRequest request) {
@@ -558,10 +584,21 @@ public class OrderController {
             logger.info("订单号退款:"+order_num);
             return "ok";
         } else {
-            TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()), "商品退款");
+            int i = 0;
+            if(byOrderNum.getYouhui_status() != null){
+                String youhui_much = byOrderNum.getYouhui_much();
+                double v = Double.parseDouble(youhui_much);
+                Double aDouble = Double.valueOf(100);
+                double mul = Arith.mul(v, aDouble);
+
+                i = new Double(mul).intValue();
+            }
+            String result = TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) - i, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) - i, "商品退款");
+
+
             orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
             orderSysService.updateTk("yes", Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
-            logger.info("订单号退款:"+order_num);
+            logger.info("订单号退款:"+order_num+"详情："+result);
             return "ok";
         }
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.SearchCountMapper">
+
+    <select id="findBySearchMess" resultType="SearchCount">
+        SELECT * FROM card_search_count WHERE search_mess = #{search_mess};
+    </select>
+
+    <select id="findBySearchOrderBy" resultType="SearchCount">
+        SELECT * FROM card_search_count ORDER BY `count` DESC  limit ${start},${size};
+    </select>
+
+    <update id="updateBySerach">
+        UPDATE card_search_count SET `count` = #{count} WHERE search_mess = #{search_mess};
+    </update>
+
+    <select id="searchLike" resultType="SearchCount">
+        SELECT * FROM card_search_count WHERE search_mess LIKE "%" #{search_mess} "%"  limit #{start},#{size};
+    </select>
+
+
+</mapper>

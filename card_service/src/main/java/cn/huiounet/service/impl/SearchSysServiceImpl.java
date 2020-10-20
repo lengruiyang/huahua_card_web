@@ -22,4 +22,15 @@ public class SearchSysServiceImpl implements SearchSysService{
     public void saveSerarch(SearchSys searchSys) {
         searchSysMapper.insert(searchSys);
     }
+
+    @Override
+    public void deleteByUser(String user_id) {
+        searchSysMapper.deleteByUser(user_id);
+    }
+
+    @Override
+    public SearchSys findByUserAndMess(String user_id, String search_mess) {
+        return searchSysMapper.findByUserAndMess(user_id, search_mess);
+    }
+
 }

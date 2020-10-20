@@ -32,7 +32,7 @@ public class UserController {
     private UserInfoService userInfoService;
 
     @GetMapping("/save_user")
-    public Result saveUser(HttpServletResponse response, HttpServletRequest request){
+    public Result saveUser(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/reg_user")
-    public Result reg_user(HttpServletResponse response, HttpServletRequest request){
+    public Result reg_user(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -68,9 +68,6 @@ public class UserController {
         String password = request.getParameter("password");
         String from_user_id = request.getParameter("from_user_id");
 
-
-
-
         JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
         shardInfo.setPassword("lry123456");//这里是密码
 
@@ -78,7 +75,7 @@ public class UserController {
 
         String code_check = jedis.get(phone);
 
-        if(code_check.equals(code_)){
+        if (code_check.equals(code_)) {
             //保存
             String jsonString = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", "appid=" + WeChatTool.wxspAppid + "&secret=" + WeChatTool.app_key + "&js_code=" + code + "&grant_type=authorization_code");
 
@@ -88,7 +85,7 @@ public class UserController {
 
             UserInfoSystem byPhone = userInfoService.findByPhone(phone);
             UserInfoSystem byOpenId = userInfoService.findByOpenId(open_id);
-            if (byPhone != null || byOpenId !=null){
+            if (byPhone != null || byOpenId != null) {
                 return Result.ok("fail");
             }
 
@@ -100,22 +97,31 @@ public class UserController {
             userInfoSystem.setNick_name(nickName);
             userInfoSystem.setPhone_number(phone);
             userInfoSystem.setSex(gander);
-            userInfoSystem.setPassword(password);
-            userInfoSystem.setUser_tuijian_id(RamNumberUtil.getRandomStr(6,1));
+            userInfoSystem.setJifen("0");
+            userInfoSystem.setMoney("0");
+            userInfoSystem.setUser_tuijian_id(RamNumberUtil.getRandomStr(6, 1));
             userInfoSystem.setFrom_id(from_user_id);
             userInfoSystem.setStatus("1");
+            //发消息
+            String randomStr = RamNumberUtil.getRandomStr(4, 0);
+            try {
+                SendMessageUtil.getMess2(phone, randomStr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            userInfoSystem.setPassword(randomStr);
             userInfoService.saveUser(userInfoSystem);
 
             jedis.del(phone);
             return Result.ok("ok");
-        }else {
+        } else {
             return Result.ok("fail");
         }
 
     }
 
     @GetMapping("/reg_user_")
-    public Result reg_user_(HttpServletResponse response, HttpServletRequest request){
+    public Result reg_user_(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -128,8 +134,7 @@ public class UserController {
         String avatarUrl = request.getParameter("avatarUrl");
         String password = request.getParameter("password");
 
-
-            //保存
+        //保存
         String jsonString = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", "appid=" + WeChatTool.wxspAppid + "&secret=" + WeChatTool.app_key + "&js_code=" + code + "&grant_type=authorization_code");
 
         JSONObject json = JSONObject.fromObject(jsonString);
@@ -142,9 +147,11 @@ public class UserController {
         userInfoSystem.setNick_name(nickName);
         userInfoSystem.setStatus("1");
         userInfoSystem.setSex(gander);
+        userInfoSystem.setIs_vip("0");
         userInfoSystem.setPassword(password);
 
-        if(userInfoService.findByOpenId(open_id) == null){
+
+        if (userInfoService.findByOpenId(open_id) == null) {
             userInfoService.saveUser(userInfoSystem);
         }
 
@@ -153,7 +160,7 @@ public class UserController {
     }
 
     @GetMapping("/check_user")
-    public String checkUser(HttpServletResponse response, HttpServletRequest request){
+    public String checkUser(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -171,28 +178,28 @@ public class UserController {
 
         UserInfoSystem byOpenId = userInfoService.findByOpenId(open_id);
 
-        if(byOpenId == null){
+        if (byOpenId == null) {
             return "null";
-        }else if(byOpenId.getStatus().equals("0")){
+        } else if (byOpenId.getStatus().equals("0")) {
             return "userIsDisabled";
-        }else {
+        } else {
             return byOpenId.getOpen_id();
         }
 
     }
 
 
-    public  String getToken(String userId){
+    public String getToken(String userId) {
 
         String nonceStr = WXPayUtil.generateUUID();
 
-        RedisUtil.redisSetString(userId,nonceStr,true,7200000);
+        RedisUtil.redisSetString(userId, nonceStr, true, 7200000);
 
         return nonceStr;
     }
 
     @GetMapping("/find_user")
-    public ReturnUser findUser(HttpServletResponse response, HttpServletRequest request){
+    public ReturnUser findUser(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -203,17 +210,17 @@ public class UserController {
 
         UserInfoSystem byOpenId = userInfoService.findByOpenId(open_id);
 
-        String token = getToken(byOpenId.getId()+"");
+        String token = getToken(byOpenId.getId() + "");
 
-        ReturnUser returnUser = new ReturnUser(byOpenId,token);
+        ReturnUser returnUser = new ReturnUser(byOpenId, token);
 
 
-        logger.info("用户"+open_id+"登录结果:"+returnUser);
+        logger.info("用户" + open_id + "登录结果:" + returnUser);
         return returnUser;
     }
 
     @GetMapping("/find_userById")
-    public UserInfoSystem find_userById(HttpServletResponse response, HttpServletRequest request){
+    public UserInfoSystem find_userById(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -228,7 +235,7 @@ public class UserController {
     }
 
     @GetMapping("/update_user")
-    public Result update_user(HttpServletResponse response, HttpServletRequest request){
+    public Result update_user(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -238,46 +245,127 @@ public class UserController {
         String id = request.getParameter("id");
         String q_m = request.getParameter("qian_ming");
 
-       userInfoService.updateQM(q_m,id);
+        userInfoService.updateQM(q_m, id);
 
-       logger.info("签名ID"+id+"被更新");
+        logger.info("签名ID" + id + "被更新");
 
         return Result.ok("ok");
     }
 
-    @GetMapping("/getMess")
-    public Result getMess(HttpServletResponse response, HttpServletRequest request){
+    @GetMapping("/update_Pwd")
+    public Result update_Pwd(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
 
         /* 星号表示所有的异域请求都可以接受， */
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String id = request.getParameter("id");
+        String pwd = request.getParameter("pwd");
+
+        userInfoService.updatePassWord(pwd,id);
+
+        logger.info("密码" + id + "被更新");
+
+        return Result.ok("ok");
+    }
+
+    @GetMapping("/find_pwd_mess")
+    public Result find_pwd_mess(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
         String phone = request.getParameter("phone");
-        String num =  RamNumberUtil.getRandomStr(6,0);
+
+        String randomStr = RamNumberUtil.getRandomStr(6, 0);
 
         JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
         shardInfo.setPassword("lry123456");//这里是密码
 
         Jedis jedis = new Jedis(shardInfo);
 
-        jedis.set(phone,num); //存
+        jedis.set(phone, randomStr); //存
+        try {
+            SendMessageUtil.getMess3(phone, randomStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        UserInfoSystem byPhone = userInfoService.findByPhone(phone);
+        return Result.ok("ok");
+    }
 
-        if(byPhone == null){
-            try {
-                SendMessageUtil.getMess(phone,num);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+    @GetMapping("/check_pwd")
+    public Result check_pwd(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String phone = request.getParameter("phone");
+        String check_code = request.getParameter("check_code");
+
+        JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
+
+        shardInfo.setPassword("lry123456");//这里是密码
+
+        Jedis jedis = new Jedis(shardInfo);
+
+        String s = jedis.get(phone);
+
+        if (check_code.equals(s)){
             return Result.ok("ok");
         }else {
             return Result.ok("fail");
         }
+    }
 
+    @GetMapping("/regcheckcode")
+    public Result regcheckcode(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
 
+        String phone = request.getParameter("phone");
+        String mycode = request.getParameter("mycode");
 
+        String s = RedisUtil.redisGetString(phone + "SERVER_CODE");
+        logger.info(s);
+        if(s.equalsIgnoreCase(mycode)){
+            //正确
+            UserController userController = new UserController();
+            Result mess = userController.getMess(phone);
+            return mess;
+        }else {
+            return Result.fail("code_fail");
+        }
+
+    }
+
+    public  Result getMess(String phone) {
+        String num = RamNumberUtil.getRandomStr(6, 0);
+
+        JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
+        shardInfo.setPassword("lry123456");//这里是密码
+
+        Jedis jedis = new Jedis(shardInfo);
+
+        jedis.set(phone, num); //存
+
+            try {
+                SendMessageUtil.getMess(phone, num);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return Result.ok("ok");
     }
 }

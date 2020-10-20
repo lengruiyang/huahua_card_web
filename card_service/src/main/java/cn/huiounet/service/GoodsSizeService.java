@@ -10,4 +10,6 @@ public interface GoodsSizeService  {
 
     GoodsSize findById(String id);
 
+    void saveSize(GoodsSize goodsSize);
+
 }

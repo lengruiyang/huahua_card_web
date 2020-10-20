@@ -22,4 +22,9 @@ public class GoodsSizeServiceImpl implements GoodsSizeService{
     public GoodsSize findById(String id) {
         return goodsSizeMapper.findById(id);
     }
+
+    @Override
+    public void saveSize(GoodsSize goodsSize) {
+        goodsSizeMapper.insert(goodsSize);
+    }
 }

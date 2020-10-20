@@ -29,7 +29,34 @@ public class OrderSys implements Serializable{
     private String is_tk;
     private String tk_money;
     private String tk_time;
+    private String youhui_much;
+    private String youhuiquan_id;
+    private String youhui_status;//1:优惠券，2;会员卡，0:无优惠
     private String order_lx; //1普通 2秒杀 3拼团
+
+    public String getYouhuiquan_id() {
+        return youhuiquan_id;
+    }
+
+    public void setYouhuiquan_id(String youhuiquan_id) {
+        this.youhuiquan_id = youhuiquan_id;
+    }
+
+    public String getYouhui_much() {
+        return youhui_much;
+    }
+
+    public void setYouhui_much(String youhui_much) {
+        this.youhui_much = youhui_much;
+    }
+
+    public String getYouhui_status() {
+        return youhui_status;
+    }
+
+    public void setYouhui_status(String youhui_status) {
+        this.youhui_status = youhui_status;
+    }
 
     public String getOrder_lx() {
         return order_lx;

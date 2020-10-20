@@ -38,4 +38,10 @@ public interface GoodsSysService {
     List<GoodsSys> findMiaoShaGoodsList(String miaosha_id, int start, int size);
 
     void updateKuCun(String kucun, String id);
+
+    void saveGoodsSys(GoodsSys goodsSys);
+
+    int findMaxId();
+
+    List<GoodsSys> searchGoods(String goods_name,int start,int size);
 }

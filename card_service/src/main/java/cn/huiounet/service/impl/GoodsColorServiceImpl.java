@@ -22,4 +22,14 @@ public class GoodsColorServiceImpl implements GoodsColorService {
     public GoodsColor findById(String id) {
         return goodsColorMapper.findById(id);
     }
+
+    @Override
+    public void saveGoodsColor(GoodsColor goodsColor) {
+        goodsColorMapper.insert(goodsColor);
+    }
+
+    @Override
+    public int findMaxId() {
+        return goodsColorMapper.findMaxId();
+    }
 }

@@ -14,6 +14,43 @@ public class UserInfoSystem implements Serializable {
     private String birthday;
     private String phone_number;
     private String status;
+    private String is_vip;
+    private String money;
+    private String jifen;
+    private String vip_time;
+
+    public String getVip_time() {
+        return vip_time;
+    }
+
+    public void setVip_time(String vip_time) {
+        this.vip_time = vip_time;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
+    }
+
+    public String getJifen() {
+        return jifen;
+    }
+
+    public void setJifen(String jifen) {
+        this.jifen = jifen;
+    }
+
+    public String getIs_vip() {
+        return is_vip;
+    }
+
+    public void setIs_vip(String is_vip) {
+        this.is_vip = is_vip;
+    }
+
     private String settting_num;
     private String create_time;
 

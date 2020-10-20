@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.VipLogMapper">
+
+
+    <update id="updateByOrderNum">
+        UPDATE card_vip_log SET status = #{status} WHERE order_num = #{order_num};
+    </update>
+
+    <select id="findByOrderNum" resultType="VipLog">
+        SELECT * FROM card_vip_log where order_num = #{order_num};
+    </select>
+
+
+</mapper>

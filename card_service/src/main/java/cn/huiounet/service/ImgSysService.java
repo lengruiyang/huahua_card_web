@@ -12,4 +12,10 @@ public interface ImgSysService {
 
     List<ImgSys> findByFenLeiLunBo();
 
+    void saveImg(ImgSys imgSys);
+
+    List<ImgSys> findByFenLeiLunBoShouYe();
+
+    List<ImgSys> findByFenLeiLunBoBystatus(String status);
+
 }

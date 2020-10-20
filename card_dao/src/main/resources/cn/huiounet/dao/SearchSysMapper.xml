@@ -6,5 +6,13 @@
         SELECT * FROM card_search_sys WHERE user_id = #{user_id};
     </select>
 
+    <select id="findByUserAndMess" resultType="SearchSys">
+        SELECT * FROM card_search_sys WHERE user_id = #{user_id} AND search_mess = #{search_mess};
+    </select>
+
+    <delete id="deleteByUser">
+        DELETE FROM card_search_sys where user_id = #{user_id};
+    </delete>
+
 
 </mapper>

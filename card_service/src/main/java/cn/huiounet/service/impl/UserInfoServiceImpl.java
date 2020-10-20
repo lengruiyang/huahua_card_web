@@ -39,7 +39,22 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     @Override
+    public void updateMoney(String money, String id) {
+        userInfoMapper.updateMoney(money, id);
+    }
+
+    @Override
     public UserInfoSystem findById(String id) {
         return userInfoMapper.findById(id);
+    }
+
+    @Override
+    public void updatePassWord(String password, String id) {
+        userInfoMapper.updatePassWord(password, id);
+    }
+
+    @Override
+    public void updateVipTime(String vip_time, String id) {
+        userInfoMapper.updateVipTime(vip_time, id);
     }
 }

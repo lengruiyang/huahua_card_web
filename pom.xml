@@ -371,11 +371,6 @@
             <version>1.11.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.goeasy</groupId>
-            <artifactId>goeasy-sdk</artifactId>
-            <version>0.3.8</version>
-        </dependency>
 
         <dependency>
             <groupId>com.tencentcloudapi</groupId>
@@ -413,18 +408,24 @@
             <version>5.0.0.Alpha2</version>
         </dependency>
 
+        <!-- 爬虫相关Jar包依赖 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10-FINAL</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>goeasy</id>
-            <name>goeasy</name>
-            <url>
-                http://maven.goeasy.io/content/repositories/releases/
-            </url>
-        </repository>
-    </repositories>
-
     <build>
         <plugins>
             <plugin>

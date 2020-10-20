@@ -2,16 +2,22 @@ package cn.huiounet.web;
 
 import cn.huiounet.utils.access_token.GetTokenUtil;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisShardInfo;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RequestMapping("/app")
 @RestController
 public class AppSysController {
     private static final Logger logger = Logger.getLogger(AppSysController.class);
+
+    @Autowired
+    public HttpServletRequest Request;
 
     /**
      * token
@@ -46,5 +52,12 @@ public class AppSysController {
 
         return token_wx;
 
+    }
+
+    @GetMapping("/code_img")
+    public String getImg(){
+        String server_code = (String)Request.getSession().getAttribute("SERVER_CODE");
+
+        return server_code;
     }
 }

@@ -15,7 +15,13 @@ public interface UserInfoService {
 
     UserInfoSystem findByPhone(String phone);
 
-    void updateQM(String qian_ming,String id);
+    void updateQM(String qian_ming, String id);
+
+    void updateMoney(String money, String id);
 
     UserInfoSystem findById(String id);
+
+    void updatePassWord(String password, String id);
+
+    void updateVipTime(String vip_time,String id);
 }

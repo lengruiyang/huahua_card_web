@@ -14,4 +14,12 @@
         SELECT * FROM  card_img_sys where status = '3';
     </select>
 
+    <select id="findByFenLeiLunBoShouYe" resultType="ImgSys">
+        SELECT * FROM  card_img_sys where status = '4';
+    </select>
+
+    <select id="findByFenLeiLunBoBystatus" resultType="ImgSys">
+        SELECT * FROM  card_img_sys where status = #{status};
+    </select>
+
 </mapper>

@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class CouponSys implements Serializable{
     private String id;
     private String name;
+    private String coupon_id;
     private String price; //减去多少元
     private String enough_price;//达到价格
     private String about_mess;
@@ -19,9 +20,35 @@ public class CouponSys implements Serializable{
     private String create_time; //系统创建时间
     private String start_time; //领取时间
     private String last_time;
+    private String goods_id;
+    private String shop_id;
     private String long_time;
     private String user_id;
     private String where_from; //sys:系统  goods:商品 shop:商店
+
+    public String getGoods_id() {
+        return goods_id;
+    }
+
+    public void setGoods_id(String goods_id) {
+        this.goods_id = goods_id;
+    }
+
+    public String getShop_id() {
+        return shop_id;
+    }
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public String getCoupon_id() {
+        return coupon_id;
+    }
+
+    public void setCoupon_id(String coupon_id) {
+        this.coupon_id = coupon_id;
+    }
 
     public String getWhere_from() {
         return where_from;

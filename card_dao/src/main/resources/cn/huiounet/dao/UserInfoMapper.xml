@@ -14,9 +14,18 @@
         SELECT * FROM  card_user_info where  id = #{id};
     </select>
 
-    <!--<update id="updateSex">-->
-        <!--UPDATE card_user_info set sex = #{sex} where id = #{id};-->
-    <!--</update>-->
+    <update id="updatePassWord">
+        UPDATE card_user_info set password = #{password} where id = #{id};
+    </update>
+
+    <update id="updateVipTime">
+        UPDATE card_user_info set vip_time = #{vip_time}, is_vip = '1' where id = #{id};
+    </update>
+
+
+    <update id="updateMoney">
+        UPDATE card_user_info set money = #{money} where id = #{id};
+    </update>
 
     <!--<update id="updateBir">-->
         <!--UPDATE card_user_info set birthday = #{birthday} where id = #{id};-->

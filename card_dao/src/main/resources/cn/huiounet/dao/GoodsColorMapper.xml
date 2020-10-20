@@ -10,4 +10,8 @@
         SELECT * FROM  card_goods_color where id = #{id};
     </select>
 
+    <select id="findMaxId" resultType="java.lang.Integer">
+         SELECT MAX(id) FROM card_goods_color;
+    </select>
+
 </mapper>

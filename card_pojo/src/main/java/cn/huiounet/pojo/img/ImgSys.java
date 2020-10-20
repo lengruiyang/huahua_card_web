@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Table(name = "card_img_sys")
 public class ImgSys implements Serializable {
     private int id;
-    private String status; //2轮播图？1商品图
+    private String status; //2轮播图？1商品图 3:分类轮播 4首页
     private String to_url; //轮播图
     private String goods_id;
     private String url;

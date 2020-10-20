@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.huiounet.dao.OrderSysMapper">
+
+    <select id="searchOrder" resultType="OrderSys">
+        SELECT * FROM (SELECT * FROM card_order_sys WHERE `user_id`=#{user_id})AS a WHERE `order_num`=#{order_num}  OR  shop_name LIKE "%" #{shop_name} "%"  limit #{start},#{size};
+    </select>
+
+    <update id="updateYouHui">
+        UPDATE card_order_sys SET youhui_status = #{youhui_status},youhui_much = #{youhui_much},youhuiquan_id = #{youhuiquan_id} WHERE order_num = #{order_num}
+    </update>
+
+    <!--<update id="updateYouHui">-->
+        <!--UPDATE card_order_sys SET all_pay = #{all_pay} WHERE order_num = #{order_num}-->
+    <!--</update>-->
+
     <update id="updatePayWay">
         update  card_order_sys SET pay_way = #{pay_way} WHERE  order_num = #{order_num}
     </update>

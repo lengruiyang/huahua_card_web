@@ -8,6 +8,8 @@ public interface OrderSysService {
 
     OrderSys findByOrderNum(String order_num);
 
+    void updateYouHui(String youhui_status,String youhui_much,String youhuiquan_id,String order_num);
+
     void saveOrder(OrderSys orderSys);
 
     void updataPayStatusByOrderNum(String pay_status, String order_num);
@@ -45,4 +47,6 @@ public interface OrderSysService {
     void updatePayWay(String pay_way,String order_num);
 
     void updateTk(String is_tk,String tk_money,String tk_time, String order_num);
+
+    List<OrderSys> searchOrder(String user_id,String order_num,String shop_name,int start,int size);
 }

@@ -10,4 +10,6 @@ public interface GoodsColorMapper extends Mapper<GoodsColor> {
     List<GoodsColor> findGoodsColor(String goods_id);
 
     GoodsColor findById(String id);
+
+    int findMaxId();
 }

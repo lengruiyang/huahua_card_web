@@ -53,6 +53,20 @@ public class ImgSysController {
         return byGoodsId;
     }
 
+    @GetMapping("/status")
+    public List<ImgSys> findByStatus(HttpServletResponse response, HttpServletRequest request){
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        String status = request.getParameter("status");
+        List<ImgSys> byFenLeiLunBoBystatus = imgSysService.findByFenLeiLunBoBystatus(status);
+
+        return byFenLeiLunBoBystatus;
+    }
+
 
     @GetMapping("/video")
     public List<VideoCardSys> video(HttpServletResponse response, HttpServletRequest request){

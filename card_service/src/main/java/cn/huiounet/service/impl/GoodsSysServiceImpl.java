@@ -93,5 +93,20 @@ public class GoodsSysServiceImpl implements GoodsSysService {
         goodsSysMapper.updateKuCun(kucun, id);
     }
 
+    @Override
+    public void saveGoodsSys(GoodsSys goodsSys) {
+        goodsSysMapper.insert(goodsSys);
+    }
+
+    @Override
+    public int findMaxId() {
+        return goodsSysMapper.findMaxId();
+    }
+
+    @Override
+    public List<GoodsSys> searchGoods(String goods_name, int start, int size) {
+        return goodsSysMapper.searchGoods(goods_name, start, size);
+    }
+
 
 }

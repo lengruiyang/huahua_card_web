@@ -27,4 +27,19 @@ public class ImgSysServiceImpl implements ImgSysService {
     public List<ImgSys> findByFenLeiLunBo() {
         return imgSysMapper.findByFenLeiLunBo();
     }
+
+    @Override
+    public void saveImg(ImgSys imgSys) {
+        imgSysMapper.insert(imgSys);
+    }
+
+    @Override
+    public List<ImgSys> findByFenLeiLunBoShouYe() {
+        return imgSysMapper.findByFenLeiLunBoShouYe();
+    }
+
+    @Override
+    public List<ImgSys> findByFenLeiLunBoBystatus(String status) {
+        return imgSysMapper.findByFenLeiLunBoBystatus(status);
+    }
 }
