@@ -13,7 +13,7 @@ public class VipServiceImpl implements VipService{
 
 
     @Override
-    public Vip findById() {
-        return vipMapper.findById();
+    public Vip findById(String id) {
+        return vipMapper.findById(id);
     }
 }

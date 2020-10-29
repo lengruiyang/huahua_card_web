@@ -25,6 +25,24 @@ public class GoodsSys implements Serializable {
     private String miaosha_id;
     private String is_miaosha;
     private String kucun;
+    private String specification_one;
+    private String specification_two;
+
+    public String getSpecification_one() {
+        return specification_one;
+    }
+
+    public void setSpecification_one(String specification_one) {
+        this.specification_one = specification_one;
+    }
+
+    public String getSpecification_two() {
+        return specification_two;
+    }
+
+    public void setSpecification_two(String specification_two) {
+        this.specification_two = specification_two;
+    }
 
     public String getKucun() {
         return kucun;

@@ -124,5 +124,10 @@ public class OrderSysServiceImpl implements OrderSysService {
         return orderSysMapper.searchOrder(user_id, order_num, shop_name, start, size);
     }
 
+    @Override
+    public List<OrderSys> findZhOrderNum(String zh_order_num) {
+        return orderSysMapper.findZhOrderNum(zh_order_num);
+    }
+
 
 }

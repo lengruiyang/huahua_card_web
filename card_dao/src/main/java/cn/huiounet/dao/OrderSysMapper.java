@@ -16,6 +16,8 @@ public interface OrderSysMapper extends Mapper<OrderSys> {
 
     List<OrderSys> findPayNumList(String pay_num);
 
+    List<OrderSys> findZhOrderNum(String zh_order_num);
+
     int findAllNum(@Param(value = "user_id") String user_id, @Param(value = "pay_status") String pay_status);
 
     void updataPayStatusByOrderNum(@Param(value = "pay_status") String pay_status, @Param(value = "order_num") String order_num);

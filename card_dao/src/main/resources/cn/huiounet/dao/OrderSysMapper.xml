@@ -47,6 +47,10 @@
         SELECT * FROM  card_order_sys   where user_id = #{user_id} And pay_status = #{pay_status} ORDER  BY id desc limit #{start},#{size};
     </select>
 
+    <select id="findZhOrderNum" resultType="OrderSys">
+        SELECT * FROM  card_order_sys   where zh_order_num = #{zh_order_num} ;
+    </select>
+
     <update id="updataPayStatusByOrderNum">
         UPDATE card_order_sys SET pay_status = #{pay_status} WHERE order_num = #{order_num}
     </update>

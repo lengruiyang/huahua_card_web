@@ -4,5 +4,5 @@ import cn.huiounet.pojo.vip.Vip;
 
 public interface VipService {
 
-    Vip findById();
+    Vip findById(String id);
 }

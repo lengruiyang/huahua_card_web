@@ -119,6 +119,7 @@ public class OrderController {
         OrderSys orderSys = new OrderSys();
         orderSys.setOrder_lx(order_lx);
         orderSys.setUser_id(user_id);
+        orderSys.setIs_zh("0");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         orderSys.setCreat_time(df.format(new Date()));
 
@@ -205,6 +206,8 @@ public class OrderController {
         Map<String, List<CartSys>> userGroupMap = cartSys.stream().
                 collect(Collectors.groupingBy(CartSys::getShop_id));
         List<String> strings = new ArrayList<>();
+        String allOrder = "";
+        String nonceStr2 = WXPayUtil.generateUUID(); //订单号
         for (Map.Entry<String, List<CartSys>> entry : userGroupMap.entrySet()) {
             String nonceStr = WXPayUtil.generateUUID(); //订单号
             String mapKey = entry.getKey(); //mapKey就是shop_id
@@ -220,8 +223,9 @@ public class OrderController {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             orderSys.setCreat_time(df.format(new Date()));
             orderSys.setOrder_num(nonceStr);
-
-
+            orderSys.setIs_zh("1");
+            orderSys.setZh_order_num(nonceStr2);
+            allOrder = allOrder+strings+ "\\|";
             int yunfeiMoney = 0;
             BigDecimal money = new BigDecimal(0);
             for (int n = 0; n < value.size(); n++) {
@@ -272,7 +276,6 @@ public class OrderController {
             orderSysService.saveOrder(orderSys);
 
         }
-
         for (int m = 0; m < split.length; m++) {
             String s = split[m];
 

@@ -49,4 +49,6 @@ public interface OrderSysService {
     void updateTk(String is_tk,String tk_money,String tk_time, String order_num);
 
     List<OrderSys> searchOrder(String user_id,String order_num,String shop_name,int start,int size);
+
+    List<OrderSys> findZhOrderNum(String zh_order_num);
 }

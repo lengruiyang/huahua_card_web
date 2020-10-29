@@ -4,7 +4,7 @@
 <mapper namespace="cn.huiounet.dao.VipMapper">
 
     <select id="findById" resultType="Vip">
-        select * from card_vip WHERE id = 1;
+        select * from card_vip WHERE id = #{id};
     </select>
 
 

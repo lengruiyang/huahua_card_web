@@ -96,6 +96,9 @@ public class GoodsRabbit {
                     //System.out.println("商品图片网址："+imgUrl.replace("//",""));
                     count+=1;
                     int maxId2 = goodsSysService.findMaxId();
+                    if(imgUrl == null){
+                        continue;
+                    }
                     goodsSys.setGoods_cen_img("http://"+imgUrl.replace("//",""));
                     goodsSys.setGoods_name(name);
                     goodsSys.setGet_score("5");

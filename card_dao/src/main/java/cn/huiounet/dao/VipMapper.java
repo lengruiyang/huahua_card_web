@@ -5,5 +5,5 @@ import tk.mybatis.mapper.common.Mapper;
 
 public interface VipMapper  extends Mapper<Vip>{
 
-    Vip findById();
+    Vip findById(String id);
 }

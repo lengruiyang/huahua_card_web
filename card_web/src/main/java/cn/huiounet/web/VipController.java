@@ -42,7 +42,7 @@ public class VipController {
     @GetMapping("find")
     public Vip find(){
 
-        Vip byId = vipService.findById();
+        Vip byId = vipService.findById("1");
 
         return byId;
     }
@@ -57,7 +57,7 @@ public class VipController {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
         String user_id = request.getParameter("user_id");
         UserInfoSystem byId = userInfoService.findById(user_id);
-        Vip byId1 = vipService.findById();
+        Vip byId1 = vipService.findById("1");
         String price = byId1.getPrice();
         double mul = Arith.mul(Double.parseDouble(price), 100);
         int i = new Double(mul).intValue();
@@ -99,40 +99,7 @@ public class VipController {
             logger.info("错误" + e);
         }
         if (trade_state.equals("SUCCESS")) {
-            //已支付
-            VipLog byOrderNum = vipLogService.findByOrderNum(order_num);
-            String user_id = byOrderNum.getUser_id();
-            vipLogService.updateByOrderNum("pay",order_num);
-            Vip byId1 = vipService.findById();
-            String time = byId1.getTime();
-            UserInfoSystem byId = userInfoService.findById(user_id);
-            if(byId.getIs_vip().equals("0")){
-                //没有
-                long l = System.currentTimeMillis();
-                Long time2 = 86400000L * Integer.parseInt(time);
-                long viptime = l+time2;
-                Date date = new Date();
-                date.setTime(viptime);
-                String format = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                userInfoService.updateVipTime(format,user_id);
-            }else {
-                String vip_time = byId.getVip_time();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                long dateToSecond = 0;
-                try {
-                    dateToSecond = sdf.parse(vip_time).getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Long time2 = 86400000L * Integer.parseInt(time);
-                long l = dateToSecond + time2;
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(l);
-                String format = formatter.format(calendar.getTime());
-                userInfoService.updateVipTime(format,user_id);
-            }
 
             logger.info("微信支付订单号："+order_num+"支付成功");
             return Result.ok("ok");

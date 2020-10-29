@@ -22,6 +22,33 @@ public class ShopSys implements Serializable{
     private String location;
     private String create_time;
     private String sell_goods;
+    private String latitude;//维度
+    private String longitude; //精度
+    private String is_ziti;
+
+    public String getIs_ziti() {
+        return is_ziti;
+    }
+
+    public void setIs_ziti(String is_ziti) {
+        this.is_ziti = is_ziti;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
     public String getUser_pj() {
         return user_pj;

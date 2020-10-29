@@ -33,6 +33,24 @@ public class OrderSys implements Serializable{
     private String youhuiquan_id;
     private String youhui_status;//1:优惠券，2;会员卡，0:无优惠
     private String order_lx; //1普通 2秒杀 3拼团
+    private String is_zh;
+    private String zh_order_num;
+
+    public String getIs_zh() {
+        return is_zh;
+    }
+
+    public void setIs_zh(String is_zh) {
+        this.is_zh = is_zh;
+    }
+
+    public String getZh_order_num() {
+        return zh_order_num;
+    }
+
+    public void setZh_order_num(String zh_order_num) {
+        this.zh_order_num = zh_order_num;
+    }
 
     public String getYouhuiquan_id() {
         return youhuiquan_id;
