@@ -66,6 +66,7 @@ public class UserController {
         String nickName = request.getParameter("nickName");
         String avatarUrl = request.getParameter("avatarUrl");
         String password = request.getParameter("password");
+        String phoneMess = request.getParameter("phoneMess");
         String from_user_id = request.getParameter("from_user_id");
 
         JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
@@ -99,6 +100,7 @@ public class UserController {
             userInfoSystem.setSex(gander);
             userInfoSystem.setJifen("0");
             userInfoSystem.setMoney("0");
+            userInfoSystem.setPhone_mess(phoneMess);
             userInfoSystem.setUser_tuijian_id(RamNumberUtil.getRandomStr(6, 1));
             userInfoSystem.setFrom_id(from_user_id);
             userInfoSystem.setStatus("1");

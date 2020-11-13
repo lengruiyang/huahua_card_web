@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.JiFenOrderMapper">
+
+
+
+    <select id="findByOrderNum" resultType="JiFenOrder">
+        SELECT * FROM card_jifen_order WHERE order_num = #{order_num};
+    </select>
+
+
+    <update id="updateByOrderNum">
+        UPDATE card_jifen_order SET is_change = #{is_change} ,change_time = #{change_time} WHERE order_num = #{order_num};
+    </update>
+
+    <update id="updateAddressByOrderNum">
+        UPDATE card_jifen_order SET address_id = #{address_id} WHERE order_num = #{order_num};
+    </update>
+
+
+</mapper>

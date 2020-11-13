@@ -27,9 +27,9 @@
         UPDATE card_user_info set money = #{money} where id = #{id};
     </update>
 
-    <!--<update id="updateBir">-->
-        <!--UPDATE card_user_info set birthday = #{birthday} where id = #{id};-->
-    <!--</update>-->
+    <update id="updateJiFen">
+        UPDATE card_user_info set jifen = #{jifen} where id = #{id};
+    </update>
 
     <update id="updateQM">
         UPDATE card_user_info set qian_ming = #{qian_ming} where id = #{id};

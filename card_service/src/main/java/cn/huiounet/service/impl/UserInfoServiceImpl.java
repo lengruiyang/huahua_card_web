@@ -57,4 +57,9 @@ public class UserInfoServiceImpl implements UserInfoService{
     public void updateVipTime(String vip_time, String id) {
         userInfoMapper.updateVipTime(vip_time, id);
     }
+
+    @Override
+    public void updateJiFen(String jifen, String id) {
+        userInfoMapper.updateJiFen(jifen, id);
+    }
 }

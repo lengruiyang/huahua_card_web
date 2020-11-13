@@ -15,6 +15,8 @@ public interface UserInfoMapper extends Mapper<UserInfoSystem> {
 
     void updatePassWord(@Param(value = "password") String password, @Param(value = "id") String id);
 
+    void updateJiFen(@Param(value = "jifen") String jifen, @Param(value = "id") String id);
+
     void updateMoney(@Param(value = "money") String money, @Param(value = "id") String id);
 
     void updateQM(@Param(value = "qian_ming") String qian_ming, @Param(value = "id") String id);

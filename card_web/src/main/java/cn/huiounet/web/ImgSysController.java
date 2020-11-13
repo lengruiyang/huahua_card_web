@@ -113,7 +113,9 @@ public class ImgSysController {
         ImageQrcode imageQrcode  = new ImageQrcode();
         logger.info(goodsId);
         logger.info(userid);
-        String shopImg = imageQrcode.getShopImg(id.getGoods_name(), id.getSecond_name(), id.getSecond_name(), id.getHight_price(), id.getLow_price(), id.getSc_price(), id.getGoods_cen_img(), byId.getHead_img());
+        HelpPayController helpPayController = new HelpPayController();
+        String qrCode = helpPayController.getQrCode("2|" + goodsId);
+        String shopImg = imageQrcode.getShopImg(id.getGoods_name(), id.getSecond_name(), id.getSecond_name(), id.getHight_price(), id.getLow_price(), id.getSc_price(), id.getGoods_cen_img(), qrCode);
         return shopImg;
     }
 }

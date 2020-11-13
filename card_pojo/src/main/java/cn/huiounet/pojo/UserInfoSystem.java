@@ -18,6 +18,15 @@ public class UserInfoSystem implements Serializable {
     private String money;
     private String jifen;
     private String vip_time;
+    private String phone_mess;
+
+    public String getPhone_mess() {
+        return phone_mess;
+    }
+
+    public void setPhone_mess(String phone_mess) {
+        this.phone_mess = phone_mess;
+    }
 
     public String getVip_time() {
         return vip_time;

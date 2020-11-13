@@ -295,6 +295,7 @@ public class WxPayController {
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         orderSysService.updataPayTime(df.format(new Date()), order_num);
                         List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(zhOrderNum.get(n).getOrder_num());
+                        int jifen = 0;
                         for (int i = 0; i < byOrderNUm.size(); i++) {
                             ReturnGoods returnGoods = byOrderNUm.get(i);
                             String goods_id = returnGoods.getGoods_id();
@@ -306,13 +307,23 @@ public class WxPayController {
                             int sellMany = i1 + 1;
                             String num = returnGoods.getNum();
                             int i3 = i2 - Integer.parseInt(num); //剩余酷讯
+                            if(id.getIs_add_jifen() != null){
+                                if (id.getJi_fen() != null){
+                                    jifen = jifen + Integer.parseInt(id.getJi_fen());
+                                }
+                            }
                             goodsSysService.updateSell_many(sellMany + "", goods_id);
                             goodsSysService.updateKuCun(i3+"",goods_id);
                         }
+                        UserInfoSystem byId = userInfoService.findById(orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num()).getUser_id());
+                        String jifen1 = byId.getJifen();
+                        int i = Integer.parseInt(jifen1) + jifen;
+                        userInfoService.updateJiFen(i+"",orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num()).getUser_id());
                         orderSysService.updatePayNumById(order_num,orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num())+"");
                     }
                 }else {
                     List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+                    int jifen = 0;
                     for (int i = 0; i < byOrderNUm.size(); i++) {
                         ReturnGoods returnGoods = byOrderNUm.get(i);
                         String goods_id = returnGoods.getGoods_id();
@@ -324,10 +335,19 @@ public class WxPayController {
                         int sellMany = i1 + 1;
                         String num = returnGoods.getNum();
                         int i3 = i2 - Integer.parseInt(num); //剩余库存
+                        if(id.getIs_add_jifen() != null){
+                            if (id.getJi_fen() != null){
+                                jifen = jifen + Integer.parseInt(id.getJi_fen());
+                            }
+                        }
                         goodsSysService.updateSell_many(sellMany + "", goods_id);
                         goodsSysService.updateKuCun(i3 + "", goods_id);
                     }
                     OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+                    UserInfoSystem byId = userInfoService.findById(byOrderNum.getUser_id());
+                    String jifen1 = byId.getJifen();
+                    int i = Integer.parseInt(jifen1) + jifen;
+                    userInfoService.updateJiFen(i+"",byOrderNum.getUser_id()+"");
                     if (byOrderNum.getYouhuiquan_id() != null) {
                         couponSysService.updateById("2", byOrderNum.getYouhuiquan_id());
                     }
@@ -393,7 +413,7 @@ public class WxPayController {
                 HuaFeiOrderSys byOrderNum = huaFeiOrderSysService.findByOrderNum(out_trade_no);
                 String cz_much = byOrderNum.getCz_much();
                 String cz_phone = byOrderNum.getCz_phone();
-                String s = huaFeiService.JuHeHuaFei(cz_phone, cz_much);
+                String s = huaFeiService.JuHeHuaFei(cz_phone, cz_much,out_trade_no);
                 logger.info("充值状态："+s);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 huaFeiOrderSysService.updateByOrderNum("is_pay",df.format(new Date()),byOrderNum.getOrder_num());

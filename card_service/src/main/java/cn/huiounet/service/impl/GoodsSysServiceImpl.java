@@ -29,6 +29,11 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     }
 
     @Override
+    public void updateJiFen(String ji_fen, String id) {
+        goodsSysMapper.updateJiFen(ji_fen, id);
+    }
+
+    @Override
     public List<GoodsSys> findByLike(int start, int size) {
         return goodsSysMapper.findByLike(start, size);
     }

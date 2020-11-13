@@ -85,6 +85,7 @@ public class CzMoneyController  {
         czOrder.setStatus("not_pay");
         czOrder.setOrder_num(nonceStr);
         czOrder.setPay_way("weChat");
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         czOrder.setCreate_time(df.format(new Date()));
 
@@ -173,6 +174,7 @@ public class CzMoneyController  {
         String user_id = request.getParameter("user_id");
         String id = request.getParameter("id");
         String phone = request.getParameter("phone");
+        String name = request.getParameter("name");
 
         HuaFeiSys byId = huaFeiSysService.findById(id);
 
@@ -190,7 +192,15 @@ public class CzMoneyController  {
         huaFeiOrderSys.setCz_much(byId.getPrice());
         huaFeiOrderSys.setPay_status("not_pay");
         huaFeiOrderSys.setPay_money(pay_money);
+        huaFeiOrderSys.setIs_cz_success("0");
         huaFeiOrderSys.setUser_id(user_id);
+        if(name.startsWith("移动")){
+            huaFeiOrderSys.setFuwushang("1");
+        }else if(name.startsWith("电信")){
+            huaFeiOrderSys.setFuwushang("2");
+        }else {
+            huaFeiOrderSys.setFuwushang("3");
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         huaFeiOrderSys.setCreate_time(df.format(new Date()));
         ReturnCz returnCz = new ReturnCz(payResult,nonceStr);
@@ -231,6 +241,56 @@ public class CzMoneyController  {
             logger.info("微信支付订单号："+order_num+"支付失败");
             return Result.ok("fail");//支付失败
         }
+    }
+
+    @GetMapping("/findByUser")
+    public  List<HuaFeiOrderSys> findByUser(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String user_id = request.getParameter("user_id");
+        String start = request.getParameter("start");
+        List<HuaFeiOrderSys> byUserId = huaFeiOrderSysService.findByUserId(user_id, Integer.parseInt(start), 5);
+
+        return byUserId;
+    }
+
+    @GetMapping("/findByOrderNum")
+    public  HuaFeiOrderSys findByOrderNum(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String order_num = request.getParameter("order_num");
+
+        HuaFeiOrderSys byOrderNum = huaFeiOrderSysService.findByOrderNum(order_num);
+
+
+        return byOrderNum;
+    }
+
+    @GetMapping("/deleteById")
+    public  Result deleteById(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+        String id = request.getParameter("id");
+
+        huaFeiOrderSysService.deleteById(id);
+
+
+        return Result.ok("ok");
     }
 
 }

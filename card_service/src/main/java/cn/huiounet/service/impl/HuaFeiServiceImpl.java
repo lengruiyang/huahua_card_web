@@ -18,7 +18,7 @@ import java.util.Date;
 public class HuaFeiServiceImpl implements HuaFeiService {
 
     @Override
-    public String JuHeHuaFei(String phoneNumber, String num) {
+    public String JuHeHuaFei(String phoneNumber, String num,String order) {
         HuaFei huaFei = new HuaFei();
 
         //电话号码 充值金额
@@ -30,21 +30,19 @@ public class HuaFeiServiceImpl implements HuaFeiService {
         huaFei.setOpenid("JHcf23d254253185e88bb1e9751bdf81e6");
 
         //订单
-        Date nowTime = new Date(System.currentTimeMillis());
-        SimpleDateFormat sdFormatter = new SimpleDateFormat("yyyyMMddHHmmSS");
-        String retStrFormatNowDate = sdFormatter.format(nowTime);
-        huaFei.setOrderid(retStrFormatNowDate);
+
+        huaFei.setOrderid(order);
 
 
         //签名校验值，md5(OpenID+key+phoneno+cardnum+orderid)，OpenID在个人中心查询
         String s = MD5Utils.stringToMD5("JHcf23d254253185e88bb1e9751bdf81e6" + "6804dadc2cf950de47c3ee0120d79cab"
-                + phoneNumber + num + retStrFormatNowDate);
+                + phoneNumber + num + order);
         huaFei.setSign(s);
 
         //服务器---聚合
         String s1 = HttpRequest.sendGet("http://op.juhe.cn/ofpay/mobile/onlineorder",
                 "key=6804dadc2cf950de47c3ee0120d79cab&phoneno=" + phoneNumber + "&cardnum=" + num + "" +
-                        "&orderid=" + retStrFormatNowDate + "&sign=" + s + "");
+                        "&orderid=" + order + "&sign=" + s + "");
 
         return s1;
     }

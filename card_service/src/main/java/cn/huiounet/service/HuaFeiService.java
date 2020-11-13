@@ -7,6 +7,6 @@ package cn.huiounet.service;
  */
 public interface HuaFeiService {
 
-    String JuHeHuaFei(String phoneNumber, String num);
+    String JuHeHuaFei(String phoneNumber, String num,String order);
 
 }

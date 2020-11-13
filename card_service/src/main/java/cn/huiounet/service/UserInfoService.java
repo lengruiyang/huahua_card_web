@@ -24,4 +24,6 @@ public interface UserInfoService {
     void updatePassWord(String password, String id);
 
     void updateVipTime(String vip_time,String id);
+
+    void updateJiFen(String jifen, String id);
 }

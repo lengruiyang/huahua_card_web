@@ -3,12 +3,16 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.goods.GoodsColor;
 import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
+import cn.huiounet.pojo.huafei.HuaFeiOrderSys;
 import cn.huiounet.pojo.img.ImgSys;
 import cn.huiounet.pojo.vo.Result;
-import cn.huiounet.service.GoodsColorService;
-import cn.huiounet.service.GoodsSizeService;
-import cn.huiounet.service.GoodsSysService;
-import cn.huiounet.service.ImgSysService;
+import cn.huiounet.service.*;
+import cn.huiounet.utils.http.HttpRequest;
+
+
+import cn.huiounet.utils.tuikuan.TuiKuanSys;
+import cn.huiounet.utils.wxPay.WXPayUtil;
+import net.sf.json.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -16,6 +20,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * 获取商品机器人
@@ -33,6 +40,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/rabbit")
 public class GoodsRabbit {
+    private static final Logger logger = Logger.getLogger(GoodsRabbit.class);
     @Autowired
     private GoodsSysService goodsSysService;
 
@@ -43,7 +51,55 @@ public class GoodsRabbit {
     private ImgSysService imgSysService;
 
     @Autowired
+    private HuaFeiOrderSysService huaFeiOrderSysService;
+
+    @Autowired
     private GoodsSizeService goodsSizeService;
+
+    @org.springframework.scheduling.annotation.Scheduled(cron = "0 */1 * * * ?")
+    public void getTKOuTo(){
+        logger.info("拼多多执行");
+        String s = HttpRequest.sendGet("https://huahuaka.huiounet.cn/app/index.php", "i=2&c=entry&do=getDdOrderList&m=first_duoduoke");
+        logger.info("拼多多执行"+s);
+        logger.info("拼多多2执行");
+        String s2 = HttpRequest.sendGet("https://huahuaka.huiounet.cn/app/index.php", "i=2&c=entry&do=getDdOrderDetail&m=first_duoduoke");
+        logger.info("拼多多2执行"+s2);
+        String s3 = HttpRequest.sendGet("https://huahuaka.huiounet.cn/app/index.php", "i=2&c=entry&do=getJdOrderList&m=first_duoduoke");
+        logger.info("京东执行"+s3);
+
+
+    }
+
+    @org.springframework.scheduling.annotation.Scheduled(cron = "0 */1 * * * ?")
+    public void rabbitGoods() throws Exception {
+        logger.info("执行订单查询");
+        List<HuaFeiOrderSys> payButNotSuccess = huaFeiOrderSysService.findPayButNotSuccess("0");
+        for(int i = 0;i<payButNotSuccess.size();i++){
+            HuaFeiOrderSys huaFeiOrderSys = payButNotSuccess.get(i);
+            String order_num = huaFeiOrderSys.getOrder_num();
+            String s = HttpRequest.sendGet("http://op.juhe.cn/ofpay/mobile/ordersta", "orderid=" + order_num + "&key=6804dadc2cf950de47c3ee0120d79cab");
+            JSONObject json = JSONObject.fromObject(s);
+            logger.info(json);
+            JSONObject result = json.getJSONObject("result");
+            String game_state = result.getString("game_state");
+            if(game_state.equals("1")){
+                logger.info(order_num+"充值成功");
+                huaFeiOrderSysService.updateById("1",payButNotSuccess.get(i).getId()+"");
+            }else if(game_state.equals("0")){
+                huaFeiOrderSysService.updateById("0",payButNotSuccess.get(i).getId()+"");
+                logger.info(order_num+"充值中");
+            }else {
+                huaFeiOrderSysService.updateById("2",payButNotSuccess.get(i).getId()+"");
+                logger.info(order_num+"充值失败");
+                String nonceStr = WXPayUtil.generateUUID(); //订单号
+                String pay_money = huaFeiOrderSys.getPay_money();
+                String tuiKuan = TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(pay_money), Integer.parseInt(pay_money), "话费充值退款");
+
+                logger.info("退款详情:"+tuiKuan);
+            }
+        }
+
+    }
 
     @GetMapping("/getGoods")
     public Result getGoods(String input,String num)throws Exception{
@@ -96,9 +152,7 @@ public class GoodsRabbit {
                     //System.out.println("商品图片网址："+imgUrl.replace("//",""));
                     count+=1;
                     int maxId2 = goodsSysService.findMaxId();
-                    if(imgUrl == null){
-                        continue;
-                    }
+
                     goodsSys.setGoods_cen_img("http://"+imgUrl.replace("//",""));
                     goodsSys.setGoods_name(name);
                     goodsSys.setGet_score("5");
@@ -108,6 +162,8 @@ public class GoodsRabbit {
                     goodsSys.setSell_many(count+"");
                     goodsSys.setYun_fei("0");
                     goodsSys.setTip("测试");
+
+
                     String[] split = price.split("\\.");
                     goodsSys.setSc_price(price);
                     goodsSys.setWhere_from("江西");
@@ -120,6 +176,9 @@ public class GoodsRabbit {
                     goodsSys.setLow_price(split[0]);
                     goodsSys.setStatus("1");
                     goodsSys.setHight_price(split[1]);
+                    if(goodsSys.getGoods_cen_img().equals("http://")){
+                        continue;
+                    }
                     goodsSysService.saveGoodsSys(goodsSys);
                     int maxId = goodsSysService.findMaxId();
                     imgSys.setGoods_id(maxId+"");

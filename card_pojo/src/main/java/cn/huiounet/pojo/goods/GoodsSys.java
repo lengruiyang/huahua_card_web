@@ -27,6 +27,42 @@ public class GoodsSys implements Serializable {
     private String kucun;
     private String specification_one;
     private String specification_two;
+    private String is_pingtuan;
+    private String pingtuan_id;
+    private String is_add_jifen;
+    private String ji_fen;
+
+    public String getIs_add_jifen() {
+        return is_add_jifen;
+    }
+
+    public void setIs_add_jifen(String is_add_jifen) {
+        this.is_add_jifen = is_add_jifen;
+    }
+
+    public String getJi_fen() {
+        return ji_fen;
+    }
+
+    public void setJi_fen(String ji_fen) {
+        this.ji_fen = ji_fen;
+    }
+
+    public String getIs_pingtuan() {
+        return is_pingtuan;
+    }
+
+    public void setIs_pingtuan(String is_pingtuan) {
+        this.is_pingtuan = is_pingtuan;
+    }
+
+    public String getPingtuan_id() {
+        return pingtuan_id;
+    }
+
+    public void setPingtuan_id(String pingtuan_id) {
+        this.pingtuan_id = pingtuan_id;
+    }
 
     public String getSpecification_one() {
         return specification_one;

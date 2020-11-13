@@ -13,6 +13,9 @@ public interface GoodsSysService {
 
     List<GoodsSys> findNewGoods();
 
+
+    void updateJiFen( String ji_fen, String id);
+
     List<GoodsSys> findByLike(int start, int size);
 
     void updateSell_many(String sell_many, String id);

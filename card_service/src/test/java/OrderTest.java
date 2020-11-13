@@ -6,6 +6,7 @@ import cn.huiounet.pojo.coupon.ReturnCoupon;
 import cn.huiounet.pojo.goods.GoodsColor;
 import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
+import cn.huiounet.pojo.huafei.HuaFeiOrderSys;
 import cn.huiounet.pojo.img.ImgSys;
 import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
@@ -77,16 +78,18 @@ public class OrderTest {
     @Autowired
     private GoodsRootService goodsRootService;
 
+    @Autowired
+    private GoodsColorService goodsColorService;
+
+    @Autowired
+    private ImgSysService imgSysService;
+
+    @Autowired
+    private HuaFeiOrderSysService huaFeiOrderSysService;
+
     @Test
     public void test_()throws Exception{
 
-//        UserInfoSystem byId = userInfoService.findById("10");
-//        GoodsSys id = goodsSysService.findId("1");
-//        ImageQrcode imageQrcode  = new ImageQrcode();
-//
-//        String shopImg = imageQrcode.getShopImg(id.getGoods_name(), id.getSecond_name(), id.getSecond_name(), id.getHight_price(), id.getLow_price(), id.getSc_price(), id.getGoods_cen_img(), byId.getHead_img());
-//
-//        System.out.println(shopImg);
     }
 
 

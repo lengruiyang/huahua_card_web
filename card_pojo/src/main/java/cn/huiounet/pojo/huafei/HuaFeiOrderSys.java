@@ -13,6 +13,41 @@ public class HuaFeiOrderSys implements Serializable {
     private String pay_money;
     private String user_id;
     private String cz_phone;
+    private String fuwushang; //1移动 2：电信 3：联通
+    private String is_cz_success; //1：成功 2 ：失败 0：充值中
+
+    public String getFuwushang() {
+        return fuwushang;
+    }
+
+    public String getIs_cz_success() {
+        return is_cz_success;
+    }
+
+    public void setIs_cz_success(String is_cz_success) {
+        this.is_cz_success = is_cz_success;
+    }
+
+    @Override
+    public String toString() {
+        return "HuaFeiOrderSys{" +
+                "id=" + id +
+                ", order_num='" + order_num + '\'' +
+                ", pay_status='" + pay_status + '\'' +
+                ", create_time='" + create_time + '\'' +
+                ", pay_time='" + pay_time + '\'' +
+                ", pay_money='" + pay_money + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", cz_phone='" + cz_phone + '\'' +
+                ", fuwushang='" + fuwushang + '\'' +
+                ", is_cz_success='" + is_cz_success + '\'' +
+                ", cz_much='" + cz_much + '\'' +
+                '}';
+    }
+
+    public void setFuwushang(String fuwushang) {
+        this.fuwushang = fuwushang;
+    }
 
     public String getCz_much() {
         return cz_much;

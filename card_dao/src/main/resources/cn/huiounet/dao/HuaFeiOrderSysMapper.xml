@@ -7,8 +7,25 @@
         SELECT * FROM  card_huafei_order where order_num = #{order_num};
     </select>
 
+    <delete id="deleteById">
+        DELETE FROM card_huafei_order WHERE id = #{id};
+    </delete>
+
+    <select id="findPayButNotSuccess" resultType="HuaFeiOrderSys">
+        SELECT * FROM  card_huafei_order where pay_status = 'is_pay' AND is_cz_success = #{is_cz_success};
+    </select>
+
+    <select id="findByUserId" resultType="HuaFeiOrderSys">
+        SELECT * FROM  card_huafei_order where user_id = #{user_id} ORDER  BY id  desc limit #{start},#{size};
+    </select>
+
     <update id="updateByOrderNum">
         UPDATE card_huafei_order SET pay_status = #{pay_status} ,pay_time = #{pay_time} WHERE order_num = #{order_num};
+    </update>
+
+
+    <update id="updateById">
+        UPDATE card_huafei_order SET is_cz_success = #{is_cz_success} WHERE id = #{id};
     </update>
 
 

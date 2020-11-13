@@ -77,4 +77,8 @@
         UPDATE card_goods_sys SET kucun = #{kucun} WHERE id = #{id};
     </update>
 
+    <update id="updateJiFen">
+        UPDATE card_goods_sys SET ji_fen = #{ji_fen} WHERE id = #{id};
+    </update>
+
 </mapper>

@@ -14,9 +14,11 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
 
     int findMaxId();
 
-    List<GoodsSys> searchGoods(@Param(value = "goods_name")String goods_name,@Param(value = "start")int start,@Param(value = "size")int size);
+    List<GoodsSys> searchGoods(@Param(value = "goods_name") String goods_name, @Param(value = "start") int start, @Param(value = "size") int size);
 
     void updateSell_many(@Param(value = "sell_many") String sell_many, @Param(value = "id") String id);
+
+    void updateJiFen(@Param(value = "ji_fen") String ji_fen, @Param(value = "id") String id);
 
     List<GoodsSys> findByLike(@Param(value = "start") int start, @Param(value = "size") int size);
 
@@ -40,9 +42,9 @@ public interface GoodsSysMapper extends Mapper<GoodsSys> {
 
     List<GoodsSys> findByShopId(@Param(value = "shop_id") String shop_id, @Param(value = "start") int stsrt, @Param(value = "size") int size);
 
-    List<GoodsSys> findMiaoShaGoodsList(@Param(value = "miaosha_id")String miaosha_id,@Param(value = "start")int start,@Param(value = "size")int size);
+    List<GoodsSys> findMiaoShaGoodsList(@Param(value = "miaosha_id") String miaosha_id, @Param(value = "start") int start, @Param(value = "size") int size);
 
-    void updateKuCun(@Param(value = "kucun")String kucun,@Param(value = "id")String id);
+    void updateKuCun(@Param(value = "kucun") String kucun, @Param(value = "id") String id);
 
 
 }
