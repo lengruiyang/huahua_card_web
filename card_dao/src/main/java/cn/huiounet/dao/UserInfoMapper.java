@@ -5,11 +5,15 @@ import cn.huiounet.pojo.UserInfoSystem;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
+
 public interface UserInfoMapper extends Mapper<UserInfoSystem> {
 
     UserInfoSystem findByOpenId(String open_id);
 
     UserInfoSystem findById(String id);
+
+    List<UserInfoSystem> findAllUser(@Param(value = "start")int start,@Param(value = "size")int size);
 
     UserInfoSystem findByPhone(String phone);
 

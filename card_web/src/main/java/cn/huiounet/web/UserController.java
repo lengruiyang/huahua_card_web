@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
@@ -23,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -30,7 +34,27 @@ public class UserController {
     private static final Logger logger = Logger.getLogger(UserController.class);
     @Autowired
     private UserInfoService userInfoService;
+    /**
+     * 系统端口
+     */
+    @GetMapping("findAll")
+    public Map findAll(int page, int limit){
+        int truePage = page - 1;
+        int start = truePage * limit;
+        List<UserInfoSystem> allUser = userInfoService.findAllUser(start, limit);
+        logger.info(allUser.toString());
+        Map map = new HashMap();
+        map.put("code",0);
+        map.put("data",allUser);
+        return map;
+    }
 
+    /**
+     * 小程序控制
+     * @param response
+     * @param request
+     * @return
+     */
     @GetMapping("/save_user")
     public Result saveUser(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");

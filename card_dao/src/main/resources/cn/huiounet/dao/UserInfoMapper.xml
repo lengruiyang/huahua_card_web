@@ -6,6 +6,10 @@
         SELECT * FROM  card_user_info where open_id = #{open_id};
     </select>
 
+    <select id="findAllUser" resultType="UserInfoSystem">
+        SELECT * FROM  card_user_info limit #{start},#{size};
+    </select>
+
     <select id="findByPhone" resultType="UserInfoSystem">
         SELECT * FROM  card_user_info where  phone_number = #{phone_number};
     </select>

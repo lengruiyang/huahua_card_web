@@ -9,6 +9,8 @@ public interface UserInfoService {
 
     List<UserInfoSystem> findAll();
 
+    List<UserInfoSystem> findAllUser(int start,int size);
+
     UserInfoSystem findByOpenId(String open_id);
 
     void saveUser(UserInfoSystem userInfoSystem);

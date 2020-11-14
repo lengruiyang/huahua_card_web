@@ -10,6 +10,7 @@ import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.order.*;
 import cn.huiounet.pojo.shop.ShopSys;
+import cn.huiounet.pojo.vo.OrderResult;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.access_token.GetTokenUtil;
@@ -82,7 +83,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/save")
-    private String create_order(HttpServletResponse response, HttpServletRequest request) {
+    private synchronized String create_order(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -103,12 +104,12 @@ public class OrderController {
         String goods_size = request.getParameter("goods_size");
         String nonceStr = WXPayUtil.generateUUID(); //订单号
 
+
+
         if(order_lx.equals("2")){
             //直接减少库存
             GoodsSys id = goodsSysService.findId(goods_id);
-
             String kucun = id.getKucun();
-
             goodsSysService.updateKuCun(Integer.parseInt(kucun)-Integer.parseInt(goods_num)+"",goods_id);
         }
 
@@ -294,7 +295,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/find")
-    private ReturnOrder _order(HttpServletResponse response, HttpServletRequest request) {
+    private ReturnOrder findOrder(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");

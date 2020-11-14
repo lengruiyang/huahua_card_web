@@ -19,6 +19,11 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     @Override
+    public List<UserInfoSystem> findAllUser(int start, int size) {
+        return userInfoMapper.findAllUser(start, size);
+    }
+
+    @Override
     public UserInfoSystem findByOpenId(String open_id) {
         return userInfoMapper.findByOpenId(open_id);
     }
