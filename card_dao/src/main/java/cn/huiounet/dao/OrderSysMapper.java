@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface OrderSysMapper extends Mapper<OrderSys> {
 
+    List<OrderSys> findAllSys(@Param(value = "start") int start, @Param(value = "size") int size);
+
     void updateYouHui(@Param(value = "youhui_status") String youhui_status, @Param(value = "youhui_much") String youhui_much, @Param(value = "youhuiquan_id") String youhuiquan_id, @Param(value = "order_num") String order_num);
 
     List<OrderSys> findOrderNumByUserId(String user_id);

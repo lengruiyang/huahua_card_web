@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/goods")
@@ -32,6 +34,20 @@ public class GoodsController {
 
     @Autowired
     private GoodsColorService goodsColorService;
+
+    @GetMapping("/findAllSys")
+    public Map findAllSys(int page,int limit){
+        int truePage = page - 1;
+        int start = truePage * limit;
+        List<GoodsSys> all = goodsSysService.findAll(start, limit);
+
+
+        Map map = new HashMap();
+        map.put("code",0);
+        map.put("count",goodsSysService.findAllSys());
+        map.put("data",all);
+        return map;
+    }
 
     @GetMapping("/findAll")
     public List<GoodsSys> findAll(HttpServletResponse response, HttpServletRequest request){

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>后台管理</title>
+		<link rel="stylesheet" href="../lib/layui/css/layui.css">
+		<link rel="stylesheet" href="../css/admin.css">
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header">
+				<!--id="cz"-->
+				<div class="layui-logo"> 后台管理 </div>
+				<!-- 头部区域（可配合layui已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left">
+					<li class="layui-nav-item layui-this" data-nav="1"><a href="javascript:;">系统设置</a></li>
+					<li class="layui-nav-item" data-nav="2"><a href="javascript:;">用户管理</a></li>
+					<li class="layui-nav-item" data-nav="3"><a href="javascript:;">订单管理</a></li>
+					<li class="layui-nav-item" data-nav="4"><a href="javascript:;">商品管理</a></li>
+				</ul>
+				<ul class="layui-nav layui-layout-right">
+					<!--<li class="layui-nav-item">-->
+						<!--<a href="javascript:;">-->
+							<!--<img src="../images/logins.png" class="layui-nav-img">小龙猫-->
+						<!--</a>-->
+						<!--<dl class="layui-nav-child">-->
+							<!--<dd><a href="javascript:;">基本资料</a></dd>-->
+							<!--<dd><a href="javascript:;">安全设置</a></dd>-->
+							<!--<dd><a href="javascript:;">退出登录</a></dd>-->
+						<!--</dl>-->
+					<!--</li>-->
+					<li class="layui-nav-item"><a href="/card_web_/logout.lry"> <i class="layui-icon layui-icon-logout" style="font-size: 30px;"></i>  </a></li>
+				</ul>
+			</div>
+			<!-垂直-->
+			<div   class="layui-side layui-bg-black ">
+				<div class="layui-side-scroll" id="layui_nav_left_1">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav  layui-nav-tree"  lay-filter="test">
+						<li class="layui-nav-item">
+							<a class="" href="javascript:;">网站设置</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="console.html">控制台</a></dd>
+								<dd><a href="javascript:;" data-url="set-basic.html">基本设置</a></dd>
+								<dd><a href="javascript:;" data-url="set-upload.html">上传设置</a></dd>
+								<dd><a href="javascript:;" data-url="set-watermark.html">水印设置</a></dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;">管理员设置</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="admin-list.html">管理员列表</a></dd>
+								<dd><a href="javascript:;" data-url="role-list.html">角色列表</a></dd>
+								<dd><a href="javascript:;" data-url="auth-list.html">权限列表</a></dd>
+							</dl>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;">其他设置</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="enclosure-list.html">附件列表</a></dd>
+								<dd><a href="javascript:;" data-url="cache.html">清空缓存</a></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="layui-side-scroll" id="layui_nav_left_2">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+						<li class="layui-nav-item">
+							<a class="" href="javascript:;">小程序用户管理</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="article_category-list.html">用户列表</a></dd>
+								<dd><a href="javascript:;" data-url="article-list.html">管理用户</a></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="layui-side-scroll" id="layui_nav_left_3">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+						<li class="layui-nav-item">
+							<a class="" href="javascript:;">全部订单</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="order.html">商铺订单</a></dd>
+								<dd><a href="javascript:;" data-url="order.html">充值订单</a></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="layui-side-scroll" id="layui_nav_left_4">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+						<li class="layui-nav-item">
+							<a class="" href="javascript:;">商品中心</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="GoodsList.html">全部商品</a></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="layui-body" id="LAY_app_body">
+				<div class="layui-tabsbody-item layui-show">
+					<iframe src="console.html" frameborder="0" class="layui-iframe" style="padding: 15px;"></iframe>
+				</div>
+			</div>
+			<div class="layui-footer">
+				<!-- 底部固定区域 -->
+				©huiounet.cn 花花卡后台管理
+			</div>
+		</div>
+	</body>
+</html>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../lib/layui/layui.js"></script>
+<script src="../js/admin.js"></script>

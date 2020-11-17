@@ -2,6 +2,7 @@ package cn.huiounet.web;
 
 import cn.huiounet.pojo.ReturnUser;
 import cn.huiounet.pojo.UserInfoSystem;
+import cn.huiounet.pojo.UserSys;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.UserInfoService;
 import cn.huiounet.utils.http.HttpRequest;
@@ -12,6 +13,9 @@ import cn.huiounet.utils.wxPay.WXPayUtil;
 import cn.huiounet.utils.wxPay.WeChatTool;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +53,24 @@ public class UserController {
         return map;
     }
 
+    @GetMapping("/login")
+    public String login(String username,String password) {
+        Subject subject = SecurityUtils.getSubject();
+        //2 将登陆表单封装成 token 对象
+        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        try {
+            //3 让 shiro 框架进行登录验证：
+            subject.login(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = e.getMessage();
+
+            return "error";
+        }
+
+        return "ok";
+
+    }
     /**
      * 小程序控制
      * @param response

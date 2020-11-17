@@ -14,8 +14,20 @@ public class OrderSysServiceImpl implements OrderSysService {
     private OrderSysMapper orderSysMapper;
 
     @Override
+    public List<OrderSys> findAllSys(int start, int size) {
+        return orderSysMapper.findAllSys(start, size);
+    }
+
+    @Override
     public OrderSys findByOrderNum(String order_num) {
         return orderSysMapper.findByOrderNum(order_num);
+    }
+
+    @Override
+    public int getLength() {
+        List<OrderSys> orderSys = orderSysMapper.selectAll();
+        int size = orderSys.size();
+        return size;
     }
 
     @Override

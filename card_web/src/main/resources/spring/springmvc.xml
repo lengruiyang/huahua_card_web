@@ -14,7 +14,13 @@
 	<!--配置springmvc创建容器时要扫描的包-->
 	<context:component-scan base-package="cn.huiounet.web"></context:component-scan>
 
-
+	<!-- 配置shiro开启注解支持 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		  depends-on="lifecycleBeanPostProcessor"/>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager"/>
+	</bean>
 
 	<task:scheduler id="scheduler" pool-size="10" />
 	<task:annotation-driven executor="scheduler" proxy-target-class="true"/>

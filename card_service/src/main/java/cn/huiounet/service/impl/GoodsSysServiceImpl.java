@@ -109,6 +109,13 @@ public class GoodsSysServiceImpl implements GoodsSysService {
     }
 
     @Override
+    public int findAllSys() {
+        List<GoodsSys> goodsSys = goodsSysMapper.selectAll();
+        int size = goodsSys.size();
+        return size;
+    }
+
+    @Override
     public List<GoodsSys> searchGoods(String goods_name, int start, int size) {
         return goodsSysMapper.searchGoods(goods_name, start, size);
     }

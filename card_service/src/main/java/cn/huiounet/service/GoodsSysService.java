@@ -14,7 +14,7 @@ public interface GoodsSysService {
     List<GoodsSys> findNewGoods();
 
 
-    void updateJiFen( String ji_fen, String id);
+    void updateJiFen(String ji_fen, String id);
 
     List<GoodsSys> findByLike(int start, int size);
 
@@ -46,5 +46,7 @@ public interface GoodsSysService {
 
     int findMaxId();
 
-    List<GoodsSys> searchGoods(String goods_name,int start,int size);
+    int findAllSys();
+
+    List<GoodsSys> searchGoods(String goods_name, int start, int size);
 }

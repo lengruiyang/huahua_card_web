@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface OrderSysService {
 
+    List<OrderSys> findAllSys( int start,  int size);
+
     OrderSys findByOrderNum(String order_num);
+
+    int getLength();
 
     void updateYouHui(String youhui_status,String youhui_much,String youhuiquan_id,String order_num);
 

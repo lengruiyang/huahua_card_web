@@ -31,10 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,7 +70,135 @@ public class OrderController {
     private ShopSysService shopSysService;
 
     @Autowired
+    private CouponSysService couponSysService;
+
+    @Autowired
     private OrderSellAfterService orderSellAfterService;
+
+    @Autowired
+    private PingJiaSysService pingJiaSysService;
+
+    /**
+     * 系统
+     */
+
+    @GetMapping("getOrderSys")
+    public Map getOrderSys(int page,int limit){
+        int truePage = page - 1;
+        int start = truePage * limit;
+        List<OrderSys> allSys = orderSysService.findAllSys(start, limit);
+        List<OrderReturnSYs> orderReturnSYss = new ArrayList<>();
+        for(int i = 0;i<allSys.size();i++){
+            OrderReturnSYs orderReturnSYs = new OrderReturnSYs();
+            OrderSys orderSys = allSys.get(i);
+            orderReturnSYs.setOrderSys(orderSys);
+            String order_num = orderSys.getOrder_num();
+            List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+            orderReturnSYs.setReturnGoods(byOrderNUm);
+            String shop_id = orderSys.getShop_id();
+            ShopSys byOpenId = shopSysService.findByOpenId(shop_id);
+            orderReturnSYs.setShopSys(byOpenId);
+            String user_id = orderSys.getUser_id();
+            UserInfoSystem byId = userInfoService.findById(user_id);
+            orderReturnSYs.setUserInfoSystem(byId);
+            OrderAddress byOrderNum = orderAddressService.findByOrderNum(order_num);
+            orderReturnSYs.setAddressSys(byOrderNum);
+            if(orderSys.getIs_pj() != null){
+                if(orderSys.getIs_pj().equals("1")){
+                    orderReturnSYs.setPingJiaSys(pingJiaSysService.findByOrderNum(order_num).get(0));
+                }
+            }
+            orderReturnSYss.add(orderReturnSYs);
+        }
+        Map map = new HashMap();
+        map.put("code",0);
+        map.put("count",orderSysService.getLength());
+        map.put("data",orderReturnSYss);
+
+        return map;
+    }
+
+    @GetMapping("sysPay")
+    public Result paySys(String out_trade_no){
+        //商品订单
+        //已支付
+        String order_num = out_trade_no;
+        if(orderSysService.findByOrderNum(out_trade_no).getIs_zh().equals("1")){
+            String zh_order_num = orderSysService.findByOrderNum(out_trade_no).getZh_order_num();
+            List<OrderSys> zhOrderNum = orderSysService.findZhOrderNum(zh_order_num);
+            for (int n = 0; n < zhOrderNum.size(); n++) {
+                orderSysService.updatePayWay("sysPay",zhOrderNum.get(n).getOrder_num());
+                orderSysService.updataPayStatusByOrderNum("is_payed", zhOrderNum.get(n).getOrder_num());
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                orderSysService.updataPayTime(df.format(new Date()), order_num);
+                List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(zhOrderNum.get(n).getOrder_num());
+                int jifen = 0;
+                for (int i = 0; i < byOrderNUm.size(); i++) {
+                    ReturnGoods returnGoods = byOrderNUm.get(i);
+                    String goods_id = returnGoods.getGoods_id();
+                    GoodsSys id = goodsSysService.findId(goods_id);
+                    String sell_many = id.getSell_many();
+                    String kucun = id.getKucun();
+                    int i1 = Integer.parseInt(sell_many);
+                    int i2 = Integer.parseInt(kucun);
+                    int sellMany = i1 + 1;
+                    String num = returnGoods.getNum();
+                    int i3 = i2 - Integer.parseInt(num); //剩余酷讯
+                    if(id.getIs_add_jifen() != null){
+                        if (id.getJi_fen() != null){
+                            jifen = jifen + Integer.parseInt(id.getJi_fen());
+                        }
+                    }
+                    goodsSysService.updateSell_many(sellMany + "", goods_id);
+                    goodsSysService.updateKuCun(i3+"",goods_id);
+                }
+                UserInfoSystem byId = userInfoService.findById(orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num()).getUser_id());
+                String jifen1 = byId.getJifen();
+                int i = Integer.parseInt(jifen1) + jifen;
+                userInfoService.updateJiFen(i+"",orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num()).getUser_id());
+                orderSysService.updatePayNumById(order_num,orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num())+"");
+            }
+        }else {
+            List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
+            int jifen = 0;
+            for (int i = 0; i < byOrderNUm.size(); i++) {
+                ReturnGoods returnGoods = byOrderNUm.get(i);
+                String goods_id = returnGoods.getGoods_id();
+                GoodsSys id = goodsSysService.findId(goods_id);
+                String sell_many = id.getSell_many();
+                String kucun = id.getKucun();
+                int i2 = Integer.parseInt(kucun);
+                int i1 = Integer.parseInt(sell_many);
+                int sellMany = i1 + 1;
+                String num = returnGoods.getNum();
+                int i3 = i2 - Integer.parseInt(num); //剩余库存
+                if(id.getIs_add_jifen() != null){
+                    if (id.getJi_fen() != null){
+                        jifen = jifen + Integer.parseInt(id.getJi_fen());
+                    }
+                }
+                goodsSysService.updateSell_many(sellMany + "", goods_id);
+                goodsSysService.updateKuCun(i3 + "", goods_id);
+            }
+            OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+            UserInfoSystem byId = userInfoService.findById(byOrderNum.getUser_id());
+            String jifen1 = byId.getJifen();
+            int i = Integer.parseInt(jifen1) + jifen;
+            userInfoService.updateJiFen(i+"",byOrderNum.getUser_id()+"");
+            if (byOrderNum.getYouhuiquan_id() != null) {
+                couponSysService.updateById("2", byOrderNum.getYouhuiquan_id());
+            }
+            orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            orderSysService.updataPayTime(df.format(new Date()), order_num);
+            orderSysService.updatePayWay("sysPay", order_num);
+            orderSysService.updatePayNumById(order_num, orderSysService.findByOrderNum(order_num).getId() + "");
+
+            orderSysService.updateAll_pay("1", order_num);
+        }
+
+        return null;
+    }
 
     /**
      * 一个
@@ -564,6 +689,64 @@ public class OrderController {
         if(!sysToken.equals(token)){
             return "token_error";
         }
+
+        String nonceStr = WXPayUtil.generateUUID(); //订单号
+
+
+        if (byOrderNum.getAll_pay() == null) {
+            List<OrderSys> payNumList = orderSysService.findPayNumList(byOrderNum.getPay_num());
+            int money = 0;
+            for (int i = 0; i < payNumList.size(); i++) {
+                OrderSys orderSys = payNumList.get(i);
+                String all_money = orderSys.getAll_money();
+                String yun_fei = orderSys.getYun_fei();
+                int i1 = Integer.parseInt(all_money);
+                int i2 = Integer.parseInt(yun_fei);
+                money = i1 + i2 + money;
+            }
+            String pay_num = byOrderNum.getPay_num();
+            String yun_fei = byOrderNum.getYun_fei();
+            String all_money = byOrderNum.getAll_money();
+            TuiKuanSys.tuiKuan(pay_num, nonceStr, money, Integer.parseInt(yun_fei) + Integer.parseInt(all_money), "商品退款");
+            orderSysService.updateTk("yes", Integer.parseInt(yun_fei) + Integer.parseInt(all_money) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+            orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+            logger.info("订单号退款:"+order_num);
+            return "ok";
+        } else {
+            int i = 0;
+            if(byOrderNum.getYouhui_status() != null){
+                String youhui_much = byOrderNum.getYouhui_much();
+                double v = Double.parseDouble(youhui_much);
+                Double aDouble = Double.valueOf(100);
+                double mul = Arith.mul(v, aDouble);
+
+                i = new Double(mul).intValue();
+            }
+            String result = TuiKuanSys.tuiKuan(order_num, nonceStr, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) - i, Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) - i, "商品退款");
+
+
+            orderSysService.updataPayStatusByOrderNum("is_cancel", order_num);
+            orderSysService.updateTk("yes", Integer.parseInt(byOrderNum.getAll_money()) + Integer.parseInt(byOrderNum.getYun_fei()) + "", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), order_num);
+            logger.info("订单号退款:"+order_num+"详情："+result);
+            return "ok";
+        }
+    }
+
+    @GetMapping("/tui_kuan_sys")
+    private String tui_kuan_sys(HttpServletResponse response, HttpServletRequest request) {
+        response.setContentType("text/html;charset=utf-8");
+        /*设置响应头允许ajax跨域访问*/
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        /* 星号表示所有的异域请求都可以接受， */
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+
+
+        String order_num = request.getParameter("order_num");
+
+
+        OrderSys byOrderNum = orderSysService.findByOrderNum(order_num);
+
 
         String nonceStr = WXPayUtil.generateUUID(); //订单号
 

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../lib/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<style type="text/css">
+    td div.layui-table-cell {
+        height: 48px;
+        line-height: 48px;
+        height: auto !important;
+        white-space: normal;
+    }
+</style>
+<body style="background-color: #f2f2f2">
+<div class="layui-fluid">
+    <div class="layui-col-md12">
+        <div class="layui-navs">
+					<span class="layui-breadcrumb" lay-separator="—">
+						<a href="javascript:;">订单管理</a>
+						<a><cite>全部订单</cite></a>
+                        <a><cite>商铺订单</cite></a>
+					</span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;float:right;height: 36px;"
+               href="javascript:location.replace(location.href);" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:36px;font-size: 16px;"></i>
+            </a>
+        </div>
+
+        <div class="layui-card-body">
+            <table class="layui-hide" id="OrderMessList" lay-filter="test"></table>
+        </div>
+    </div>
+</div>
+</body>
+<!--发货表单-->
+<div id="app">
+    <form class="layui-form" id="fahuo" style="display:none;margin-right:10px;margin-top: 10px;margin-left: 10px">
+        <div style="margin-left: 25px;margin-bottom:25px;display: flex;justify-content: space-between"
+             class="layui-form-item">
+
+            <div id="addressUser"></div>
+            <div id="addressPhone"></div>
+        </div>
+        <div style="margin-left: 25px" class="layui-form-item">
+            <div id="address"></div>
+            <div id="bz"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #0C0C0C">快递单号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" v-model="fahuo_num" placeholder="请输入快递单号" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 270px">
+            <button type="button" id="order_num" @click="fahuoNow()" class="layui-btn">立即提交</button>
+        </div>
+    </form>
+
+
+    <form class="layui-form" id="goodsList" style="background-color: #eeeeee;width: 100%;height: 100%">
+        <div  class="OrderGoodsList">
+
+        </div>
+        <hr class="layui-bg-gray">
+        <div class="layui-card">
+            <div class="layui-card-header">收货地址</div>
+            <div class="layui-card-body">
+                <div style="margin-left: 25px;margin-bottom:25px;display: flex;justify-content: space-between"
+                     class="layui-form-item">
+                    <div id="addressU"></div>
+                    <div id="addressP"></div>
+                </div>
+                <div style="margin-left: 25px" class="layui-form-item">
+                    <div id="addres"></div>
+                    <div style="margin-top: 10px" id="bzc"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <form class="layui-form" id="pjList" style="background-color: #eeeeee;width: 100%;height: 100%">
+        <div style="margin-left: 10px;display: flex;justify-content: space-between"  class="OrderGoodsList">
+            <div>
+                <!--<img style="width: 300px;height: 300px" id="pjimg" src="">-->
+                <!--<div style="margin-left: 10px" id="pjMess">-->
+
+                <!--</div>-->
+            </div>
+
+        </div>
+
+    </form>
+</div>
+<!--模板-->
+<script type="text/html" id="IDKey">
+    <div>{{d.orderSys.id}}</div>
+</script>
+<script type="text/html" id="kdMess">
+    <div style="display: flex;justify-content: space-around;align-items: center">{{d.orderSys.yun_fei/100}}元</div>
+</script>
+<script type="text/html" id="UserImg">
+    <div style="display: flex;justify-content: space-around;align-items: center">{{d.userInfoSystem.nick_name}}<img
+            style="height:48px;width:48px;line-height:48px!important;" src="{{d.userInfoSystem.head_img}}"></div>
+</script>
+<script type="text/html" id="shopname">
+    <div style="display: flex;justify-content: space-around;align-items: center">{{d.shopSys.shop_name}} <img
+            style="height:48px;width:48px;line-height:48px!important;" src="{{d.shopSys.shop_head_img}}"></div>
+</script>
+
+<script type="text/html" id="createTime">
+    <div>{{d.orderSys.creat_time}}</div>
+</script>
+<script type="text/html" id="payTime">
+    <div>
+        {{# if(d.orderSys.pay_time != null){ }}
+        {{d.orderSys.pay_time}}
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="KDT">
+    <div>
+        {{# if(d.orderSys.fa_huo_time != null){ }}
+        {{d.orderSys.fa_huo_time}}
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="KD">
+    <div>
+        {{# if(d.orderSys.fa_huo_num != null){ }}
+        {{d.orderSys.fa_huo_num}}
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="orderLX">
+    <div>
+        {{# if(d.orderSys.order_lx == "1"){ }}
+        普通订单
+        {{# } if(d.orderSys.order_lx == "2"){ }}
+        秒杀订单
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="payWay">
+    <div style="display: flex;justify-content: center;align-items: center">
+        {{# if(d.orderSys.pay_way == "wxPay"){ }}
+        <i class="layui-icon layui-icon-login-wechat" style="font-size: 30px; color: green;"></i>
+        {{# }if(d.orderSys.pay_way == "sysPay") { }}
+        <i class="layui-icon layui-icon-windows" style="font-size: 30px; color: blue;"></i>
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="YH">
+    <div style="display: flex;justify-content: center;align-items: center">
+        {{# if(d.orderSys.youhui_much == null){ }}
+        0 元
+        {{# }if(d.orderSys.youhui_much != null) { }}
+        {{d.orderSys.youhui_much}} 元
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="price">
+    <div style="display: flex;justify-content: center;align-items: center">
+        {{d.orderSys.all_money/100}} 元
+    </div>
+</script>
+<script type="text/html" id="payStatus">
+    <div>
+        {{# if(d.orderSys.pay_status == "is_cancel"){ }}
+        <span class="layui-badge layui-bg-gray">已取消</span>
+        {{# }if(d.orderSys.pay_status == "not_pay") { }}
+        <span class="layui-badge layui-bg-orange">待支付</span>
+        {{# }if(d.orderSys.pay_status == "is_payed") { }}
+        <span class="layui-badge">待发货</span>
+        <!--is_fa_huo-->
+        {{# }if(d.orderSys.pay_status == "is_fa_huo") { }}
+        <span class="layui-badge layui-bg-green">已发货</span>
+        <!--is_shou_huo-->
+        {{# }if(d.orderSys.pay_status == "is_shou_huo") { }}
+
+        <span class="layui-badge layui-bg-green">已收货</span>
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="orderNum">
+    <div>
+        <text style="color: red">{{d.orderSys.order_num}}</text>
+        <button type="button" data-clipboard-text="{{d.orderSys.order_num}}" class="layui-btn copy layui-btn-xs">复制
+        </button>
+    </div>
+</script>
+<script type="text/html" id="PayNum">
+    <div>
+        {{# if(d.orderSys.pay_num != null){ }}
+        <text style="color: #01AAED">{{d.orderSys.pay_num}}</text>
+        <button type="button" data-clipboard-text="{{d.orderSys.order_num}}" class="layui-btn copy layui-btn-xs">复制
+        </button>
+        {{# } }}
+        {{# if(d.orderSys.is_zh == '1'){ }}
+        <text style="color: #01AAED">{{d.orderSys.zh_order_num}}</text>
+        <button type="button" data-clipboard-text="{{d.orderSys.zh_order_num}}" class="layui-btn copy layui-btn-xs">复制
+        </button>
+        {{# } }}
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    {{#  if(d.orderSys.is_pj != null){ }}
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pj">查看评价</a>
+    {{#  } }}
+    <a class="layui-btn layui-btn-xs" lay-event="detail">购买详情</a>
+    {{#  if(d.orderSys.pay_status == "is_cancel"){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{# }if(d.orderSys.pay_status == "not_pay") { }}
+    <a class="layui-btn  layui-btn-xs" lay-event="pay">支付</a>
+    {{# }if(d.orderSys.pay_status == "is_payed") { }}
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="fahuo">发货</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="quxiao">关闭订单</a>
+    {{#  } }}
+</script>
+</html>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../lib/layui/layui.js"></script>
+<script src="../js/admin.js"></script>
+<script src="../js/vuejs-2.5.16.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/clipboard.min.js"></script>
+<script src="../js/controller/orderController.js"></script>

@@ -291,6 +291,7 @@ public class WxPayController {
                     String zh_order_num = orderSysService.findByOrderNum(out_trade_no).getZh_order_num();
                     List<OrderSys> zhOrderNum = orderSysService.findZhOrderNum(zh_order_num);
                     for (int n = 0; n < zhOrderNum.size(); n++) {
+                        orderSysService.updatePayWay("wxPay",zhOrderNum.get(n).getOrder_num());
                         orderSysService.updataPayStatusByOrderNum("is_payed", zhOrderNum.get(n).getOrder_num());
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         orderSysService.updataPayTime(df.format(new Date()), order_num);
