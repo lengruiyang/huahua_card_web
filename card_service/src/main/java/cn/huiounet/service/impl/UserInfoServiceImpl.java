@@ -13,6 +13,12 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+
+    @Override
+    public List<UserInfoSystem> findBySex(String sex) {
+        return userInfoMapper.findBySex(sex);
+    }
+
     @Override
     public List<UserInfoSystem> findAll() {
         return userInfoMapper.selectAll();

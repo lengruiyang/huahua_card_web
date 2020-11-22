@@ -3,6 +3,7 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.ReturnUser;
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.UserSys;
+import cn.huiounet.pojo.vo.BinUser;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.UserInfoService;
 import cn.huiounet.utils.http.HttpRequest;
@@ -27,10 +28,7 @@ import redis.clients.jedis.JedisShardInfo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -41,6 +39,21 @@ public class UserController {
     /**
      * 系统端口
      */
+    @GetMapping("findSysBin")
+    public List<BinUser> findAllSys(){
+        List<UserInfoSystem> bySex = userInfoService.findBySex("1");
+        int size = bySex.size();
+        BinUser binUser = new BinUser(size,"男性");
+        List<UserInfoSystem> bySex2 = userInfoService.findBySex("2");
+        int size2 = bySex2.size();
+        BinUser binUser2 = new BinUser(size2,"女性");
+        List<BinUser> lists = new ArrayList<>();
+        lists.add(binUser);
+        lists.add(binUser2);
+        return lists;
+    }
+
+
     @GetMapping("findAll")
     public Map findAll(int page, int limit){
         int truePage = page - 1;

@@ -22,4 +22,29 @@ public class DaoHangSysServiceImpl implements DaoHangSysService {
     public List<DaoHangSys> findByStatus() {
         return daoHangSysMapper.findByStatus();
     }
+
+    @Override
+    public void save(DaoHangSys daoHangSys) {
+        daoHangSysMapper.insert(daoHangSys);
+    }
+
+    @Override
+    public void updateById(String status, int id) {
+        daoHangSysMapper.updateById(status, id);
+    }
+
+    @Override
+    public void updateMessById(String name, String img, String to_url, int id) {
+        daoHangSysMapper.updateMessById(name, img, to_url, id);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        daoHangSysMapper.deleteById(id);
+    }
+
+    @Override
+    public DaoHangSys findById(int id) {
+        return daoHangSysMapper.findById(id);
+    }
 }

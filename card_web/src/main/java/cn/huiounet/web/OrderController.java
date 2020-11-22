@@ -82,6 +82,35 @@ public class OrderController {
      * 系统
      */
 
+    public static String getPastDate(int past) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
+        Date today = calendar.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String result = format.format(today);
+
+        return result;
+    }
+
+    @GetMapping("/getOrderMessSys")
+    public Map getOrderMess(){
+        ArrayList<String> pastDaysList = new ArrayList<>();
+        ArrayList<Integer> numList = new ArrayList<>();
+        Map map = new HashMap();
+        for (int i = 0; i <7; i++) {
+            pastDaysList.add(getPastDate(i));
+            String pastDate = getPastDate(i);
+            List<OrderSys> byData = orderSysService.findByData(pastDate);
+            numList.add(byData.size());
+        }
+        Collections.reverse(pastDaysList);
+        Collections.reverse(numList);
+        map.put("timeList",pastDaysList);
+        map.put("numList",numList);
+
+        return map;
+    }
+
     @GetMapping("getOrderSys")
     public Map getOrderSys(int page,int limit){
         int truePage = page - 1;

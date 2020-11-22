@@ -7,6 +7,11 @@
         SELECT * FROM  card_order_sys    ORDER  BY id  desc   limit #{start},#{size} ;
     </select>
 
+
+    <select id="findByData" resultType="OrderSys">
+        SELECT  *  FROM  card_order_sys  WHERE  creat_time like CONCAT(#{creat_time},'%')
+    </select>
+
     <select id="searchOrder" resultType="OrderSys">
         SELECT * FROM (SELECT * FROM card_order_sys WHERE `user_id`=#{user_id})AS a WHERE `order_num`=#{order_num}  OR  shop_name LIKE "%" #{shop_name} "%"  limit #{start},#{size};
     </select>
@@ -16,7 +21,7 @@
     </update>
 
     <!--<update id="updateYouHui">-->
-        <!--UPDATE card_order_sys SET all_pay = #{all_pay} WHERE order_num = #{order_num}-->
+    <!--UPDATE card_order_sys SET all_pay = #{all_pay} WHERE order_num = #{order_num}-->
     <!--</update>-->
 
     <update id="updatePayWay">
@@ -99,9 +104,6 @@
     <delete id="deleteByOrderNum">
         DELETE FROM card_order_sys WHERE  order_num = #{order_num}
     </delete>
-
-
-
 
 
 </mapper>

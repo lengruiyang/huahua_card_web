@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -47,6 +49,23 @@ public class MiaoShaController {
             miaoShaGoodsSysService.updateStartTime(return_time+"",miaoShaGoodsSys.getId()+"");
         }
         logger.info("凌晨12点任务执行");
+    }
+
+    @GetMapping("/miaosha_sys")
+    public void miaosha_sys()throws Exception{
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String format = df.format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = sdf.parse(format);
+        long longDate = date.getTime();
+        int id = 15;
+        for (int i = 0; i < 11; i++) {
+            MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(id + "");
+            miaoShaGoodsSysService.updateStartTime(longDate + "", byId.getId() + "");
+            longDate += 7200000;
+            id+=1;
+        }
+        logger.info("格式化秒杀执行");
     }
 
     @GetMapping("/miaoshaList")

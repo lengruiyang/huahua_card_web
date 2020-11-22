@@ -3,6 +3,7 @@ import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.coupon.CouPon;
 import cn.huiounet.pojo.coupon.CouponSys;
 import cn.huiounet.pojo.coupon.ReturnCoupon;
+import cn.huiounet.pojo.daohang.DaoHangSys;
 import cn.huiounet.pojo.goods.GoodsColor;
 import cn.huiounet.pojo.goods.GoodsSize;
 import cn.huiounet.pojo.goods.GoodsSys;
@@ -10,7 +11,9 @@ import cn.huiounet.pojo.huafei.HuaFeiOrderSys;
 import cn.huiounet.pojo.img.ImgSys;
 import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
+import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.pojo.miaosha.YuYueMiaoSha;
+import cn.huiounet.pojo.order.OrderSys;
 import cn.huiounet.pojo.root.GoodsRoot;
 import cn.huiounet.pojo.search.SearchCount;
 import cn.huiounet.pojo.vo.Result;
@@ -87,11 +90,36 @@ public class OrderTest {
     @Autowired
     private HuaFeiOrderSysService huaFeiOrderSysService;
 
-    @Test
-    public void test_()throws Exception{
+    @Autowired
+    private DaoHangSysService daoHangSysService;
 
+    @Autowired
+    private MiaoShaGoodsSysService miaoShaGoodsSysService;
+
+    @Test
+    public void test_() throws Exception {
+//        ArrayList<String> pastDaysList = new ArrayList<>();
+//
+//        for (int i = 0; i <7; i++) {
+//            pastDaysList.add(getPastDate(i));
+//            String pastDate = getPastDate(i);
+//            List<OrderSys> byData = orderSysService.findByData(pastDate);
+//            System.out.println("日期:"+pastDate+"订单:"+byData.size());
+//        }
+
+
+//        System.out.println(pastDaysList.toString());
     }
 
+//    public static String getPastDate(int past) {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
+//        Date today = calendar.getTime();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//        String result = format.format(today);
+//
+//        return result;
+//    }
 
 
 }

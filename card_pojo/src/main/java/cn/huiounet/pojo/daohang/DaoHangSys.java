@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Table(name = "card_dao_hang_sys")
 public class DaoHangSys implements Serializable {
-    private int id;
+    private String id;
     private String name;
     private String img;
     private String to_url;
@@ -29,11 +29,11 @@ public class DaoHangSys implements Serializable {
     public DaoHangSys() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

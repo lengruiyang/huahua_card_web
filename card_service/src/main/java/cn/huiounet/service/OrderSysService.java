@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface OrderSysService {
 
+    List<OrderSys> findByData(String create_time);
+
     List<OrderSys> findAllSys( int start,  int size);
 
     OrderSys findByOrderNum(String order_num);

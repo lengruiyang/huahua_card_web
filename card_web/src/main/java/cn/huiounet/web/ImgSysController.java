@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/img")
@@ -35,6 +37,56 @@ public class ImgSysController {
     @Autowired
     private UserInfoService userInfoService;
 
+    /**
+     * 系统
+     * @return
+     */
+    @GetMapping("/lun_boSys")
+    public Map getLun_boSys(){
+
+        List<ImgSys> byLunBo = imgSysService.findByLunBo();
+        Map map = new HashMap();
+        map.put("count",byLunBo.size());
+        map.put("code",0);
+        map.put("data",byLunBo);
+        return map;
+    }
+
+    @GetMapping("/delete_lun_boSys")
+    public void delete_lun_boSys(int id){
+
+        imgSysService.deleteById(id);
+
+    }
+
+    @GetMapping("/save_lun_boSys")
+    public void save_lun_boSys(String url,String to_url,String goods_id){
+
+        ImgSys imgSys = new ImgSys();
+        imgSys.setUrl(url);
+        imgSys.setStatus("2");
+        if(to_url.equals("")){
+            imgSys.setTo_url(null);
+            imgSys.setGoods_id(goods_id);
+        }else {
+            imgSys.setTo_url(to_url);
+            imgSys.setGoods_id(null);
+        }
+        imgSysService.saveImg(imgSys);
+    }
+
+    @GetMapping("/update_lun_boSys")
+    public void delete_lun_boSys(int id,String imgurl,String to_url,String goods_id){
+        if(to_url.equals("")){
+            imgSysService.updateById(imgurl,null,goods_id,id);
+        }else {
+            imgSysService.updateById(imgurl,to_url,null,id);
+        }
+    }
+    /**
+     * 结束
+     * @return
+     */
     @GetMapping("/lun_bo")
     public List<ImgSys> getLun_bo(){
 

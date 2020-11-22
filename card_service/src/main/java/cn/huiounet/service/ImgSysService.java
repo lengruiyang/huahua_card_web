@@ -18,4 +18,8 @@ public interface ImgSysService {
 
     List<ImgSys> findByFenLeiLunBoBystatus(String status);
 
+    void deleteById(int id);
+
+    void updateById(String url,String to_url,String goods_id,int id);
+
 }

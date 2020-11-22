@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../lib/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<style type="text/css">
+    td div.layui-table-cell {
+        height: 48px;
+        line-height: 48px;
+        height: auto !important;
+        white-space: normal;
+    }
+</style>
+<body style="background-color: #f2f2f2">
+<div class="layui-fluid">
+    <div class="layui-col-md12">
+        <div class="layui-navs">
+					<span class="layui-breadcrumb" lay-separator="—">
+						<a href="javascript:;">商品管理</a>
+						<a><cite>商品中心</cite></a>
+                        <a><cite>添加商品</cite></a>
+					</span>
+        </div>
+        <div id="app">
+        <div class="layui-card-body">
+
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">网络爬虫</li>
+                    <li>用户管理</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 100px;background-color: white">
+                    <div  class="layui-tab-item layui-show">
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-inline layui-show-xs-block">
+                                <input type="text" v-model="sKey" name="name" value=""  placeholder="请输入爬取关键字" autocomplete="off" class="layui-input">
+                                <input type="text" v-model="sNum" name="name" value=""  placeholder="请输入爬取销量" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-inline layui-show-xs-block">
+                                <button @click="sKeyMess()" type="button" class="layui-btn"><i class="layui-icon">&#xe615;</i>{{sKey}}</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-tab-item">
+
+                    </div>
+                    <div class="layui-tab-item">内容3</div>
+                    <div class="layui-tab-item">内容4</div>
+                    <div class="layui-tab-item">内容5</div>
+                </div>
+            </div>
+            <!--<table class="layui-hide" id="GoodsMessList" lay-filter="test"></table>-->
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+
+
+</html>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="../lib/layui/layui.js"></script>
+<script src="../js/admin.js"></script>
+<script src="../js/vuejs-2.5.16.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/clipboard.min.js"></script>
+<script src="../js/controller/AddGoodsController.js"></script>

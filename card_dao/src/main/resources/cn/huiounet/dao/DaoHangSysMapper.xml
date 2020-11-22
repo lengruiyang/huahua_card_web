@@ -5,4 +5,20 @@
     <select id="findByStatus" resultType="DaoHangSys">
         SELECT * FROM  card_dao_hang_sys where status = '1';
     </select>
+
+    <select id="findById" resultType="DaoHangSys">
+        SELECT * FROM  card_dao_hang_sys where id = #{id};
+    </select>
+
+    <update id="updateById">
+        UPDATE card_dao_hang_sys SET status = #{status} WHERE id = #{id};
+    </update>
+
+    <update id="updateMessById">
+        UPDATE card_dao_hang_sys SET `name` = #{name},to_url=#{to_url},img=#{img} WHERE id = #{id};
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM card_dao_hang_sys WHERE id = #{id};
+    </delete>
 </mapper>

@@ -22,4 +22,12 @@
         SELECT * FROM  card_img_sys where status = #{status};
     </select>
 
+    <delete id="deleteById">
+        DELETE FROM card_img_sys WHERE id = #{id};
+    </delete>
+
+    <update id="updateById">
+        UPDATE card_img_sys SET url = #{url},to_url = #{to_url},goods_id = #{goods_id} WHERE id = #{id};
+    </update>
+
 </mapper>

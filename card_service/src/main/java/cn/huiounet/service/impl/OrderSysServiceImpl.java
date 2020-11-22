@@ -14,6 +14,11 @@ public class OrderSysServiceImpl implements OrderSysService {
     private OrderSysMapper orderSysMapper;
 
     @Override
+    public List<OrderSys> findByData(String create_time) {
+        return orderSysMapper.findByData(create_time);
+    }
+
+    @Override
     public List<OrderSys> findAllSys(int start, int size) {
         return orderSysMapper.findAllSys(start, size);
     }

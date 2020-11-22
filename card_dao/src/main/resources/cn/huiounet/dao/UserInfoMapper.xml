@@ -18,6 +18,10 @@
         SELECT * FROM  card_user_info where  id = #{id};
     </select>
 
+    <select id="findBySex" resultType="UserInfoSystem">
+        SELECT * FROM  card_user_info where  sex = #{sex};
+    </select>
+
     <update id="updatePassWord">
         UPDATE card_user_info set password = #{password} where id = #{id};
     </update>

@@ -42,4 +42,14 @@ public class ImgSysServiceImpl implements ImgSysService {
     public List<ImgSys> findByFenLeiLunBoBystatus(String status) {
         return imgSysMapper.findByFenLeiLunBoBystatus(status);
     }
+
+    @Override
+    public void deleteById(int id) {
+        imgSysMapper.deleteById(id);
+    }
+
+    @Override
+    public void updateById(String url, String to_url, String goods_id, int id) {
+        imgSysMapper.updateById(url, to_url, goods_id, id);
+    }
 }

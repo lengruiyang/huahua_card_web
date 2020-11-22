@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UserInfoService {
 
+    List<UserInfoSystem> findBySex(String sex);
 
     List<UserInfoSystem> findAll();
 

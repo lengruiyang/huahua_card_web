@@ -13,7 +13,9 @@ public interface UserInfoMapper extends Mapper<UserInfoSystem> {
 
     UserInfoSystem findById(String id);
 
-    List<UserInfoSystem> findAllUser(@Param(value = "start")int start,@Param(value = "size")int size);
+    List<UserInfoSystem> findAllUser(@Param(value = "start") int start, @Param(value = "size") int size);
+
+    List<UserInfoSystem> findBySex(String sex);
 
     UserInfoSystem findByPhone(String phone);
 
