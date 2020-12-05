@@ -6,18 +6,16 @@ import cn.huiounet.pojo.huafei.HuaFeiOrderSys;
 import cn.huiounet.pojo.order.CzOrder;
 import cn.huiounet.pojo.order.OrderSys;
 import cn.huiounet.pojo.order.ReturnGoods;
+import cn.huiounet.pojo.order.ZhuanZhangOrder;
 import cn.huiounet.pojo.vip.Vip;
 import cn.huiounet.pojo.vip.VipLog;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.*;
 import cn.huiounet.utils.create_order.CreateOrder;
 import cn.huiounet.utils.http.HttpRequest;
-import cn.huiounet.utils.juhe.JuHeCzUtils;
 import cn.huiounet.utils.math.Arith;
 import cn.huiounet.utils.wxPay.WXPayUtil;
 import cn.huiounet.utils.xml.XmlPayUtil;
-import net.sf.json.JSON;
-import net.sf.json.xml.XMLSerializer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +44,9 @@ public class WxPayController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private ZhuanZhangOrderService zhuanZhangOrderService;
 
     @Autowired
     private HuaFeiService huaFeiService;
@@ -280,7 +282,7 @@ public class WxPayController {
             response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>");
             String out_trade_no = map.get("out_trade_no");
             /**
-             * 有三种订单
+             * 订单选择项
              */
             if(orderSysService.findByOrderNum(out_trade_no) != null){
 
@@ -418,8 +420,17 @@ public class WxPayController {
                 logger.info("充值状态："+s);
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 huaFeiOrderSysService.updateByOrderNum("is_pay",df.format(new Date()),byOrderNum.getOrder_num());
+            }else if(zhuanZhangOrderService.findByOrderNum(out_trade_no) != null){
+                zhuanZhangOrderService.updateByOrderNum("is_payed",out_trade_no);
+                ZhuanZhangOrder byOrderNum = zhuanZhangOrderService.findByOrderNum(out_trade_no);
+                String to_user = byOrderNum.getTo_user();
+                UserInfoSystem byId = userInfoService.findById(to_user);
+                String money = byId.getMoney();
+                Double aDouble = Double.valueOf(money);
+                double add = Arith.add(Double.valueOf(byOrderNum.getMoney_num()), aDouble);
+                userInfoService.updateMoney(add+"",to_user);
             }
-            logger.info("支付成功");
+            logger.info("异步支付成功");
         }
 
     }

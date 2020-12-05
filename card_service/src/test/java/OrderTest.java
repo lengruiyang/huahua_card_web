@@ -22,8 +22,11 @@ import cn.huiounet.service.*;
 import cn.huiounet.utils.access_token.GetTokenUtil;
 import cn.huiounet.utils.http.HttpRequest;
 import cn.huiounet.utils.juhe.JuHeCzUtils;
+import cn.huiounet.utils.math.Arith;
 import cn.huiounet.utils.phone.PhoneUtils;
+import cn.huiounet.utils.qrcode.GetImage;
 import cn.huiounet.utils.qrcode.ImageQrcode;
+import cn.huiounet.utils.qrcode.QRCodeUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
@@ -95,9 +98,23 @@ public class OrderTest {
 
     @Autowired
     private MiaoShaGoodsSysService miaoShaGoodsSysService;
-
+    private static String fileUrl = "/www/server/tomcat/apache-tomcat-8.5.51/webapps/imgs/";
     @Test
     public void test_() throws Exception {
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        Date date = sdf.parse("2020-11-30 00:00");
+//        long longDate = date.getTime();
+//        int id = 15;
+//        for (int i = 0; i < 11; i++) {
+//            MiaoShaGoodsSys byId = miaoShaGoodsSysService.findById(id + "");
+//            miaoShaGoodsSysService.updateStartTime(longDate + "", byId.getId() + "");
+//            longDate += 7200000;
+//            id+=1;
+//        }
+//        Long payMoneyNum = orderSysService.findPayMoneyNum();
+//        double sub = Arith.sub(Double.valueOf(payMoneyNum), Double.valueOf(100));
+//        System.out.println(sub);
 //        ArrayList<String> pastDaysList = new ArrayList<>();
 //
 //        for (int i = 0; i <7; i++) {

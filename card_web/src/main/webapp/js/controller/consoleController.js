@@ -1,4 +1,22 @@
-layui.use(['table','jquery','element','form','layer','upload'],function () {
+layui.use(['table','jquery','element','form','layer','upload','laydate'],function () {
+
+    $.ajax({
+        type: "GET",
+        url : '/card_web_/index/NumShuJu.lry',
+        success(res){
+            console.log(res);
+            $("#people").html(res.peopleNum);
+            $("#orderNum").html(res.orderNum);
+            $("#price").html(res.price/100);
+        }
+    })
+
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#test1' //指定元素
+    });
     // 基于准备好的dom，初始化echarts实例
     $.ajax({
         type : "GET",

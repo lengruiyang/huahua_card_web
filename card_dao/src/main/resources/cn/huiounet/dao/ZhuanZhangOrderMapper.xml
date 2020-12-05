@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.ZhuanZhangOrderMapper">
+
+
+    <select id="findByOrderNum" resultType="ZhuanZhangOrder">
+        SELECT * FROM card_zhuan_zhuang WHERE order_num = #{order_num};
+    </select>
+    <update id="updateByOrderNum">
+        UPDATE card_zhuan_zhuang SET status = #{status} WHERE order_num = #{order_num}
+    </update>
+</mapper>

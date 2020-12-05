@@ -24,8 +24,18 @@ public class OrderSysServiceImpl implements OrderSysService {
     }
 
     @Override
+    public int SysTemNumOrder() {
+        return orderSysMapper.selectAll().size();
+    }
+
+    @Override
     public OrderSys findByOrderNum(String order_num) {
         return orderSysMapper.findByOrderNum(order_num);
+    }
+
+    @Override
+    public Long findPayMoneyNum() {
+        return orderSysMapper.findPayMoneyNum();
     }
 
     @Override

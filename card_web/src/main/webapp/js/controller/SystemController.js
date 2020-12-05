@@ -47,7 +47,7 @@ layui.use(['table','jquery','element','form','layer','upload'],function () {
             layer.msg("已禁用")
         }
     })
-    //第一个实例
+
     table.render({
         elem: '#demo'
         ,height: 700
@@ -149,6 +149,18 @@ layui.use(['table','jquery','element','form','layer','upload'],function () {
         }else {
             $("#sy2").show();
         }
+    });
+
+    table.render({
+        elem: '#demoAdd'
+        ,height: 580
+        ,url: '/card_web_/img/ImgIndexAdSys.lry' //数据接口
+        ,cols: [[ //表头
+            {title: '图片', width:180,  templet: '#ImgAdd'},
+            {title: '位置', width:180, field: 'name'},
+            {title: '动作', width:280, templet: '#AddImgDo'}
+            , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo3'}
+        ]]
     });
 
     table.render({

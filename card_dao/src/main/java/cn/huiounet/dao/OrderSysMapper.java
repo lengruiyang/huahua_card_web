@@ -12,6 +12,8 @@ public interface OrderSysMapper extends Mapper<OrderSys> {
 
     List<OrderSys> findByData(String create_time);
 
+    Long findPayMoneyNum();
+
     void updateYouHui(@Param(value = "youhui_status") String youhui_status, @Param(value = "youhui_much") String youhui_much, @Param(value = "youhuiquan_id") String youhuiquan_id, @Param(value = "order_num") String order_num);
 
     List<OrderSys> findOrderNumByUserId(String user_id);

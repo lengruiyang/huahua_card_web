@@ -56,7 +56,7 @@ public class MiaoShaController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String format = df.format(new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date = sdf.parse(format);
+        Date date = sdf.parse(format+" 00:00");
         long longDate = date.getTime();
         int id = 15;
         for (int i = 0; i < 11; i++) {

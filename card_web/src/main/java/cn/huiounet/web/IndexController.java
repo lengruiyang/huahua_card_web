@@ -1,8 +1,13 @@
 package cn.huiounet.web;
 
+import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.daohang.DaoHangSys;
+import cn.huiounet.pojo.index.SystemMess;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.DaoHangSysService;
+import cn.huiounet.service.OrderSysService;
+import cn.huiounet.service.UserInfoService;
+import cn.huiounet.utils.math.Arith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +25,29 @@ public class IndexController {
     @Autowired
     private DaoHangSysService daoHangSysService;
 
+    @Autowired
+    private OrderSysService orderSysService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+
     /**
      * system
      * @return
      */
+    @GetMapping("/NumShuJu")
+    private SystemMess NumShuJu(){
+        int i = orderSysService.SysTemNumOrder();
+        Long payMoneyNum = orderSysService.findPayMoneyNum();
+//        double sub = Arith.sub(Double.valueOf(payMoneyNum), Double.valueOf(100));
+        SystemMess systemMess = new SystemMess(payMoneyNum,Long.valueOf(userInfoService.findAll().size()),Long.valueOf(i),0L);
+
+        return systemMess;
+    }
+
+
+
     @GetMapping("/dao_hang")
     private List<DaoHangSys> findAllDaoHang(){
 

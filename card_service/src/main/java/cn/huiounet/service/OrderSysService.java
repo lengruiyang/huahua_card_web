@@ -10,7 +10,11 @@ public interface OrderSysService {
 
     List<OrderSys> findAllSys( int start,  int size);
 
+    int SysTemNumOrder();
+
     OrderSys findByOrderNum(String order_num);
+
+    Long findPayMoneyNum();
 
     int getLength();
 

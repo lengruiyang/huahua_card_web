@@ -12,6 +12,10 @@
         SELECT  *  FROM  card_order_sys  WHERE  creat_time like CONCAT(#{creat_time},'%')
     </select>
 
+    <select id="findPayMoneyNum" resultType="java.lang.Long">
+        SELECT SUM(all_money) FROM card_order_sys WHERE pay_status != 'is_cancel';
+    </select>
+
     <select id="searchOrder" resultType="OrderSys">
         SELECT * FROM (SELECT * FROM card_order_sys WHERE `user_id`=#{user_id})AS a WHERE `order_num`=#{order_num}  OR  shop_name LIKE "%" #{shop_name} "%"  limit #{start},#{size};
     </select>

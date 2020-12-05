@@ -3,6 +3,7 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.img.ImgSys;
+import cn.huiounet.pojo.img.ImgSysAdd;
 import cn.huiounet.pojo.video.VideoCardSys;
 import cn.huiounet.service.GoodsSysService;
 import cn.huiounet.service.ImgSysService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,31 @@ public class ImgSysController {
      * 系统
      * @return
      */
+    @GetMapping("/ImgIndexAdSys")
+    public Map ImgIndexAdSys(){
+
+        List<ImgSys> byFenLeiLunBoBystatus = imgSysService.findByFenLeiLunBoBystatus("4");
+
+        List<ImgSysAdd> imgSysAdds = new ArrayList<>();
+        ImgSysAdd imgSysAdd1 = new ImgSysAdd(byFenLeiLunBoBystatus.get(0),"魔方一");
+        imgSysAdds.add(imgSysAdd1);
+        ImgSysAdd imgSysAdd2 = new ImgSysAdd(byFenLeiLunBoBystatus.get(1),"魔方二");
+        imgSysAdds.add(imgSysAdd2);
+        ImgSysAdd imgSysAdd3 = new ImgSysAdd(byFenLeiLunBoBystatus.get(2),"魔方三");
+        imgSysAdds.add(imgSysAdd3);
+        ImgSysAdd imgSysAdd4 = new ImgSysAdd(byFenLeiLunBoBystatus.get(3),"中部广告");
+        imgSysAdds.add(imgSysAdd4);
+        ImgSysAdd imgSysAdd5= new ImgSysAdd(byFenLeiLunBoBystatus.get(4),"首次弹框");
+        imgSysAdds.add(imgSysAdd5);
+        ImgSysAdd imgSysAdd6 = new ImgSysAdd(byFenLeiLunBoBystatus.get(5),"首页悬浮");
+        imgSysAdds.add(imgSysAdd6);
+        Map map = new HashMap();
+        map.put("count",imgSysAdds.size());
+        map.put("code",0);
+        map.put("data",imgSysAdds);
+        return map;
+    }
+
     @GetMapping("/lun_boSys")
     public Map getLun_boSys(){
 
