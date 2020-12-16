@@ -427,7 +427,8 @@ public class WxPayController {
                 UserInfoSystem byId = userInfoService.findById(to_user);
                 String money = byId.getMoney();
                 Double aDouble = Double.valueOf(money);
-                double add = Arith.add(Double.valueOf(byOrderNum.getMoney_num()), aDouble);
+                double div = Double.valueOf(byOrderNum.getMoney_num()) / 100;
+                double add = Arith.add(aDouble, div);
                 userInfoService.updateMoney(add+"",to_user);
             }
             logger.info("异步支付成功");
