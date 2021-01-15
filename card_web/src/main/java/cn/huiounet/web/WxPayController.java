@@ -3,6 +3,7 @@ package cn.huiounet.web;
 import cn.huiounet.pojo.UserInfoSystem;
 import cn.huiounet.pojo.goods.GoodsSys;
 import cn.huiounet.pojo.huafei.HuaFeiOrderSys;
+import cn.huiounet.pojo.notic.PayLogNoticPojo;
 import cn.huiounet.pojo.order.CzOrder;
 import cn.huiounet.pojo.order.OrderSys;
 import cn.huiounet.pojo.order.ReturnGoods;
@@ -44,6 +45,9 @@ public class WxPayController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private PayLogNoticPojoService payLogNoticPojoService;
 
     @Autowired
     private ZhuanZhangOrderService zhuanZhangOrderService;
@@ -275,12 +279,19 @@ public class WxPayController {
         }
         String resultxml = new String(outSteam.toByteArray(), "utf-8");
         Map<String, String> map = WXPayUtil.xmlToMap(resultxml);
-
-
         logger.info("商户订单号："+map.get("out_trade_no"));
+        logger.info("商户订单详情："+map);
         if(map.get("return_code").equals("SUCCESS") && map.get("result_code").equals("SUCCESS")){
             response.getWriter().write("<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>");
             String out_trade_no = map.get("out_trade_no");
+            PayLogNoticPojo payLogNoticPojo = new PayLogNoticPojo();
+            payLogNoticPojo.setOrder_num(out_trade_no);
+            payLogNoticPojo.setPay_num(map.get("cash_fee"));
+            SimpleDateFormat df3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat df2 = new SimpleDateFormat("MM");
+            payLogNoticPojo.setCreate_time(df3.format(new Date()));
+            payLogNoticPojo.setDay_time(Integer.parseInt(df2.format(new Date()))+"");
+
             /**
              * 订单选择项
              */
@@ -290,6 +301,8 @@ public class WxPayController {
                 //已支付
                 String order_num = out_trade_no;
                 if(orderSysService.findByOrderNum(out_trade_no).getIs_zh().equals("1")){
+                    payLogNoticPojo.setUser_id(orderSysService.findByOrderNum(out_trade_no).getUser_id());
+                    payLogNoticPojo.setStatus("1");
                     String zh_order_num = orderSysService.findByOrderNum(out_trade_no).getZh_order_num();
                     List<OrderSys> zhOrderNum = orderSysService.findZhOrderNum(zh_order_num);
                     for (int n = 0; n < zhOrderNum.size(); n++) {
@@ -325,6 +338,8 @@ public class WxPayController {
                         orderSysService.updatePayNumById(order_num,orderSysService.findByOrderNum(zhOrderNum.get(n).getOrder_num())+"");
                     }
                 }else {
+
+                    payLogNoticPojo.setStatus("1");
                     List<ReturnGoods> byOrderNUm = returnGoodsService.findByOrderNUm(order_num);
                     int jifen = 0;
                     for (int i = 0; i < byOrderNUm.size(); i++) {
@@ -354,6 +369,7 @@ public class WxPayController {
                     if (byOrderNum.getYouhuiquan_id() != null) {
                         couponSysService.updateById("2", byOrderNum.getYouhuiquan_id());
                     }
+                    payLogNoticPojo.setUser_id(byOrderNum.getUser_id()+"");
                     orderSysService.updataPayStatusByOrderNum("is_payed", order_num);
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     orderSysService.updataPayTime(df.format(new Date()), order_num);
@@ -365,9 +381,12 @@ public class WxPayController {
             }else  if(czOrderService.findByOrderNum(out_trade_no) != null){
                 //充值订单
                 //已支付
+
+                payLogNoticPojo.setStatus("3");
                 String order_num = out_trade_no;
                 CzOrder byOrderNum = czOrderService.findByOrderNum(order_num);
                 UserInfoSystem byId = userInfoService.findById(byOrderNum.getUser_id());
+                payLogNoticPojo.setUser_id(userInfoService.findById(byOrderNum.getUser_id()).getId()+"");
                 String money = byId.getMoney();
                 double v = Double.parseDouble(money);
                 String cz_money = byOrderNum.getCz_money();
@@ -377,9 +396,12 @@ public class WxPayController {
             }else if(vipLogService.findByOrderNum(out_trade_no) != null){
                 //vip充值订单
                 //已支付
+
+                payLogNoticPojo.setStatus("4");
                 String order_num = out_trade_no;
                 VipLog byOrderNum = vipLogService.findByOrderNum(order_num);
                 String user_id = byOrderNum.getUser_id();
+                payLogNoticPojo.setUser_id(user_id);
                 vipLogService.updateByOrderNum("pay",order_num);
                 Vip byId1 = vipService.findById("1");
                 String time = byId1.getTime();
@@ -395,7 +417,6 @@ public class WxPayController {
                     userInfoService.updateVipTime(format,user_id);
                 }else {
                     String vip_time = byId.getVip_time();
-
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     long dateToSecond = 0;
                     try {
@@ -411,9 +432,13 @@ public class WxPayController {
                     String format = formatter.format(calendar.getTime());
                     userInfoService.updateVipTime(format,user_id);
                 }
+                //vip充值结束
             }else if(huaFeiOrderSysService.findByOrderNum(out_trade_no) != null){
-                //支付成功
+                //话费充值支付成功
+                payLogNoticPojo.setStatus("5");
+
                 HuaFeiOrderSys byOrderNum = huaFeiOrderSysService.findByOrderNum(out_trade_no);
+                payLogNoticPojo.setUser_id(byOrderNum.getUser_id());
                 String cz_much = byOrderNum.getCz_much();
                 String cz_phone = byOrderNum.getCz_phone();
                 String s = huaFeiService.JuHeHuaFei(cz_phone, cz_much,out_trade_no);
@@ -421,9 +446,12 @@ public class WxPayController {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 huaFeiOrderSysService.updateByOrderNum("is_pay",df.format(new Date()),byOrderNum.getOrder_num());
             }else if(zhuanZhangOrderService.findByOrderNum(out_trade_no) != null){
+                //转账
                 zhuanZhangOrderService.updateByOrderNum("is_payed",out_trade_no);
                 ZhuanZhangOrder byOrderNum = zhuanZhangOrderService.findByOrderNum(out_trade_no);
                 String to_user = byOrderNum.getTo_user();
+                payLogNoticPojo.setStatus("6");
+                payLogNoticPojo.setUser_id(byOrderNum.getTo_user());
                 UserInfoSystem byId = userInfoService.findById(to_user);
                 String money = byId.getMoney();
                 Double aDouble = Double.valueOf(money);
@@ -431,6 +459,7 @@ public class WxPayController {
                 double add = Arith.add(aDouble, div);
                 userInfoService.updateMoney(add+"",to_user);
             }
+            payLogNoticPojoService.saveLog(payLogNoticPojo);
             logger.info("异步支付成功");
         }
 

@@ -14,4 +14,6 @@ public interface ShopSysMapper extends Mapper<ShopSys> {
 
     void updateFans(@Param(value = "fans")String fans,@Param(value = "user_open_id")String user_open_id);
 
+    List<ShopSys> findByZiTi(@Param(value = "is_ziti")String is_ziti,@Param(value = "start")int start,@Param(value = "size")int size);
+
 }

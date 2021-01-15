@@ -9,8 +9,8 @@
 		<link rel="shortcut icon" href="https://wx.qlogo.cn/mmhead/Q3auHgzwzM6iamS59NEicHe0juS1GAx8rBe83pjVPGObDsH19ZBgjVfQ/0" />
 	</head>
 	<body class="layui-layout-body">
-		<div class="layui-layout layui-layout-admin">
-			<div class="layui-header">
+		<div class="layui-layout  layui-layout-admin">
+			<div class="layui-header ">
 				<!--id="cz"-->
 				<div class="layui-logo"> 后台管理 </div>
 				<!-- 头部区域（可配合layui已有的水平导航） -->
@@ -19,6 +19,7 @@
 					<li class="layui-nav-item" data-nav="2"><a href="javascript:;">用户管理</a></li>
 					<li class="layui-nav-item" data-nav="3"><a href="javascript:;">订单管理</a></li>
 					<li class="layui-nav-item" data-nav="4"><a href="javascript:;">商品管理</a></li>
+					<li class="layui-nav-item" data-nav="5"><a href="javascript:;">线下点单</a></li>
 				</ul>
 				<ul class="layui-nav layui-layout-right">
 					<!--<li class="layui-nav-item">-->
@@ -97,6 +98,18 @@
 							<dl class="layui-nav-child">
 								<dd><a href="javascript:;" data-url="AddGoods.html">添加商品</a></dd>
 								<dd><a href="javascript:;" data-url="GoodsList.html">全部商品</a></dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="layui-side-scroll" id="layui_nav_left_5">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree"  lay-filter="test">
+						<li class="layui-nav-item">
+							<a class="" href="javascript:;">商家管理</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:;" data-url="AllShopsOfXianXia.html">全部商家</a></dd>
+								<dd><a href="javascript:;" data-url="AddShopMess.html">正在审核</a></dd>
 							</dl>
 						</li>
 					</ul>

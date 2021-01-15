@@ -27,4 +27,16 @@ public class ShopSysServiceImpl implements ShopSysService {
     public void updateFans(String fans, String user_open_id) {
         shopSysMapper.updateFans(fans, user_open_id);
     }
+
+    @Override
+    public List<ShopSys> findByZiTi(String is_ziti, int start, int size) {
+        return shopSysMapper.findByZiTi(is_ziti, start, size);
+    }
+
+    @Override
+    public Long findAll() {
+        int size = shopSysMapper.selectAll().size();
+
+        return (long)size;
+    }
 }

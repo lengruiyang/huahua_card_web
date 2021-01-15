@@ -8,6 +8,15 @@ public class UserSys implements Serializable {
     private int id;
     private String user_name;
     private String password;
+    private String open_id;
+
+    public String getOpen_id() {
+        return open_id;
+    }
+
+    public void setOpen_id(String open_id) {
+        this.open_id = open_id;
+    }
 
     public int getId() {
         return id;

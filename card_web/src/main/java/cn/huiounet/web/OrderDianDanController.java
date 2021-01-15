@@ -1,7 +1,6 @@
 package cn.huiounet.web;
 
 import cn.huiounet.pojo.diandan.*;
-import cn.huiounet.pojo.shop.ShopSys;
 import cn.huiounet.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,7 @@ public class OrderDianDanController {
     @Autowired
     private DianDanGoodsFenLeiFartherService dianDanGoodsFenLeiFartherService;
 
-    @GetMapping("findGoodsFenLei")
+    @GetMapping("/findGoodsFenLei")
     public List<ReturnFenLei> findGoodsFenLei(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
@@ -55,7 +54,7 @@ public class OrderDianDanController {
         return returnFenLeis;
     }
 
-    @GetMapping("findGoods")
+    @GetMapping("/findGoods")
     public DianDanGoods findGoods(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
@@ -70,7 +69,7 @@ public class OrderDianDanController {
         return byId;
     }
 
-    @GetMapping("findShop")
+    @GetMapping("/findShop")
     public OrderDianDanShop findByShopId(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
@@ -85,7 +84,7 @@ public class OrderDianDanController {
         return byId;
     }
 
-    @GetMapping("findFenLei")
+    @GetMapping("/findFenLei")
     public List<ReturnDianDanList> findFenLei(HttpServletResponse response, HttpServletRequest request){
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/

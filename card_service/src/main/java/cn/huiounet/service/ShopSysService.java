@@ -10,5 +10,9 @@ public interface ShopSysService {
 
     ShopSys findById(String id);
 
-    void updateFans(String fans,String user_open_id);
+    void updateFans(String fans, String user_open_id);
+
+    List<ShopSys> findByZiTi(String is_ziti, int start, int size);
+
+    Long findAll();
 }

@@ -10,6 +10,11 @@
         SELECT * FROM card_shop WHERE  id = #{id};
     </select>
 
+
+    <select id="findByZiTi" resultType="ShopSys">
+        SELECT * FROM card_shop WHERE  is_ziti = #{is_ziti} limit #{start},#{size};
+    </select>
+
     <update id="updateFans">
         UPDATE card_shop SET fans = #{fans} WHERE user_open_id = #{user_open_id};
     </update>

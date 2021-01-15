@@ -16,6 +16,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:20.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch:6.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch-core:6.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:7.2.1" level="project" />
@@ -126,7 +127,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.alibaba:jconsole:1.8.0">
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/jdk1.8.0_171/lib/jconsole.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/jconsole.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -135,7 +136,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.alibaba:tools:1.8.0">
         <CLASSES>
-          <root url="jar://C:/Program Files/Java/jdk1.8.0_171/lib/tools.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

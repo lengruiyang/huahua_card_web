@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="lib/layui/css/layui.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="lib/layui/layui.js"></script>
+    <script src="js/vuejs-2.5.16.js"></script>
+    <script src="js/axios-0.18.0.js"></script>
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy-1.2.0.js"></script>
 </head>
 <div id="app">
 <body>
@@ -14,12 +19,15 @@
         <input type="text" v-model="username" placeholder="用户名">
         <input type="password" v-model="password"  placeholder="密码">
         <input type="submit" onclick="return false"   @click="login()"  value="登录">
+        <button @click="weChatLogin()" type="button" class="layui-btn layui-bg-green">
+            <i class="layui-icon layui-icon-login-wechat "></i>花花卡登陆
+        </button>
     </form>
 </body>
 </div>
-</html>
-<script src="js/jquery-3.4.1.min.js"></script>
-<script src="lib/layui/layui.js"></script>
-<script src="js/vuejs-2.5.16.js"></script>
-<script src="js/axios-0.18.0.js"></script>
+
+<div id="qrCode" style="display: none;">
+    <img id="img" style="width: 400px;height: 375px;" src="" >
+</div>
 <script src="js/controller/loginController.js"></script>
+</html>

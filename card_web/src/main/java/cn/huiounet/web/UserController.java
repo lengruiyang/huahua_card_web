@@ -6,7 +6,9 @@ import cn.huiounet.pojo.UserSys;
 import cn.huiounet.pojo.vo.BinUser;
 import cn.huiounet.pojo.vo.Result;
 import cn.huiounet.service.UserInfoService;
+import cn.huiounet.service.UserSysService;
 import cn.huiounet.utils.http.HttpRequest;
+import cn.huiounet.utils.qrcode.QRCodeUtil;
 import cn.huiounet.utils.redis.RedisUtil;
 import cn.huiounet.utils.send_message.RamNumberUtil;
 import cn.huiounet.utils.send_message.SendMessageUtil;
@@ -33,44 +35,90 @@ import java.util.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private static String fileUrl = "/www/server/tomcat/apache-tomcat-8.5.51/webapps/imgs/";
     private static final Logger logger = Logger.getLogger(UserController.class);
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private UserSysService userSysService;
+
     /**
      * 系统端口
      */
     @GetMapping("findSysBin")
-    public List<BinUser> findAllSys(){
+    public List<BinUser> findAllSys() {
         List<UserInfoSystem> bySex = userInfoService.findBySex("1");
         int size = bySex.size();
-        BinUser binUser = new BinUser(size,"男性");
+        BinUser binUser = new BinUser(size, "男性");
         List<UserInfoSystem> bySex2 = userInfoService.findBySex("2");
         int size2 = bySex2.size();
-        BinUser binUser2 = new BinUser(size2,"女性");
+        BinUser binUser2 = new BinUser(size2, "女性");
         List<BinUser> lists = new ArrayList<>();
         lists.add(binUser);
         lists.add(binUser2);
         return lists;
     }
 
+    @GetMapping("findBySysUser")
+    public UserSys findBySysUser(String phone) throws Exception{
+        UserSys byUserName = userSysService.findByUserName(phone);
+
+        return byUserName;
+    }
+
+    @GetMapping("huahuacardLogin")
+    public String huahuacardLogin() throws Exception{
+        String nonceStr = WXPayUtil.generateUUID(); //订单号
+        RedisUtil.redisSetString("loginCodeToken",nonceStr,true,60000);
+        String format = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        QRCodeUtil.encode("5|"+nonceStr, "/www/server/tomcat/apache-tomcat-8.5.51/webapps/imgs/0.png", fileUrl + format + ".jpg");
+        return nonceStr+"|https://xcx2.huiounet.cn/imgs/" + format + ".jpg";
+    }
+
+    @GetMapping("/Syslogin")
+    public String Syslogin(String tokenRedis,String username, String password) {
+        String loginCodeToken = RedisUtil.redisGetString("loginCodeToken");
+        if(loginCodeToken == null){
+            return "tokenError";
+        }
+        if (!tokenRedis.equals(loginCodeToken)) {
+            return "tokenError";
+        }
+        Subject subject = SecurityUtils.getSubject();
+        //2 将登陆表单封装成 token 对象
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        try {
+            //3 让 shiro 框架进行登录验证：
+            subject.login(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = e.getMessage();
+            logger.info(message);
+            return "error";
+        }
+
+        return "ok";
+
+    }
 
     @GetMapping("findAll")
-    public Map findAll(int page, int limit){
+    public Map findAll(int page, int limit) {
         int truePage = page - 1;
         int start = truePage * limit;
         List<UserInfoSystem> allUser = userInfoService.findAllUser(start, limit);
         logger.info(allUser.toString());
         Map map = new HashMap();
-        map.put("code",0);
-        map.put("data",allUser);
+        map.put("code", 0);
+        map.put("data", allUser);
         return map;
     }
 
     @GetMapping("/login")
-    public String login(String username,String password) {
+    public String login(String username, String password) {
         Subject subject = SecurityUtils.getSubject();
         //2 将登陆表单封装成 token 对象
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             //3 让 shiro 框架进行登录验证：
             subject.login(token);
@@ -84,8 +132,10 @@ public class UserController {
         return "ok";
 
     }
+
     /**
      * 小程序控制
+     *
      * @param response
      * @param request
      * @return
@@ -324,7 +374,7 @@ public class UserController {
         String id = request.getParameter("id");
         String pwd = request.getParameter("pwd");
 
-        userInfoService.updatePassWord(pwd,id);
+        userInfoService.updatePassWord(pwd, id);
 
         logger.info("密码" + id + "被更新");
 
@@ -380,15 +430,15 @@ public class UserController {
 
         String s = jedis.get(phone);
 
-        if (check_code.equals(s)){
+        if (check_code.equals(s)) {
             return Result.ok("ok");
-        }else {
+        } else {
             return Result.ok("fail");
         }
     }
 
     @GetMapping("/regcheckcode")
-    public Result regcheckcode(HttpServletResponse response, HttpServletRequest request){
+    public Result regcheckcode(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("text/html;charset=utf-8");
         /*设置响应头允许ajax跨域访问*/
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -401,18 +451,18 @@ public class UserController {
 
         String s = RedisUtil.redisGetString(phone + "SERVER_CODE");
         logger.info(s);
-        if(s.equalsIgnoreCase(mycode)){
+        if (s.equalsIgnoreCase(mycode)) {
             //正确
             UserController userController = new UserController();
             Result mess = userController.getMess(phone);
             return mess;
-        }else {
+        } else {
             return Result.fail("code_fail");
         }
 
     }
 
-    public  Result getMess(String phone) {
+    public Result getMess(String phone) {
         String num = RamNumberUtil.getRandomStr(6, 0);
 
         JedisShardInfo shardInfo = new JedisShardInfo("localhost");//这里是连接的本地地址和端口
@@ -422,11 +472,11 @@ public class UserController {
 
         jedis.set(phone, num); //存
 
-            try {
-                SendMessageUtil.getMess(phone, num);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return Result.ok("ok");
+        try {
+            SendMessageUtil.getMess(phone, num);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.ok("ok");
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.PayLogNoticPojoMapper">
+
+    <select id="findByUserId" resultType="PayLogNoticPojo">
+        select * from (select * from (select * from card_pay_log where user_id = #{user_id})
+         as a where day_time = #{day_time})as b order by id desc ;
+    </select>
+
+    <select id="findMonth" resultType="java.lang.String">
+        SELECT day_time
+        FROM card_pay_log where user_id = #{user_id}
+        GROUP BY day_time ORDER by day_time desc
+    </select>
+</mapper>

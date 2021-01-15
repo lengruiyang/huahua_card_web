@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.huiounet.dao.AddShopMapper">
+    <select id="findByUserId" resultType="AddShop">
+        SELECT * FROM  card_shop_add where user_id = #{user_id};
+    </select>
+
+    <select id="findPage" resultType="AddShop">
+        SELECT * FROM  card_shop_add limit #{start},#{size};
+    </select>
+
+    <update id="updateStatusById">
+        UPDATE card_shop_add SET status = #{status} WHERE id = #{id};
+    </update>
+</mapper>

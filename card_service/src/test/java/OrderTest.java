@@ -17,6 +17,7 @@ import cn.huiounet.pojo.live.LiveSys;
 import cn.huiounet.pojo.live.LiveSysReturn;
 import cn.huiounet.pojo.miaosha.MiaoShaGoodsSys;
 import cn.huiounet.pojo.miaosha.YuYueMiaoSha;
+import cn.huiounet.pojo.notic.PayLogNoticPojo;
 import cn.huiounet.pojo.order.OrderSys;
 import cn.huiounet.pojo.order.ZhuanZhangOrder;
 import cn.huiounet.pojo.root.GoodsRoot;
@@ -119,18 +120,20 @@ public class OrderTest {
     private LiveService liveService;
 
     @Autowired
+    private AddShopService addShopService;
+
+    @Autowired
+    private PayLogNoticPojoService payLogNoticPojoService;
+
+    @Autowired
     private MiaoShaGoodsSysService miaoShaGoodsSysService;
     private static String fileUrl = "/www/server/tomcat/apache-tomcat-8.5.51/webapps/imgs/";
     @Test
     public void test_() throws Exception {
-        GetLiveLogsPojo getLiveLogsPojo = new GetLiveLogsPojo();
-        getLiveLogsPojo.setRoom_id(2);
-        getLiveLogsPojo.setAction("get_replay");
-        getLiveLogsPojo.setLimit(10);
-        getLiveLogsPojo.setStart(0);
+//        List<PayLogNoticPojo> byUserId = payLogNoticPojoService.findByUserId("15", "12");
+//
+//        System.out.println(byUserId.toString());
 
-        String liveLogs = liveService.getLiveLogs(getLiveLogsPojo);
-        System.out.println(liveLogs);
     }
 
 

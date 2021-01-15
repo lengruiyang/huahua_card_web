@@ -55,7 +55,7 @@ public class CartSysController {
 
         String user_id = request.getParameter("user_id");
         String goods_id = request.getParameter("goods_id");
-        if(goodsSysService.findId(goods_id).getKucun().equals("0")){
+        if(("0").equals(goodsSysService.findId(goods_id).getKucun())){
             return Result.ok("fail");
         }
         String color_id = request.getParameter("color_id");

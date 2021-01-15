@@ -437,6 +437,7 @@
 
     </dependencies>
     <build>
+        <finalName>card_web_</finalName>
         <plugins>
             <!-- tomcat插件控制 -->
             <plugin>

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="card_web:war exploded">
-    <output-path>$PROJECT_DIR$/card_web/target/card_web-1.0-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/card_web/target/card_web_</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -26,6 +26,7 @@
           <element id="archive" name="card_common-1.0-SNAPSHOT.jar">
             <element id="module-output" name="card_common" />
           </element>
+          <element id="library" level="project" name="Maven: org.jetbrains:annotations:20.1.0" />
           <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch:6.2.2" />
           <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-core:6.2.2" />
           <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:7.2.1" />
@@ -174,7 +175,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/card_web/target/card_web-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/card_web/target/card_web_/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="card_web/web/Web" />
     </root>

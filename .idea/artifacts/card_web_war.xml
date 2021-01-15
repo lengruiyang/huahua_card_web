@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="card_web-1.0-SNAPSHOT.war">
+    <root id="archive" name="card_web_.war">
       <element id="artifact" artifact-name="card_web:war exploded" />
     </root>
   </artifact>
